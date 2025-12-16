@@ -246,7 +246,7 @@ const Hero: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-            <a href="/xhub.apk" download className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+            <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
               <span className="relative z-10 flex items-center gap-2">
                 <DownloadIcon className="w-5 h-5" />
                 Download Now
@@ -414,7 +414,7 @@ const Footer: React.FC = () => (
         </div>
         <div className="flex flex-col items-center md:items-end gap-6">
           <a
-            href="/xhub.apk"
+            href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
             download
             className="bg-white text-black hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
           >
