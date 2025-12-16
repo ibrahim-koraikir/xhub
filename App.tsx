@@ -139,7 +139,7 @@ const Header: React.FC = () => {
           <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Reviews</a>
         </nav>
         <a
-          href="/xhub.apk"
+          href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
           download
           className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5"
         >
