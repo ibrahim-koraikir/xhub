@@ -1,8 +1,8 @@
 {
     "versionCode": 2,
-    "versionName": "1.1.0",
+    "versionName": "1.0.1",
     "minVersionCode": 1,
     "apkUrl": "https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk",
-    "releaseNotes": "• New Design Refresh\n• 4K Video Support added\n• Bug fixes and performance improvements",
+    "releaseNotes": "Bug fixes and improvements",
     "forceUpdate": false
 }
