@@ -128,7 +128,7 @@ const Header: React.FC = () => {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/90 backdrop-blur-xl py-4 border-b border-white/5 shadow-2xl' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-tr from-rose-600 to-red-600 rounded-lg flex items-center justify-center shadow-lg shadow-rose-900/20">
+          <div className="w-8 h-8 bg-gradient-to-tr from-brand-600 to-red-600 rounded-lg flex items-center justify-center shadow-lg shadow-brand-900/20">
             <span className="text-white font-black text-lg">X</span>
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">XHub</h1>
@@ -228,17 +228,17 @@ const Hero: React.FC = () => {
 
         {/* Left Column: Text */}
         <div className="text-center lg:text-left pt-10 lg:pt-0">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-rose-300 text-xs font-bold tracking-wider uppercase mb-8 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-brand-300 text-xs font-bold tracking-wider uppercase mb-8 backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
             </span>
             {versionInfo ? `New Version ${versionInfo.versionName} Available` : 'New Version Available'}
           </div>
 
           <h1 className="text-5xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 tracking-tight">
             Stream Everything. <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-red-500 to-orange-500">Unlimited Access.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 via-red-500 to-orange-500">Unlimited Access.</span>
           </h1>
 
           <p className="text-lg text-gray-400 mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed font-light">
@@ -251,7 +251,7 @@ const Hero: React.FC = () => {
                 <DownloadIcon className="w-5 h-5" />
                 Download Now
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-rose-200 to-orange-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-200 to-orange-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
             <div className="flex items-center gap-4 text-sm text-gray-500 pl-4">
               <div className="flex -space-x-3">
@@ -280,7 +280,7 @@ const Hero: React.FC = () => {
           {/* Main Card */}
           <div className="relative z-20 transition-transform duration-700 hover:scale-105 animate-float">
             <PhoneMockup
-              className="shadow-[0_0_80px_rgba(225,29,72,0.25)]"
+              className="shadow-[0_0_80px_rgba(244,63,94,0.25)]"
               imageSrc={APP_SCREENSHOTS.hero}
             />
 
@@ -296,7 +296,7 @@ const Hero: React.FC = () => {
             </div>
 
             <div className="absolute -left-12 bottom-40 bg-black/40 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce" style={{ animationDuration: '5s', animationDelay: '1s' }}>
-              <div className="w-10 h-10 rounded-full bg-rose-500/20 text-rose-500 flex items-center justify-center border border-rose-500/30">
+              <div className="w-10 h-10 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center border border-brand-500/30">
                 <PlayIcon className="w-5 h-5" />
               </div>
               <div>
@@ -317,7 +317,7 @@ const Features: React.FC = () => (
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-rose-500/20">
+          <div className="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-brand-500/20">
             <GlobeIcon className="w-7 h-7" />
           </div>
           <h3 className="text-xl font-bold text-white mb-3">All-in-One Aggregator</h3>
@@ -378,7 +378,7 @@ const Testimonials: React.FC = () => (
           { name: "Sarah L.", role: "Verified User", text: "I love the private browser feature. It's super fast and feels very secure." },
           { name: "James R.", role: "Verified User", text: "Video quality is amazing, even on mobile data. Highly recommend for movie buffs." }
         ].map((t, i) => (
-          <div key={i} className="bg-white/5 border border-white/5 p-8 rounded-2xl hover:border-rose-500/30 transition-colors">
+          <div key={i} className="bg-white/5 border border-white/5 p-8 rounded-2xl hover:border-brand-500/30 transition-colors">
             <div className="flex text-yellow-500 mb-4 space-x-1">
               {[1, 2, 3, 4, 5].map(star => <StarIcon key={star} className="w-4 h-4" />)}
             </div>
@@ -405,7 +405,7 @@ const Footer: React.FC = () => (
       <div className="flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
-            <div className="w-6 h-6 bg-rose-600 rounded flex items-center justify-center">
+            <div className="w-6 h-6 bg-brand-600 rounded flex items-center justify-center">
               <span className="text-white font-bold text-xs">X</span>
             </div>
             <span className="text-xl font-bold text-white">XHub</span>
@@ -437,7 +437,7 @@ const Footer: React.FC = () => (
 
 function App() {
   return (
-    <div className="min-h-screen bg-black text-white font-sans selection:bg-rose-500/30 selection:text-white">
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-500/30 selection:text-white">
       <Header />
       <main>
         <Hero />
