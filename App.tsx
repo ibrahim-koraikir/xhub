@@ -69,6 +69,18 @@ const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+const XIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
+const InfoIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
 // --- Styled Components & Mockups ---
 
 const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; imageSrc?: string }> = ({ children, className = "", imageSrc }) => (
@@ -206,7 +218,7 @@ const ScrollingBackground: React.FC = () => {
   );
 };
 
-const Hero: React.FC = () => {
+const Hero: React.FC<{ onInstallClick: () => void }> = ({ onInstallClick }) => {
   const [versionInfo, setVersionInfo] = useState<{ versionName: string; releaseNotes: string } | null>(null);
 
   useEffect(() => {
@@ -253,6 +265,13 @@ const Hero: React.FC = () => {
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-brand-200 to-orange-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
+            <button
+              onClick={onInstallClick}
+              className="flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold hover:bg-white/10 transition-all duration-300"
+            >
+              <InfoIcon className="w-5 h-5 text-brand-500" />
+              How to Install
+            </button>
             <div className="flex items-center gap-4 text-sm text-gray-500 pl-4">
               <div className="flex -space-x-3">
                 {[1, 2, 3, 4].map(i => (
@@ -435,17 +454,83 @@ const Footer: React.FC = () => (
   </footer>
 );
 
+const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
+      <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+        <div className="p-8 md:p-12">
+          <button
+            onClick={onClose}
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+          >
+            <XIcon className="w-5 h-5" />
+          </button>
+
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
+          </div>
+
+          <div className="space-y-8">
+            {[
+              {
+                step: "01",
+                title: "Download the APK",
+                desc: "Tap the Get APK button. The file saves to your Downloads folder."
+              },
+              {
+                step: "02",
+                title: "Allow unknown sources",
+                desc: "When prompted, enable installs from your browser in Settings → Security."
+              },
+              {
+                step: "03",
+                title: "Install & open XHub",
+                desc: "Tap the file, hit Install, and launch. You're watching in under a minute."
+              }
+            ].map((s, i) => (
+              <div key={i} className="flex gap-6">
+                <div className="text-3xl font-black text-brand-500/20 leading-none">{s.step}</div>
+                <div>
+                  <h4 className="text-lg font-bold text-white mb-1">{s.title}</h4>
+                  <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12">
+            <a
+              href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
+              download
+              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20"
+            >
+              Get APK Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function App() {
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-500/30 selection:text-white">
       <Header />
       <main>
-        <Hero />
+        <Hero onInstallClick={() => setIsInstallModalOpen(true)} />
         <Features />
         <Gallery />
         <Testimonials />
       </main>
       <Footer />
+      <InstallModal isOpen={isInstallModalOpen} onClose={() => setIsInstallModalOpen(false)} />
     </div>
   );
 }
