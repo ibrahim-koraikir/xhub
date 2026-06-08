@@ -141,7 +141,8 @@ const Header: React.FC = () => {
         <a
           href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
           download
-          className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5"
+          aria-label={`Download XHub APK ${versionInfo ? 'v' + versionInfo.versionName : ''}`}
+          className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         >
           Download APK {versionInfo && <span className="ml-1 opacity-60 text-xs">v{versionInfo.versionName}</span>}
         </a>
@@ -246,9 +247,14 @@ const Hero: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-            <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+            <a
+              href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
+              download
+              aria-label="Download XHub APK for Android"
+              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            >
               <span className="relative z-10 flex items-center gap-2">
-                <DownloadIcon className="w-5 h-5" />
+                <DownloadIcon className="w-5 h-5" aria-hidden="true" />
                 Download Now
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-rose-200 to-orange-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -313,7 +319,7 @@ const Hero: React.FC = () => {
 };
 
 const Features: React.FC = () => (
-  <section id="features" className="py-32 bg-black relative border-t border-white/5">
+  <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
@@ -346,7 +352,7 @@ const Features: React.FC = () => (
 
 const Gallery: React.FC = () => {
   return (
-    <section id="gallery" className="py-24 bg-gradient-to-b from-black to-slate-950 border-t border-white/5 overflow-hidden">
+    <section id="gallery" className="py-24 bg-gradient-to-b from-black to-slate-950 border-t border-white/5 overflow-hidden scroll-mt-24">
       <div className="container mx-auto px-6 mb-16 text-center">
         <h2 className="text-4xl font-bold text-white mb-4 tracking-tight">The Ultimate Viewing Experience</h2>
         <p className="text-gray-400 max-w-xl mx-auto">Designed for movie lovers. Dark mode enabled, intuitive navigation, and lightning fast playback.</p>
@@ -369,7 +375,7 @@ const Gallery: React.FC = () => {
 };
 
 const Testimonials: React.FC = () => (
-  <section id="testimonials" className="py-24 bg-black relative z-10 border-t border-white/5">
+  <section id="testimonials" className="py-24 bg-black relative z-10 border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">User Reviews</h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -416,7 +422,8 @@ const Footer: React.FC = () => (
           <a
             href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
             download
-            className="bg-white text-black hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+            aria-label="Download XHub APK"
+            className="bg-white text-black hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
             Download Now
           </a>
