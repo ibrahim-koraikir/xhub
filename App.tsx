@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 
 // --- CONFIGURATION ---
 // ----------------------------------------------------------------------
@@ -71,7 +71,7 @@ const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 // --- Styled Components & Mockups ---
 
-const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; imageSrc?: string }> = ({ children, className = "", imageSrc }) => (
+const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; imageSrc?: string; loading?: "lazy" | "eager"; fetchPriority?: "high" | "low" | "auto" }> = ({ children, className = "", imageSrc, loading = "lazy", fetchPriority = "auto" }) => (
   <div className={`relative mx-auto border-gray-900 bg-gray-900 border-[8px] rounded-[2.5rem] h-[580px] w-[280px] shadow-2xl flex flex-col overflow-hidden ring-1 ring-white/20 ${className}`}>
     {/* Hardware Buttons */}
     <div className="h-[32px] w-[3px] bg-gray-800 absolute -left-[10px] top-[72px] rounded-l-lg"></div>
@@ -98,7 +98,9 @@ const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; im
           src={imageSrc}
           alt="App Screenshot"
           className="absolute inset-0 w-full h-full object-cover z-10"
-          loading="lazy"
+          loading={loading}
+          // @ts-ignore
+          fetchpriority={fetchPriority}
         />
       ) : children}
     </div>
@@ -107,16 +109,8 @@ const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; im
 
 // --- Sections ---
 
-const Header: React.FC = () => {
+const Header: React.FC<{ versionInfo: { versionName: string } | null }> = ({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
-  const [versionInfo, setVersionInfo] = useState<{ versionName: string; releaseNotes: string } | null>(null);
-
-  useEffect(() => {
-    fetch('/version.json')
-      .then((res) => res.json())
-      .then((data) => setVersionInfo(data))
-      .catch((err) => console.error("Failed to fetch version info", err));
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -150,11 +144,13 @@ const Header: React.FC = () => {
   );
 };
 
-const ScrollingBackground: React.FC = () => {
+const ScrollingBackground: React.FC = memo(() => {
   // Duplicate for seamless loop
-  const column1 = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
-  const column2 = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse()).concat([...BACKGROUND_IMAGES].reverse());
-  const column3 = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES].sort(() => Math.random() - 0.5);
+  const { column1, column2, column3 } = useMemo(() => ({
+    column1: [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES],
+    column2: [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse()).concat([...BACKGROUND_IMAGES].reverse()),
+    column3: [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES].sort(() => 0.5 - Math.random())
+  }), []);
 
   return (
     <div className="absolute inset-0 overflow-hidden z-0 select-none pointer-events-none">
@@ -165,7 +161,7 @@ const ScrollingBackground: React.FC = () => {
         <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
           {column1.map((src, i) => (
             <div key={`c1-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
             </div>
           ))}
         </div>
@@ -174,7 +170,7 @@ const ScrollingBackground: React.FC = () => {
         <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0">
           {column2.map((src, i) => (
             <div key={`c2-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
             </div>
           ))}
         </div>
@@ -183,7 +179,7 @@ const ScrollingBackground: React.FC = () => {
         <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
           {column3.map((src, i) => (
             <div key={`c3-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
             </div>
           ))}
         </div>
@@ -192,7 +188,7 @@ const ScrollingBackground: React.FC = () => {
         <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex">
           {column2.map((src, i) => (
             <div key={`c4-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
             </div>
           ))}
         </div>
@@ -204,18 +200,9 @@ const ScrollingBackground: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black z-10"></div>
     </div>
   );
-};
+});
 
-const Hero: React.FC = () => {
-  const [versionInfo, setVersionInfo] = useState<{ versionName: string; releaseNotes: string } | null>(null);
-
-  useEffect(() => {
-    fetch('/version.json')
-      .then((res) => res.json())
-      .then((data) => setVersionInfo(data))
-      .catch((err) => console.error("Failed to fetch version info", err));
-  }, []);
-
+const Hero: React.FC<{ versionInfo: { versionName: string } | null }> = ({ versionInfo }) => {
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black pt-20 lg:pt-0">
 
@@ -282,6 +269,8 @@ const Hero: React.FC = () => {
             <PhoneMockup
               className="shadow-[0_0_80px_rgba(225,29,72,0.25)]"
               imageSrc={APP_SCREENSHOTS.hero}
+              loading="eager"
+              fetchPriority="high"
             />
 
             {/* Floating Elements */}
@@ -436,11 +425,20 @@ const Footer: React.FC = () => (
 );
 
 function App() {
+  const [versionInfo, setVersionInfo] = useState<{ versionName: string; releaseNotes: string } | null>(null);
+
+  useEffect(() => {
+    fetch('/version.json')
+      .then((res) => res.json())
+      .then((data) => setVersionInfo(data))
+      .catch((err) => console.error("Failed to fetch version info", err));
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-rose-500/30 selection:text-white">
-      <Header />
+      <Header versionInfo={versionInfo} />
       <main>
-        <Hero />
+        <Hero versionInfo={versionInfo} />
         <Features />
         <Gallery />
         <Testimonials />
