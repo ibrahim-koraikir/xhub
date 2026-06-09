@@ -1,0 +1,3 @@
+## 2025-05-14 - Modal Keyboard Accessibility and Scroll Locking
+**Learning:** Modals in React applications often lack standard accessibility features like 'Escape' key support and background scroll locking when implemented from scratch. This leads to a jarring experience for power users and keyboard-only users, as well as potential confusion when background content scrolls while the modal is active.
+**Action:** Always implement a `useEffect` hook in modal components to handle the 'Escape' key and manage `document.body.style.overflow`. Additionally, ensure icon-only buttons have descriptive `aria-label` attributes.
