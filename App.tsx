@@ -108,7 +108,7 @@ const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; im
       {imageSrc ? (
         <img
           src={imageSrc}
-          alt="App Screenshot"
+          alt={`XHub mobile interface showing ${imageSrc.split('/').pop()?.split('.')[0].replace(/-/g, ' ')}`}
           className="absolute inset-0 w-full h-full object-cover z-10"
           loading="lazy"
         />
@@ -143,15 +143,15 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
           <h1 className="text-2xl font-bold text-white tracking-tight">XHub</h1>
         </div>
         <nav className="hidden md:flex space-x-8">
-          <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Features</a>
-          <a href="#gallery" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Library</a>
-          <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Reviews</a>
+          <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg px-2 py-1 -mx-2 -my-1">Features</a>
+          <a href="#gallery" className="text-gray-400 hover:text-white transition-colors text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg px-2 py-1 -mx-2 -my-1">Library</a>
+          <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg px-2 py-1 -mx-2 -my-1">Reviews</a>
         </nav>
         <a
           href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
           download
           aria-label={`Download XHub APK${versionInfo ? ` version ${versionInfo.versionName}` : ''}`}
-          className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5"
+          className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         >
           Download APK {versionInfo && <span className="ml-1 opacity-60 text-xs">v{versionInfo.versionName}</span>}
         </a>
@@ -254,7 +254,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
               aria-label="Download XHub APK now"
-              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               <span className="relative z-10 flex items-center gap-2">
                 <DownloadIcon className="w-5 h-5" />
@@ -265,7 +265,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
             <button
               onClick={onInstallClick}
               aria-label="Open installation guide"
-              className="flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold hover:bg-white/10 transition-all duration-300"
+              className="flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold hover:bg-white/10 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
             >
               <InfoIcon className="w-5 h-5 text-brand-500" />
               How to Install
@@ -314,7 +314,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl z-20"></div>
                 <img
                   src={APP_SCREENSHOTS.hero}
-                  alt="App Hero Screenshot"
+                  alt="XHub main dashboard showing movie selection and streaming categories"
                   className="absolute inset-0 w-full h-full object-cover z-10"
                   loading="eager"
                   fetchPriority="high"
@@ -455,7 +455,7 @@ const Footer: React.FC = () => (
             href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
             download
             aria-label="Download XHub APK from footer"
-            className="bg-white text-black hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+            className="bg-white text-black hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
             Download Now
           </a>
@@ -465,9 +465,9 @@ const Footer: React.FC = () => (
       <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
         <p>&copy; 2024 XHub App. All rights reserved.</p>
         <div className="flex gap-8 mt-4 md:mt-0">
-          <a href="#" className="hover:text-white transition-colors">Privacy</a>
-          <a href="#" className="hover:text-white transition-colors">Terms</a>
-          <a href="#" className="hover:text-white transition-colors">DMCA</a>
+          <a href="#" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-500">Privacy</a>
+          <a href="#" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-500">Terms</a>
+          <a href="#" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-500">DMCA</a>
         </div>
       </div>
     </div>
@@ -475,6 +475,16 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleEscape);
+    }
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -484,7 +494,8 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            aria-label="Close installation guide"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             <XIcon className="w-5 h-5" />
           </button>
@@ -526,7 +537,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             <a
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
-              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20"
+              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-500"
             >
               Get APK Now
             </a>
