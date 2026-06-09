@@ -1,0 +1,3 @@
+## 2025-05-15 - Standardized Modal Accessibility and Keyboard Focus Patterns
+**Learning:** For dark-themed, glassmorphic interfaces, standard focus outlines are often invisible. Using a dedicated `focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black` ensures high contrast and clear navigation for keyboard users. Additionally, WAI-ARIA patterns for modals (role="dialog", Escape key handling, scroll locking) are critical for making "sideloading" instructions accessible to all users.
+**Action:** Apply the `focus-visible` ring pattern to all interactive elements and use the `useEffect` hook pattern for modal side-effects (Escape key and scroll lock) in future component additions.
