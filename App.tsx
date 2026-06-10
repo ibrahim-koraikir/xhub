@@ -475,22 +475,37 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (isOpen) {
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
       <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
+            aria-label="Close installation guide"
             className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
           >
             <XIcon className="w-5 h-5" />
           </button>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
             <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
           </div>
 
