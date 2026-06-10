@@ -83,7 +83,7 @@ const InfoIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 // --- Styled Components & Mockups ---
 
-const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; imageSrc?: string }> = ({ children, className = "", imageSrc }) => (
+const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; imageSrc?: string; alt?: string }> = ({ children, className = "", imageSrc, alt = "App Screenshot" }) => (
   <div className={`relative mx-auto border-gray-900 bg-gray-900 border-[8px] rounded-[2.5rem] h-[580px] w-[280px] shadow-2xl flex flex-col overflow-hidden ring-1 ring-white/20 ${className}`}>
     {/* Hardware Buttons */}
     <div className="h-[32px] w-[3px] bg-gray-800 absolute -left-[10px] top-[72px] rounded-l-lg"></div>
@@ -108,7 +108,7 @@ const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; im
       {imageSrc ? (
         <img
           src={imageSrc}
-          alt="App Screenshot"
+          alt={alt}
           className="absolute inset-0 w-full h-full object-cover z-10"
           loading="lazy"
         />
@@ -124,7 +124,7 @@ interface VersionInfo {
   releaseNotes: string;
 }
 
-const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
+const Header: React.FC<{ versionInfo: VersionInfo | null }> = React.memo(({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -143,22 +143,22 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
           <h1 className="text-2xl font-bold text-white tracking-tight">XHub</h1>
         </div>
         <nav className="hidden md:flex space-x-8">
-          <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Features</a>
-          <a href="#gallery" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Library</a>
-          <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Reviews</a>
+          <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg outline-none">Features</a>
+          <a href="#gallery" className="text-gray-400 hover:text-white transition-colors text-sm font-medium focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg outline-none">Library</a>
+          <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg outline-none">Reviews</a>
         </nav>
         <a
           href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
           download
           aria-label={`Download XHub APK${versionInfo ? ` version ${versionInfo.versionName}` : ''}`}
-          className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5"
+          className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5 active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
         >
           Download APK {versionInfo && <span className="ml-1 opacity-60 text-xs">v{versionInfo.versionName}</span>}
         </a>
       </div>
     </header>
   );
-};
+});
 
 const ScrollingBackground: React.FC = React.memo(() => {
   // Duplicate for seamless loop
@@ -219,7 +219,7 @@ const ScrollingBackground: React.FC = React.memo(() => {
   );
 });
 
-const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = ({ onInstallClick, versionInfo }) => {
+const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = React.memo(({ onInstallClick, versionInfo }) => {
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black pt-20 lg:pt-0">
 
@@ -254,7 +254,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
               aria-label="Download XHub APK now"
-              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
             >
               <span className="relative z-10 flex items-center gap-2">
                 <DownloadIcon className="w-5 h-5" />
@@ -265,7 +265,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
             <button
               onClick={onInstallClick}
               aria-label="Open installation guide"
-              className="flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold hover:bg-white/10 transition-all duration-300"
+              className="flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold hover:bg-white/10 transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
             >
               <InfoIcon className="w-5 h-5 text-brand-500" />
               How to Install
@@ -287,11 +287,11 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
         <div className="relative h-[600px] flex items-center justify-center lg:perspective-[2000px] group">
           {/* Background blurred cards */}
           <div className="absolute right-10 lg:right-0 top-1/2 -translate-y-1/2 translate-x-12 opacity-40 scale-90 blur-[2px] duration-700 transition-all group-hover:translate-x-20 group-hover:rotate-6 grayscale group-hover:grayscale-0">
-            <PhoneMockup className="rotate-12" imageSrc={APP_SCREENSHOTS.gallery1} />
+            <PhoneMockup className="rotate-12" imageSrc={APP_SCREENSHOTS.gallery1} alt="Library view mockup" />
           </div>
 
           <div className="absolute left-10 lg:left-20 top-1/2 -translate-y-1/2 -translate-x-12 opacity-40 scale-90 blur-[2px] duration-700 transition-all group-hover:-translate-x-20 group-hover:-rotate-6 grayscale group-hover:grayscale-0">
-            <PhoneMockup className="-rotate-12" imageSrc={APP_SCREENSHOTS.gallery2} />
+            <PhoneMockup className="-rotate-12" imageSrc={APP_SCREENSHOTS.gallery2} alt="Private browser mockup" />
           </div>
 
           {/* Main Card */}
@@ -314,7 +314,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl z-20"></div>
                 <img
                   src={APP_SCREENSHOTS.hero}
-                  alt="App Hero Screenshot"
+                  alt="XHub main dashboard mockup"
                   className="absolute inset-0 w-full h-full object-cover z-10"
                   loading="eager"
                   fetchPriority="high"
@@ -348,9 +348,9 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
       </div>
     </section>
   );
-};
+});
 
-const Features: React.FC = () => (
+const Features: React.FC = React.memo(() => (
   <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
@@ -380,9 +380,9 @@ const Features: React.FC = () => (
       </div>
     </div>
   </section>
-);
+));
 
-const Gallery: React.FC = () => {
+const Gallery: React.FC = React.memo(() => {
   return (
     <section id="gallery" className="py-24 bg-gradient-to-b from-black to-slate-950 border-t border-white/5 overflow-hidden scroll-mt-24">
       <div className="container mx-auto px-6 mb-16 text-center">
@@ -393,20 +393,20 @@ const Gallery: React.FC = () => {
       {/* Scroll Container */}
       <div className="flex overflow-x-auto gap-8 px-6 pb-12 snap-x snap-mandatory no-scrollbar justify-start md:justify-center">
         <div className="snap-center shrink-0">
-          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery1} />
+          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery1} alt="Video player interface mockup" />
         </div>
         <div className="snap-center shrink-0">
-          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery2} />
+          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery2} alt="Secure browser interface mockup" />
         </div>
         <div className="snap-center shrink-0">
-          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery3} />
+          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery3} alt="App content discovery mockup" />
         </div>
       </div>
     </section>
   );
-};
+});
 
-const Testimonials: React.FC = () => (
+const Testimonials: React.FC = React.memo(() => (
   <section id="testimonials" className="py-24 bg-black relative z-10 border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">User Reviews</h2>
@@ -435,9 +435,9 @@ const Testimonials: React.FC = () => (
       </div>
     </div>
   </section>
-)
+));
 
-const Footer: React.FC = () => (
+const Footer: React.FC = React.memo(() => (
   <footer className="bg-black py-16 border-t border-white/10">
     <div className="container mx-auto px-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-8">
@@ -455,7 +455,7 @@ const Footer: React.FC = () => (
             href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
             download
             aria-label="Download XHub APK from footer"
-            className="bg-white text-black hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+            className="bg-white text-black hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
           >
             Download Now
           </a>
@@ -465,32 +465,51 @@ const Footer: React.FC = () => (
       <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
         <p>&copy; 2024 XHub App. All rights reserved.</p>
         <div className="flex gap-8 mt-4 md:mt-0">
-          <a href="#" className="hover:text-white transition-colors">Privacy</a>
-          <a href="#" className="hover:text-white transition-colors">Terms</a>
-          <a href="#" className="hover:text-white transition-colors">DMCA</a>
+          <a href="#" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-brand-500 rounded outline-none">Privacy</a>
+          <a href="#" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-brand-500 rounded outline-none">Terms</a>
+          <a href="#" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-brand-500 rounded outline-none">DMCA</a>
         </div>
       </div>
     </div>
   </footer>
-);
+));
 
-const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = React.memo(({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleEscape);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} aria-hidden="true"></div>
       <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            aria-label="Close modal"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none active:scale-95"
           >
             <XIcon className="w-5 h-5" />
           </button>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
             <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
           </div>
 
@@ -526,7 +545,8 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             <a
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
-              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20"
+              aria-label="Download XHub APK from installation guide"
+              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20 active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
             >
               Get APK Now
             </a>
@@ -535,11 +555,14 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
       </div>
     </div>
   );
-};
+});
 
 function App() {
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
+
+  const openModal = React.useCallback(() => setIsInstallModalOpen(true), []);
+  const closeModal = React.useCallback(() => setIsInstallModalOpen(false), []);
 
   useEffect(() => {
     fetch('/version.json')
@@ -552,13 +575,13 @@ function App() {
     <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-500/30 selection:text-white">
       <Header versionInfo={versionInfo} />
       <main>
-        <Hero versionInfo={versionInfo} onInstallClick={() => setIsInstallModalOpen(true)} />
+        <Hero versionInfo={versionInfo} onInstallClick={openModal} />
         <Features />
         <Gallery />
         <Testimonials />
       </main>
       <Footer />
-      <InstallModal isOpen={isInstallModalOpen} onClose={() => setIsInstallModalOpen(false)} />
+      <InstallModal isOpen={isInstallModalOpen} onClose={closeModal} />
     </div>
   );
 }
