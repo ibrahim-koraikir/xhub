@@ -1,0 +1,3 @@
+## 2025-06-10 - Modal and Rating Accessibility Patterns
+**Learning:** For modals in a flat React structure, implementing `useEffect` for `Escape` key listeners and body scroll locking is essential for WAI-ARIA compliance and keyboard usability. Additionally, visual-only repetitive elements like star ratings should be summarized with a single `aria-label` on the container while individual elements are hidden from screen readers.
+**Action:** Apply `role="dialog"`, `aria-modal="true"`, and body `overflow: hidden` to all modal components. Ensure star ratings have a descriptive container label and `aria-hidden` icons.
