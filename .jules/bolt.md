@@ -1,0 +1,3 @@
+## 2025-05-15 - LCP and Component Re-rendering in Flat Architecture
+**Learning:** In a single-file flat component architecture (like this App.tsx), state changes in the root (e.g., toggling a modal) trigger re-renders of the entire component tree unless sub-components are explicitly memoized. Additionally, images specified in React props or CSS are discovered late by the browser's preload scanner.
+**Action:** Always use `React.memo` for large layout sections in flat React apps and use `<link rel="preload">` with `fetchpriority="high"` for the Largest Contentful Paint (LCP) element in `index.html` to ensure early discovery and prioritization.
