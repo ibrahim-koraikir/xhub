@@ -225,8 +225,12 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
 
       {/* Moving Background */}
       <ScrollingBackground />
+
       {/* Refined Background Ambience */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-red-600/20 blur-[150px] rounded-full pointer-events-none z-0 mix-blend-screen"></div>
+
+      {/* Mesh Gradient Overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(244,63,94,0.15),transparent_70%)] pointer-events-none z-0"></div>
 
       <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
 
@@ -254,7 +258,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
               aria-label="Download XHub APK now"
-              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 active:scale-95 overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-2">
                 <DownloadIcon className="w-5 h-5" />
@@ -265,7 +269,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
             <button
               onClick={onInstallClick}
               aria-label="Open installation guide"
-              className="flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold hover:bg-white/10 transition-all duration-300"
+              className="flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold hover:bg-white/10 transition-all duration-300 active:scale-95"
             >
               <InfoIcon className="w-5 h-5 text-brand-500" />
               How to Install
@@ -296,7 +300,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
 
           {/* Main Card */}
           <div className="relative z-20 transition-transform duration-700 hover:scale-105 animate-float">
-            <div className={`relative mx-auto border-gray-900 bg-gray-900 border-[8px] rounded-[2.5rem] h-[580px] w-[280px] shadow-2xl flex flex-col overflow-hidden ring-1 ring-white/20 shadow-[0_0_80px_rgba(244,63,94,0.25)]`}>
+            <div className={`relative mx-auto border-gray-900 bg-gray-900 border-[8px] rounded-[2.5rem] h-[580px] w-[280px] shadow-2xl flex flex-col overflow-hidden ring-1 ring-white/10 shadow-[0_0_80px_rgba(244,63,94,0.3)] drop-shadow-[0_0_40px_rgba(244,63,94,0.3)]`}>
               {/* Hardware Buttons */}
               <div className="h-[32px] w-[3px] bg-gray-800 absolute -left-[10px] top-[72px] rounded-l-lg"></div>
               <div className="h-[46px] w-[3px] bg-gray-800 absolute -left-[10px] top-[124px] rounded-l-lg"></div>
@@ -350,33 +354,44 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
   );
 };
 
+const FEATURES = [
+  {
+    title: "All-in-One Aggregator",
+    description: "Why pay for multiple subscriptions? Get access to Netflix, Disney+, Hulu, and more in a single, unified interface.",
+    icon: GlobeIcon,
+    color: "brand"
+  },
+  {
+    title: "Private Browser",
+    description: "Browse the web without tracking. Our built-in secure browser ensures your history remains yours alone.",
+    icon: LockClosedIcon,
+    color: "purple"
+  },
+  {
+    title: "Instant Streaming",
+    description: "No downloads required. Click and play your favorite content instantly in high definition.",
+    icon: PlayIcon,
+    color: "blue"
+  }
+];
+
 const Features: React.FC = () => (
   <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-brand-500/20">
-            <GlobeIcon className="w-7 h-7" />
+        {FEATURES.map((feature, i) => (
+          <div key={i} className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-500 group hover:-translate-y-2 border border-white/5 hover:border-brand-500/50 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)] active:scale-[0.98]">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border ${
+              feature.color === 'brand' ? 'bg-brand-500/10 text-brand-500 border-brand-500/20' :
+              feature.color === 'purple' ? 'bg-purple-500/10 text-purple-500 border-purple-500/20' :
+              'bg-blue-500/10 text-blue-500 border-blue-500/20'
+            }`}>
+              <feature.icon className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3 tracking-tight">{feature.title}</h3>
+            <p className="text-gray-400 leading-relaxed font-light">{feature.description}</p>
           </div>
-          <h3 className="text-xl font-bold text-white mb-3">All-in-One Aggregator</h3>
-          <p className="text-gray-400 leading-relaxed font-light">Why pay for multiple subscriptions? Get access to Netflix, Disney+, Hulu, and more in a single, unified interface.</p>
-        </div>
-
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-purple-500/20">
-            <LockClosedIcon className="w-7 h-7" />
-          </div>
-          <h3 className="text-xl font-bold text-white mb-3">Private Browser</h3>
-          <p className="text-gray-400 leading-relaxed font-light">Browse the web without tracking. Our built-in secure browser ensures your history remains yours alone.</p>
-        </div>
-
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-blue-500/20">
-            <PlayIcon className="w-7 h-7" />
-          </div>
-          <h3 className="text-xl font-bold text-white mb-3">Instant Streaming</h3>
-          <p className="text-gray-400 leading-relaxed font-light">No downloads required. Click and play your favorite content instantly in high definition.</p>
-        </div>
+        ))}
       </div>
     </div>
   </section>
@@ -475,22 +490,42 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleEscape);
+      return () => {
+        document.body.style.overflow = 'unset';
+        window.removeEventListener('keydown', handleEscape);
+      };
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fade-in"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+      <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-zoom-in">
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            aria-label="Close modal"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors active:scale-90"
           >
             <XIcon className="w-5 h-5" />
           </button>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
             <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
           </div>
 
