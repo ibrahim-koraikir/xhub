@@ -1,0 +1,3 @@
+## 2026-06-12 - Modal Accessibility and UX
+**Learning:** When implementing modals in React without a library like Headless UI or Radix, manual management of keyboard navigation (Escape key) and body scroll locking is essential for a professional and accessible experience. Decorative icons in content-heavy landing pages can clutter screen reader output if not explicitly hidden.
+**Action:** Always include a `useEffect` for keyboard listeners and body overflow toggling when creating custom modal components. Ensure all decorative SVGs use `aria-hidden="true"` and icon-only interactive elements have descriptive `aria-label` attributes.
