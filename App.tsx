@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // --- CONFIGURATION ---
 // ----------------------------------------------------------------------
@@ -111,6 +111,7 @@ const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; im
           alt="App Screenshot"
           className="absolute inset-0 w-full h-full object-cover z-10"
           loading="lazy"
+          decoding="async"
         />
       ) : children}
     </div>
@@ -124,7 +125,7 @@ interface VersionInfo {
   releaseNotes: string;
 }
 
-const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
+const Header: React.FC<{ versionInfo: VersionInfo | null }> = React.memo(({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -158,7 +159,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
       </div>
     </header>
   );
-};
+});
 
 const ScrollingBackground: React.FC = React.memo(() => {
   // Duplicate for seamless loop
@@ -175,37 +176,37 @@ const ScrollingBackground: React.FC = React.memo(() => {
       <div className="absolute -inset-40 flex justify-center gap-6 -rotate-12 scale-125 opacity-60">
 
         {/* Column 1 (Up) */}
-        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0" style={{ willChange: 'transform' }}>
           {column1.map((src, i) => (
             <div key={`c1-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 2 (Down) */}
-        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0" style={{ willChange: 'transform' }}>
           {column2.map((src, i) => (
             <div key={`c2-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 3 (Up) */}
-        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0" style={{ willChange: 'transform' }}>
           {column3.map((src, i) => (
             <div key={`c3-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 4 (Down) */}
-        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex">
+        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex" style={{ willChange: 'transform' }}>
           {column2.map((src, i) => (
             <div key={`c4-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
@@ -219,7 +220,7 @@ const ScrollingBackground: React.FC = React.memo(() => {
   );
 });
 
-const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = ({ onInstallClick, versionInfo }) => {
+const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = React.memo(({ onInstallClick, versionInfo }) => {
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black pt-20 lg:pt-0">
 
@@ -348,41 +349,48 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
       </div>
     </section>
   );
-};
+});
 
-const Features: React.FC = () => (
+const FEATURES_DATA = [
+  {
+    title: "All-in-One Aggregator",
+    description: "Why pay for multiple subscriptions? Get access to Netflix, Disney+, Hulu, and more in a single, unified interface.",
+    icon: GlobeIcon,
+    colors: "bg-brand-500/10 text-brand-500 border-brand-500/20"
+  },
+  {
+    title: "Private Browser",
+    description: "Browse the web without tracking. Our built-in secure browser ensures your history remains yours alone.",
+    icon: LockClosedIcon,
+    colors: "bg-purple-500/10 text-purple-500 border-purple-500/20"
+  },
+  {
+    title: "Instant Streaming",
+    description: "No downloads required. Click and play your favorite content instantly in high definition.",
+    icon: PlayIcon,
+    colors: "bg-blue-500/10 text-blue-500 border-blue-500/20"
+  }
+];
+
+const Features: React.FC = React.memo(() => (
   <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-brand-500/20">
-            <GlobeIcon className="w-7 h-7" />
+        {FEATURES_DATA.map((feature, i) => (
+          <div key={i} className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border ${feature.colors}`}>
+              <feature.icon className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+            <p className="text-gray-400 leading-relaxed font-light">{feature.description}</p>
           </div>
-          <h3 className="text-xl font-bold text-white mb-3">All-in-One Aggregator</h3>
-          <p className="text-gray-400 leading-relaxed font-light">Why pay for multiple subscriptions? Get access to Netflix, Disney+, Hulu, and more in a single, unified interface.</p>
-        </div>
-
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-purple-500/20">
-            <LockClosedIcon className="w-7 h-7" />
-          </div>
-          <h3 className="text-xl font-bold text-white mb-3">Private Browser</h3>
-          <p className="text-gray-400 leading-relaxed font-light">Browse the web without tracking. Our built-in secure browser ensures your history remains yours alone.</p>
-        </div>
-
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-blue-500/20">
-            <PlayIcon className="w-7 h-7" />
-          </div>
-          <h3 className="text-xl font-bold text-white mb-3">Instant Streaming</h3>
-          <p className="text-gray-400 leading-relaxed font-light">No downloads required. Click and play your favorite content instantly in high definition.</p>
-        </div>
+        ))}
       </div>
     </div>
   </section>
-);
+));
 
-const Gallery: React.FC = () => {
+const Gallery: React.FC = React.memo(() => {
   return (
     <section id="gallery" className="py-24 bg-gradient-to-b from-black to-slate-950 border-t border-white/5 overflow-hidden scroll-mt-24">
       <div className="container mx-auto px-6 mb-16 text-center">
@@ -404,9 +412,9 @@ const Gallery: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
-const Testimonials: React.FC = () => (
+const Testimonials: React.FC = React.memo(() => (
   <section id="testimonials" className="py-24 bg-black relative z-10 border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">User Reviews</h2>
@@ -435,9 +443,9 @@ const Testimonials: React.FC = () => (
       </div>
     </div>
   </section>
-)
+))
 
-const Footer: React.FC = () => (
+const Footer: React.FC = React.memo(() => (
   <footer className="bg-black py-16 border-t border-white/10">
     <div className="container mx-auto px-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-8">
@@ -472,9 +480,23 @@ const Footer: React.FC = () => (
       </div>
     </div>
   </footer>
-);
+));
 
-const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = React.memo(({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (isOpen) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = 'auto';
+      };
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -535,11 +557,19 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
       </div>
     </div>
   );
-};
+});
 
 function App() {
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
+
+  const openInstallModal = useCallback(() => {
+    setIsInstallModalOpen(true);
+  }, []);
+
+  const closeInstallModal = useCallback(() => {
+    setIsInstallModalOpen(false);
+  }, []);
 
   useEffect(() => {
     fetch('/version.json')
@@ -552,13 +582,13 @@ function App() {
     <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-500/30 selection:text-white">
       <Header versionInfo={versionInfo} />
       <main>
-        <Hero versionInfo={versionInfo} onInstallClick={() => setIsInstallModalOpen(true)} />
+        <Hero versionInfo={versionInfo} onInstallClick={openInstallModal} />
         <Features />
         <Gallery />
         <Testimonials />
       </main>
       <Footer />
-      <InstallModal isOpen={isInstallModalOpen} onClose={() => setIsInstallModalOpen(false)} />
+      <InstallModal isOpen={isInstallModalOpen} onClose={closeInstallModal} />
     </div>
   );
 }
