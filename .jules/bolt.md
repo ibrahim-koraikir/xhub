@@ -1,0 +1,3 @@
+## 2025-06-15 - Scroll Performance Optimization
+**Learning:** Using `requestAnimationFrame` with a ticking flag in scroll event listeners significantly reduces main-thread pressure by ensuring state updates only occur once per frame. Combining this with `{ passive: true }` allows the browser to optimize scrolling independently of the JavaScript execution. It is also critical to call `cancelAnimationFrame` in the `useEffect` cleanup to avoid memory leaks or state updates on unmounted components.
+**Action:** Always implement throttled scroll listeners with `requestAnimationFrame`, `passive: true`, and proper cleanup for any UI component that reacts to window scroll events.
