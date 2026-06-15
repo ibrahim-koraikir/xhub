@@ -128,9 +128,25 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let ticking = false;
+    let rafId: number;
+
+    // Use requestAnimationFrame to throttle scroll events and passive listener for better performance
+    const handleScroll = () => {
+      if (!ticking) {
+        rafId = window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -174,38 +190,38 @@ const ScrollingBackground: React.FC = React.memo(() => {
       {/* Container: Flex Row of Columns, Tilted */}
       <div className="absolute -inset-40 flex justify-center gap-6 -rotate-12 scale-125 opacity-60">
 
-        {/* Column 1 (Up) */}
-        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
+        {/* Column 1 (Up) - Optimized with will-change-transform and async image decoding */}
+        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0 will-change-transform">
           {column1.map((src, i) => (
             <div key={`c1-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 2 (Down) */}
-        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 will-change-transform">
           {column2.map((src, i) => (
             <div key={`c2-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 3 (Up) */}
-        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0 will-change-transform">
           {column3.map((src, i) => (
             <div key={`c3-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 4 (Down) */}
-        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex">
+        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex will-change-transform">
           {column2.map((src, i) => (
             <div key={`c4-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
