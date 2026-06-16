@@ -1,0 +1,3 @@
+## 2025-06-16 - Modal Accessibility and Dark Mode Focus States
+**Learning:** Custom React modals require manual implementation of the 'Escape' key listener and body scroll locking for professional UX. On dark backgrounds (like slate-900), default focus rings can be hard to see; using a ring offset that matches the background color (`focus-visible:ring-offset-slate-900`) creates a visual gap that significantly improves the visibility of the focus indicator for keyboard users.
+**Action:** Always implement `useEffect` for keyboard/scroll management in modals and use `ring-offset` with the background color for clear focus states in dark mode.
