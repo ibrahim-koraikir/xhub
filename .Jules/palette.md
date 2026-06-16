@@ -1,0 +1,3 @@
+## 2026-06-16 - Enhanced Modal Accessibility and UI Polish
+**Learning:** For interactive elements on dark backgrounds (like slate-900), using `focus-visible:ring-offset-slate-900` creates a clear visual separation for the focus ring, significantly improving keyboard navigation accessibility. Additionally, wrapping star ratings in a `role="img"` with a descriptive `aria-label` is an efficient way to make purely visual ratings accessible to screen readers.
+**Action:** Always implement body scroll locking and Escape key handling for custom modals, and ensure focus rings have appropriate offsets for the background color.
