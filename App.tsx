@@ -75,9 +75,21 @@ const XIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+const MenuIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+  </svg>
+);
+
 const InfoIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const ArrowUpIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
   </svg>
 );
 
@@ -126,6 +138,7 @@ interface VersionInfo {
 
 const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -134,7 +147,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/90 backdrop-blur-xl py-4 border-b border-white/5 shadow-2xl' : 'bg-transparent py-6'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isMobileMenuOpen ? 'bg-black/90 backdrop-blur-xl py-4 border-b border-white/5 shadow-2xl' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-tr from-brand-600 to-red-600 rounded-lg flex items-center justify-center shadow-lg shadow-brand-900/20">
@@ -142,20 +155,78 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">XHub</h1>
         </div>
+
+        {/* Desktop Nav */}
         <nav className="hidden md:flex space-x-8">
           <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Features</a>
           <a href="#gallery" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Library</a>
           <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Reviews</a>
+          <a href="#faq" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">FAQ</a>
         </nav>
-        <a
-          href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
-          download
-          aria-label={`Download XHub APK${versionInfo ? ` version ${versionInfo.versionName}` : ''}`}
-          className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5"
-        >
-          Download APK {versionInfo && <span className="ml-1 opacity-60 text-xs">v{versionInfo.versionName}</span>}
-        </a>
+
+        <div className="flex items-center gap-4">
+          <a
+            href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
+            download
+            aria-label={`Download XHub APK${versionInfo ? ` version ${versionInfo.versionName}` : ''}`}
+            className="hidden sm:block bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5"
+          >
+            Download APK {versionInfo && <span className="ml-1 opacity-60 text-xs">v{versionInfo.versionName}</span>}
+          </a>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMobileMenuOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-b border-white/5 py-8 px-6 animate-fade-in animate-slide-in-from-top">
+          <nav className="flex flex-col space-y-6">
+            <a
+              href="#features"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-xl font-medium text-gray-300 hover:text-white transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="#gallery"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-xl font-medium text-gray-300 hover:text-white transition-colors"
+            >
+              Library
+            </a>
+            <a
+              href="#testimonials"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-xl font-medium text-gray-300 hover:text-white transition-colors"
+            >
+              Reviews
+            </a>
+            <a
+              href="#faq"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-xl font-medium text-gray-300 hover:text-white transition-colors"
+            >
+              FAQ
+            </a>
+            <a
+              href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
+              download
+              className="w-full bg-brand-600 text-white font-bold py-4 rounded-2xl text-center shadow-lg shadow-brand-600/20 active:scale-95 transition-transform"
+            >
+              Download APK Now
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
@@ -392,14 +463,26 @@ const Gallery: React.FC = () => {
 
       {/* Scroll Container */}
       <div className="flex overflow-x-auto gap-8 px-6 pb-12 snap-x snap-mandatory no-scrollbar justify-start md:justify-center">
-        <div className="snap-center shrink-0">
-          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery1} />
+        <div className="snap-center shrink-0 group/card">
+          <PhoneMockup className="group-hover/card:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery1} />
+          <div className="mt-6 text-center">
+            <h4 className="text-white font-bold mb-1">Secure Browsing</h4>
+            <p className="text-gray-500 text-sm">Built-in privacy protection</p>
+          </div>
         </div>
-        <div className="snap-center shrink-0">
-          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery2} />
+        <div className="snap-center shrink-0 group/card">
+          <PhoneMockup className="group-hover/card:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery2} />
+          <div className="mt-6 text-center">
+            <h4 className="text-white font-bold mb-1">Unlimited Library</h4>
+            <p className="text-gray-500 text-sm">Movies & TV from all sources</p>
+          </div>
         </div>
-        <div className="snap-center shrink-0">
-          <PhoneMockup className="hover:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery3} />
+        <div className="snap-center shrink-0 group/card">
+          <PhoneMockup className="group-hover/card:translate-y-[-10px] transition-transform duration-300" imageSrc={APP_SCREENSHOTS.gallery3} />
+          <div className="mt-6 text-center">
+            <h4 className="text-white font-bold mb-1">4K Playback</h4>
+            <p className="text-gray-500 text-sm">Crystal clear streaming quality</p>
+          </div>
         </div>
       </div>
     </section>
@@ -436,6 +519,59 @@ const Testimonials: React.FC = () => (
     </div>
   </section>
 )
+
+const FAQ: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const faqs = [
+    {
+      q: "Is XHub safe to use on my Android device?",
+      a: "Yes, XHub is thoroughly scanned for malware and security vulnerabilities. We prioritize user privacy and do not collect any personal data or browsing history."
+    },
+    {
+      q: "How do I update the app?",
+      a: "When a new version is available, you'll see a notification in the app. You can also visit this website anytime to download the latest APK and install it over your existing version."
+    },
+    {
+      q: "Is there a subscription fee?",
+      a: "XHub is completely free to download and use. We believe in providing unlimited access to content without the burden of multiple monthly subscriptions."
+    },
+    {
+      q: "What devices are supported?",
+      a: "XHub is designed for Android smartphones and tablets running Android 7.0 or higher. We are also working on support for Android TV and Firestick."
+    }
+  ];
+
+  return (
+    <section id="faq" className="py-24 bg-slate-950/50 border-t border-white/5 scroll-mt-24">
+      <div className="container mx-auto px-6 max-w-3xl">
+        <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">Common Questions</h2>
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <div key={i} className="border border-white/10 rounded-2xl overflow-hidden bg-white/5">
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors"
+              >
+                <span className="font-bold text-white">{faq.q}</span>
+                <span className={`transform transition-transform duration-300 ${openIndex === i ? 'rotate-180' : ''}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+              </button>
+              {openIndex === i && (
+                <div className="p-6 pt-0 text-gray-400 leading-relaxed animate-fade-in animate-slide-in-from-top">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Footer: React.FC = () => (
   <footer className="bg-black py-16 border-t border-white/10">
@@ -480,7 +616,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+      <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-fade-in animate-zoom-in">
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
@@ -540,13 +676,25 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
 function App() {
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     fetch('/version.json')
       .then((res) => res.json())
       .then((data) => setVersionInfo(data))
       .catch((err) => console.error("Failed to fetch version info", err));
+
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-500/30 selection:text-white">
@@ -556,9 +704,19 @@ function App() {
         <Features />
         <Gallery />
         <Testimonials />
+        <FAQ />
       </main>
       <Footer />
       <InstallModal isOpen={isInstallModalOpen} onClose={() => setIsInstallModalOpen(false)} />
+
+      {/* Back to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 z-40 p-4 bg-brand-600 text-white rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 active:scale-90 ${showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+        aria-label="Back to top"
+      >
+        <ArrowUpIcon className="w-6 h-6" />
+      </button>
     </div>
   );
 }
