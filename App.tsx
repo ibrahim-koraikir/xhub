@@ -161,11 +161,12 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
 };
 
 const ScrollingBackground: React.FC = React.memo(() => {
-  // Duplicate for seamless loop
+  // Duplicate for seamless loop (2x duplication with 50% translation)
   const { column1, column2, column3 } = React.useMemo(() => {
-    const base = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
-    const rev = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse()).concat([...BACKGROUND_IMAGES].reverse());
-    const rand = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES].sort(() => Math.random() - 0.5);
+    const base = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
+    const rev = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse());
+    const randBase = [...BACKGROUND_IMAGES].sort(() => Math.random() - 0.5);
+    const rand = [...randBase, ...randBase];
     return { column1: base, column2: rev, column3: rand };
   }, []);
 
@@ -175,37 +176,37 @@ const ScrollingBackground: React.FC = React.memo(() => {
       <div className="absolute -inset-40 flex justify-center gap-6 -rotate-12 scale-125 opacity-60">
 
         {/* Column 1 (Up) */}
-        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0 will-change-transform">
           {column1.map((src, i) => (
             <div key={`c1-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 2 (Down) */}
-        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 will-change-transform">
           {column2.map((src, i) => (
             <div key={`c2-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 3 (Up) */}
-        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0 will-change-transform">
           {column3.map((src, i) => (
             <div key={`c3-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 4 (Down) */}
-        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex">
+        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex will-change-transform">
           {column2.map((src, i) => (
             <div key={`c4-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
@@ -350,7 +351,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
   );
 };
 
-const Features: React.FC = () => (
+const Features: React.FC = React.memo(() => (
   <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
@@ -380,9 +381,9 @@ const Features: React.FC = () => (
       </div>
     </div>
   </section>
-);
+));
 
-const Gallery: React.FC = () => {
+const Gallery: React.FC = React.memo(() => {
   return (
     <section id="gallery" className="py-24 bg-gradient-to-b from-black to-slate-950 border-t border-white/5 overflow-hidden scroll-mt-24">
       <div className="container mx-auto px-6 mb-16 text-center">
@@ -404,9 +405,9 @@ const Gallery: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
-const Testimonials: React.FC = () => (
+const Testimonials: React.FC = React.memo(() => (
   <section id="testimonials" className="py-24 bg-black relative z-10 border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">User Reviews</h2>
@@ -435,9 +436,9 @@ const Testimonials: React.FC = () => (
       </div>
     </div>
   </section>
-)
+));
 
-const Footer: React.FC = () => (
+const Footer: React.FC = React.memo(() => (
   <footer className="bg-black py-16 border-t border-white/10">
     <div className="container mx-auto px-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-8">
@@ -472,7 +473,7 @@ const Footer: React.FC = () => (
       </div>
     </div>
   </footer>
-);
+));
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
