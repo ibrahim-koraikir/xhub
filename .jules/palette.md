@@ -1,0 +1,3 @@
+## 2025-05-14 - Modal UX and Accessibility Enhancements
+**Learning:** Custom React modals require explicit ARIA attributes (role="dialog", aria-modal="true", aria-labelledby), keyboard handling (Escape key), and body scroll locking to meet basic accessibility and UX standards. Focus rings on dark backgrounds need specific offsets and contrasting colors to remain visible.
+**Action:** Always implement a useEffect hook for Escape key and body scroll lock, and ensure ARIA attributes are correctly mapped to heading IDs and buttons. Use `focus-visible` with `ring-offset` to ensure accessibility in dark-themed UIs.
