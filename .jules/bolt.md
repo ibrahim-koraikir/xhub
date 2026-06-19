@@ -1,0 +1,3 @@
+## 2024-05-23 - Efficient Infinite Marquee Pattern
+**Learning:** For infinite marquee animations, using a 50% translation (`transform: translateY(-50%)`) in CSS keyframes allows for a seamless loop with only 2x content duplication (original + clone). This is significantly more efficient than 3x duplication or 100% translation patterns as it reduces DOM nodes by 33% and simplifies the math for seamless looping.
+**Action:** Always prefer 2x duplication + 50% translation for infinite marquees. Combine with `will-change: transform` on the container and `decoding="async"` on images for maximum smoothness.
