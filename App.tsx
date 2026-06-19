@@ -81,6 +81,24 @@ const InfoIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+const ChevronDownIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+);
+
+const CopyIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+  </svg>
+);
+
+const CheckIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+);
+
 // --- Styled Components & Mockups ---
 
 const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; imageSrc?: string }> = ({ children, className = "", imageSrc }) => (
@@ -106,12 +124,15 @@ const PhoneMockup: React.FC<{ children?: React.ReactNode; className?: string; im
 
       {/* Content */}
       {imageSrc ? (
-        <img
-          src={imageSrc}
-          alt="App Screenshot"
-          className="absolute inset-0 w-full h-full object-cover z-10"
-          loading="lazy"
-        />
+        <div className="absolute inset-0 w-full h-full z-10">
+          <img
+            src={imageSrc}
+            alt="App Screenshot"
+            className="w-full h-full object-cover sepia-[0.3] hue-rotate-[320deg] saturate-[1.2]"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-brand-500/10 mix-blend-overlay"></div>
+        </div>
       ) : children}
     </div>
   </div>
@@ -254,13 +275,14 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
               aria-label="Download XHub APK now"
-              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+              className="group relative px-8 py-4 bg-white text-black rounded-full font-bold shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden animate-pulse-slow"
             >
               <span className="relative z-10 flex items-center gap-2">
                 <DownloadIcon className="w-5 h-5" />
                 Download Now
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-brand-200 to-orange-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-200 via-white to-orange-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-brand-500 to-orange-500 rounded-full blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
             </a>
             <button
               onClick={onInstallClick}
@@ -354,7 +376,7 @@ const Features: React.FC = () => (
   <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
+        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-brand-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)]">
           <div className="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-brand-500/20">
             <GlobeIcon className="w-7 h-7" />
           </div>
@@ -362,7 +384,7 @@ const Features: React.FC = () => (
           <p className="text-gray-400 leading-relaxed font-light">Why pay for multiple subscriptions? Get access to Netflix, Disney+, Hulu, and more in a single, unified interface.</p>
         </div>
 
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
+        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-brand-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)]">
           <div className="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-purple-500/20">
             <LockClosedIcon className="w-7 h-7" />
           </div>
@@ -370,7 +392,7 @@ const Features: React.FC = () => (
           <p className="text-gray-400 leading-relaxed font-light">Browse the web without tracking. Our built-in secure browser ensures your history remains yours alone.</p>
         </div>
 
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
+        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-brand-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)]">
           <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-blue-500/20">
             <PlayIcon className="w-7 h-7" />
           </div>
@@ -437,6 +459,57 @@ const Testimonials: React.FC = () => (
   </section>
 )
 
+const FAQ: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      q: "Is XHub safe to install?",
+      a: "Yes, XHub is 100% safe. We verify every build for malware and track zero user data. Since it's an APK, your phone might show a warning—simply allow the installation to proceed."
+    },
+    {
+      q: "Do I need a subscription?",
+      a: "XHub provides a unified interface for your existing streaming services and offers a built-in browser for free content. The app itself is free to use."
+    },
+    {
+      q: "How do I update the app?",
+      a: "The app will notify you when a new version is available. You can also visit this website anytime to download the latest APK directly."
+    },
+    {
+      q: "Is it available for iOS?",
+      a: "Currently, XHub is exclusively available for Android devices as an APK. We are exploring web-based solutions for iOS users."
+    }
+  ];
+
+  return (
+    <section id="faq" className="py-24 bg-gradient-to-b from-slate-950 to-black border-t border-white/5 scroll-mt-24">
+      <div className="container mx-auto px-6 max-w-3xl">
+        <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">Frequently Asked Questions</h2>
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <div key={i} className="border border-white/5 rounded-2xl overflow-hidden bg-white/5">
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full p-6 text-left flex justify-between items-center hover:bg-white/5 transition-colors"
+              >
+                <span className="font-bold text-white">{faq.q}</span>
+                <ChevronDownIcon className={`w-5 h-5 text-brand-500 transition-transform duration-300 ${openIndex === i ? 'rotate-180' : ''}`} />
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === i ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'}`}
+              >
+                <p className="p-6 pt-0 text-gray-400 leading-relaxed font-light border-t border-white/5">
+                  {faq.a}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Footer: React.FC = () => (
   <footer className="bg-black py-16 border-t border-white/10">
     <div className="container mx-auto px-6">
@@ -475,7 +548,16 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  const [copied, setCopied] = useState(false);
+  const downloadUrl = "https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk";
+
   if (!isOpen) return null;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(downloadUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -499,37 +581,62 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
               {
                 step: "01",
                 title: "Download the APK",
-                desc: "Tap the Get APK button. The file saves to your Downloads folder."
+                desc: "Tap the Get APK button. The file saves to your Downloads folder.",
+                icon: <DownloadIcon className="w-6 h-6 text-brand-500" />
               },
               {
                 step: "02",
                 title: "Allow unknown sources",
-                desc: "When prompted, enable installs from your browser in Settings → Security."
+                desc: "When prompted, enable installs from your browser in Settings → Security.",
+                icon: <LockClosedIcon className="w-6 h-6 text-purple-500" />
               },
               {
                 step: "03",
                 title: "Install & open XHub",
-                desc: "Tap the file, hit Install, and launch. You're watching in under a minute."
+                desc: "Tap the file, hit Install, and launch. You're watching in under a minute.",
+                icon: <PlayIcon className="w-6 h-6 text-green-500" />
               }
             ].map((s, i) => (
-              <div key={i} className="flex gap-6">
-                <div className="text-3xl font-black text-brand-500/20 leading-none">{s.step}</div>
+              <div key={i} className="flex gap-6 group">
+                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 border border-white/5 group-hover:border-white/10 transition-colors">
+                  {s.icon}
+                </div>
                 <div>
-                  <h4 className="text-lg font-bold text-white mb-1">{s.title}</h4>
-                  <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
+                  <h4 className="text-lg font-bold text-white mb-1 flex items-center gap-3">
+                    <span className="text-xs font-black text-brand-500/40 uppercase tracking-widest">{s.step}</span>
+                    {s.title}
+                  </h4>
+                  <p className="text-gray-400 text-sm leading-relaxed font-light">{s.desc}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-12">
+          <div className="mt-12 space-y-4">
             <a
-              href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
+              href={downloadUrl}
               download
-              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20"
+              className="block w-full py-4 bg-white text-black text-center font-bold rounded-2xl transition-all shadow-xl hover:scale-[1.02] active:scale-[0.98]"
             >
               Get APK Now
             </a>
+
+            <button
+              onClick={handleCopy}
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm font-medium"
+            >
+              {copied ? (
+                <>
+                  <CheckIcon className="w-4 h-4 text-green-500" />
+                  <span>Link Copied!</span>
+                </>
+              ) : (
+                <>
+                  <CopyIcon className="w-4 h-4" />
+                  <span>Copy Download Link</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
@@ -539,6 +646,13 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
 
 function App() {
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 500);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
 
   useEffect(() => {
@@ -556,9 +670,19 @@ function App() {
         <Features />
         <Gallery />
         <Testimonials />
+        <FAQ />
       </main>
       <Footer />
       <InstallModal isOpen={isInstallModalOpen} onClose={() => setIsInstallModalOpen(false)} />
+
+      {/* Back to Top Button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className={`fixed bottom-8 right-8 z-40 p-4 bg-white/10 backdrop-blur-xl border border-white/10 rounded-full text-white shadow-2xl transition-all duration-500 hover:bg-brand-500 hover:border-brand-500 group ${showBackToTop ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+        aria-label="Back to top"
+      >
+        <ChevronDownIcon className="w-6 h-6 rotate-180 group-hover:-translate-y-0.5 transition-transform" />
+      </button>
     </div>
   );
 }
