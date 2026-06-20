@@ -475,26 +475,70 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  const modalRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !modalRef.current) return;
+      const focusableElements = modalRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleEscape);
+    window.addEventListener('keydown', handleTab);
+
+    // Auto-focus the first element (close button)
+    setTimeout(() => {
+      const firstButton = modalRef.current?.querySelector('button');
+      firstButton?.focus();
+    }, 100);
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleEscape);
+      window.removeEventListener('keydown', handleTab);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
+    <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} aria-hidden="true"></div>
       <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            aria-label="Close modal"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-brand-500 transition-colors"
           >
             <XIcon className="w-5 h-5" />
           </button>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
             <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
           </div>
 
-          <div className="space-y-8">
+          <ol className="space-y-8">
             {[
               {
                 step: "01",
@@ -512,21 +556,21 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
                 desc: "Tap the file, hit Install, and launch. You're watching in under a minute."
               }
             ].map((s, i) => (
-              <div key={i} className="flex gap-6">
-                <div className="text-3xl font-black text-brand-500/20 leading-none">{s.step}</div>
+              <li key={i} className="flex gap-6">
+                <div className="text-3xl font-black text-brand-500/20 leading-none" aria-hidden="true">{s.step}</div>
                 <div>
                   <h4 className="text-lg font-bold text-white mb-1">{s.title}</h4>
                   <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
 
           <div className="mt-12">
             <a
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
-              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20"
+              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20 focus-visible:ring-4 focus-visible:ring-brand-500/50 active:scale-[0.98]"
             >
               Get APK Now
             </a>
