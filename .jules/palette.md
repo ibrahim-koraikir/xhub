@@ -1,0 +1,3 @@
+## 2025-03-24 - Semantic & Accessible Modal Pattern
+**Learning:** In React 19, standardizing modal accessibility requires combining `role="dialog"`, `aria-modal="true"`, and explicit focus management. To prevent 'focus yanking' during re-renders, isolate the initial focus logic into a `useEffect` that only depends on the `isOpen` state, separate from the `useEffect` handling global event listeners like `Escape` and body scroll locking.
+**Action:** Always implement separate `useEffect` hooks for modal initial focus and lifecycle events, and use semantic `<ol>`/`<li>` for sequential setup instructions to provide better screen reader context.
