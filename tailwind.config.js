@@ -31,10 +31,10 @@ export default {
         },
         'marquee-up': {
           '0%': { transform: 'translateY(0%)' },
-          '100%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(-50%)' },
         },
         'marquee-down': {
-          '0%': { transform: 'translateY(-100%)' },
+          '0%': { transform: 'translateY(-50%)' },
           '100%': { transform: 'translateY(0%)' },
         }
       },
