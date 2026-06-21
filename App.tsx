@@ -161,11 +161,13 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
 };
 
 const ScrollingBackground: React.FC = React.memo(() => {
-  // Duplicate for seamless loop
+  // Duplicate for seamless loop (2x for 50% translation pattern)
   const { column1, column2, column3 } = React.useMemo(() => {
-    const base = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
-    const rev = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse()).concat([...BACKGROUND_IMAGES].reverse());
-    const rand = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES].sort(() => Math.random() - 0.5);
+    const base = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
+    const rev = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse());
+    // To ensure a seamless loop, we shuffle once and then double the resulting array
+    const shuffled = [...BACKGROUND_IMAGES].sort(() => Math.random() - 0.5);
+    const rand = [...shuffled, ...shuffled];
     return { column1: base, column2: rev, column3: rand };
   }, []);
 
@@ -175,37 +177,37 @@ const ScrollingBackground: React.FC = React.memo(() => {
       <div className="absolute -inset-40 flex justify-center gap-6 -rotate-12 scale-125 opacity-60">
 
         {/* Column 1 (Up) */}
-        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0 [will-change:transform]">
           {column1.map((src, i) => (
             <div key={`c1-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 2 (Down) */}
-        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 [will-change:transform]">
           {column2.map((src, i) => (
             <div key={`c2-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 3 (Up) */}
-        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0">
+        <div className="flex flex-col gap-6 animate-marquee-up min-h-full shrink-0 [will-change:transform]">
           {column3.map((src, i) => (
             <div key={`c3-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
 
         {/* Column 4 (Down) */}
-        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex">
+        <div className="flex flex-col gap-6 animate-marquee-down min-h-full shrink-0 hidden lg:flex [will-change:transform]">
           {column2.map((src, i) => (
             <div key={`c4-${i}`} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" />
+              <img src={src} className="w-full h-full object-cover opacity-100 grayscale-[0.5] hover:grayscale-0 transition-all" alt="" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
