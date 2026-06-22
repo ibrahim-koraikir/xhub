@@ -1,0 +1,3 @@
+## 2025-05-15 - Accessibility and keyboard navigation enhancements
+**Learning:** For dark-themed landing pages with high-contrast accent colors (like brand-500), using `focus-visible:ring-offset-black` ensures that the focus ring stands out against the dark background. Additionally, marking visual step indicators (e.g., "01") as `aria-hidden="true"` inside a semantic `<ol>` structure prevents screen readers from redundantly announcing the step index.
+**Action:** Always combine `role="img"` with `aria-label` when creating accessible icon groups (like star ratings) to ensure screen readers treat the group as a single informative entity.
