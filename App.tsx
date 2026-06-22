@@ -1,5 +1,36 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+// --- Hooks ---
+
+const useIntersectionObserver = (options: IntersectionObserverInit = { threshold: 0.1 }) => {
+  const elementRef = useRef<any>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const currentElement = elementRef.current;
+    if (!currentElement) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.unobserve(entry.target);
+      }
+    }, options);
+
+    observer.observe(currentElement);
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+    // We intentionally only set up the observer once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return [elementRef, isVisible] as const;
+};
 
 // --- CONFIGURATION ---
 // ----------------------------------------------------------------------
@@ -70,8 +101,14 @@ const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 const XIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
+const MenuIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
   </svg>
 );
 
@@ -126,35 +163,69 @@ interface VersionInfo {
 
 const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/90 backdrop-blur-xl py-4 border-b border-white/5 shadow-2xl' : 'bg-transparent py-6'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isMobileMenuOpen ? 'bg-black/95 backdrop-blur-xl py-4 border-b border-white/5 shadow-2xl' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative z-50">
           <div className="w-8 h-8 bg-gradient-to-tr from-brand-600 to-red-600 rounded-lg flex items-center justify-center shadow-lg shadow-brand-900/20">
             <span className="text-white font-black text-lg">X</span>
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">XHub</h1>
         </div>
+
+        {/* Desktop Nav */}
         <nav className="hidden md:flex space-x-8">
           <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Features</a>
           <a href="#gallery" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Library</a>
           <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Reviews</a>
+          <a href="#faq" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">FAQ</a>
         </nav>
-        <a
-          href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
-          download
-          aria-label={`Download XHub APK${versionInfo ? ` version ${versionInfo.versionName}` : ''}`}
-          className="bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5"
-        >
-          Download APK {versionInfo && <span className="ml-1 opacity-60 text-xs">v{versionInfo.versionName}</span>}
-        </a>
+
+        <div className="flex items-center gap-4 relative z-50">
+          <a
+            href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
+            download
+            aria-label={`Download XHub APK${versionInfo ? ` version ${versionInfo.versionName}` : ''}`}
+            className="hidden sm:block bg-white text-black hover:bg-gray-100 font-semibold py-2 px-6 rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5 active:scale-95"
+          >
+            Download APK {versionInfo && <span className="ml-1 opacity-60 text-xs">v{versionInfo.versionName}</span>}
+          </a>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-white bg-white/5 rounded-lg border border-white/10 md:hidden hover:bg-white/10 transition-colors active:scale-95"
+            aria-label="Toggle navigation menu"
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" /> }
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Nav Overlay */}
+      <div className={`fixed inset-0 bg-black z-40 md:hidden transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'}`}>
+        <div className="flex flex-col items-center justify-center h-full space-y-10 text-2xl font-bold">
+          <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-400 hover:text-brand-500 transition-colors">Features</a>
+          <a href="#gallery" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-400 hover:text-brand-500 transition-colors">Library</a>
+          <a href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-400 hover:text-brand-500 transition-colors">Reviews</a>
+          <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-400 hover:text-brand-500 transition-colors">FAQ</a>
+          <a
+            href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
+            download
+            className="bg-brand-500 text-white px-10 py-4 rounded-full shadow-lg shadow-brand-500/20 active:scale-95"
+          >
+            Get APK Now
+          </a>
+        </div>
       </div>
     </header>
   );
@@ -350,41 +421,47 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
   );
 };
 
-const Features: React.FC = () => (
-  <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
-    <div className="container mx-auto px-6">
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-brand-500/20">
-            <GlobeIcon className="w-7 h-7" />
-          </div>
-          <h3 className="text-xl font-bold text-white mb-3">All-in-One Aggregator</h3>
-          <p className="text-gray-400 leading-relaxed font-light">Why pay for multiple subscriptions? Get access to Netflix, Disney+, Hulu, and more in a single, unified interface.</p>
-        </div>
+const Features: React.FC = () => {
+  const [ref, isVisible] = useIntersectionObserver();
 
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-purple-500/20">
-            <LockClosedIcon className="w-7 h-7" />
+  return (
+    <section ref={ref} id="features" className={`py-32 bg-black relative border-t border-white/5 scroll-mt-24 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+      <div className="container mx-auto px-6">
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-brand-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)]">
+            <div className="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-brand-500/20">
+              <GlobeIcon className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3">All-in-One Aggregator</h3>
+            <p className="text-gray-400 leading-relaxed font-light">Why pay for multiple subscriptions? Get access to Netflix, Disney+, Hulu, and more in a single, unified interface.</p>
           </div>
-          <h3 className="text-xl font-bold text-white mb-3">Private Browser</h3>
-          <p className="text-gray-400 leading-relaxed font-light">Browse the web without tracking. Our built-in secure browser ensures your history remains yours alone.</p>
-        </div>
 
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-blue-500/20">
-            <PlayIcon className="w-7 h-7" />
+          <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-purple-500/30 hover:shadow-[0_0_30px_rgba(168,85,247,0.1)]">
+            <div className="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-purple-500/20">
+              <LockClosedIcon className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3">Private Browser</h3>
+            <p className="text-gray-400 leading-relaxed font-light">Browse the web without tracking. Our built-in secure browser ensures your history remains yours alone.</p>
           </div>
-          <h3 className="text-xl font-bold text-white mb-3">Instant Streaming</h3>
-          <p className="text-gray-400 leading-relaxed font-light">No downloads required. Click and play your favorite content instantly in high definition.</p>
+
+          <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]">
+            <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-blue-500/20">
+              <PlayIcon className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3">Instant Streaming</h3>
+            <p className="text-gray-400 leading-relaxed font-light">No downloads required. Click and play your favorite content instantly in high definition.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Gallery: React.FC = () => {
+  const [ref, isVisible] = useIntersectionObserver();
+
   return (
-    <section id="gallery" className="py-24 bg-gradient-to-b from-black to-slate-950 border-t border-white/5 overflow-hidden scroll-mt-24">
+    <section ref={ref} id="gallery" className={`py-24 bg-gradient-to-b from-black to-slate-950 border-t border-white/5 overflow-hidden scroll-mt-24 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
       <div className="container mx-auto px-6 mb-16 text-center">
         <h2 className="text-4xl font-bold text-white mb-4 tracking-tight">The Ultimate Viewing Experience</h2>
         <p className="text-gray-400 max-w-xl mx-auto">Designed for movie lovers. Dark mode enabled, intuitive navigation, and lightning fast playback.</p>
@@ -406,20 +483,23 @@ const Gallery: React.FC = () => {
   );
 };
 
-const Testimonials: React.FC = () => (
-  <section id="testimonials" className="py-24 bg-black relative z-10 border-t border-white/5 scroll-mt-24">
-    <div className="container mx-auto px-6">
-      <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">User Reviews</h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[
-          { name: "Marcus T.", role: "Verified User", text: "Finally an app that actually works. The library is huge and I canceled my other subscriptions." },
-          { name: "Sarah L.", role: "Verified User", text: "I love the private browser feature. It's super fast and feels very secure." },
-          { name: "James R.", role: "Verified User", text: "Video quality is amazing, even on mobile data. Highly recommend for movie buffs." }
-        ].map((t, i) => (
-          <div key={i} className="bg-white/5 border border-white/5 p-8 rounded-2xl hover:border-brand-500/30 transition-colors">
-            <div className="flex text-yellow-500 mb-4 space-x-1">
-              {[1, 2, 3, 4, 5].map(star => <StarIcon key={star} className="w-4 h-4" />)}
-            </div>
+const Testimonials: React.FC = () => {
+  const [ref, isVisible] = useIntersectionObserver();
+
+  return (
+    <section ref={ref} id="testimonials" className={`py-24 bg-black relative z-10 border-t border-white/5 scroll-mt-24 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+      <div className="container mx-auto px-6">
+        <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">User Reviews</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { name: "Marcus T.", role: "Verified User", text: "Finally an app that actually works. The library is huge and I canceled my other subscriptions." },
+            { name: "Sarah L.", role: "Verified User", text: "I love the private browser feature. It's super fast and feels very secure." },
+            { name: "James R.", role: "Verified User", text: "Video quality is amazing, even on mobile data. Highly recommend for movie buffs." }
+          ].map((t, i) => (
+            <div key={i} className="bg-white/5 border border-white/5 p-8 rounded-2xl hover:border-brand-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.05)] transition-all">
+              <div className="flex text-yellow-500 mb-4 space-x-1" aria-label="5 out of 5 stars">
+                {[1, 2, 3, 4, 5].map(star => <StarIcon key={star} className="w-4 h-4" />)}
+              </div>
             <p className="text-gray-300 mb-6 italic leading-relaxed">"{t.text}"</p>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-white font-bold text-sm border border-white/10">
@@ -431,11 +511,64 @@ const Testimonials: React.FC = () => (
               </div>
             </div>
           </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-)
+    </section>
+  );
+};
+
+const FAQ: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [ref, isVisible] = useIntersectionObserver();
+
+  const faqs = [
+    {
+      q: "Is XHub safe to install?",
+      a: "Absolutely. XHub is a utility app that aggregates content and provides a secure browser. We don't collect personal data or browsing history."
+    },
+    {
+      q: "Do I need to pay for a subscription?",
+      a: "No, XHub itself is free to use. It allows you to access various streaming platforms in one interface. Some third-party platforms might require their own accounts."
+    },
+    {
+      q: "Why isn't it on the Play Store?",
+      a: "The Play Store has strict policies regarding third-party aggregators. Distributing via APK allows us to provide the full feature set without restrictions."
+    },
+    {
+      q: "How do I update the app?",
+      a: "The app will notify you when a new version is available. You can also visit this page anytime to download the latest APK."
+    }
+  ];
+
+  return (
+    <section ref={ref} id="faq" className={`py-24 bg-slate-950 border-t border-white/5 scroll-mt-24 transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+      <div className="container mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center text-white mb-16 tracking-tight">Frequently Asked Questions</h2>
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqs.map((faq, i) => (
+            <div key={i} className="border border-white/10 rounded-2xl overflow-hidden bg-white/5 transition-all duration-300">
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full px-8 py-6 flex items-center justify-between text-left hover:bg-white/5 transition-colors"
+              >
+                <span className="text-lg font-bold text-white">{faq.q}</span>
+                <span className={`text-brand-500 transition-transform duration-300 ${openIndex === i ? 'rotate-180' : ''}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+              </button>
+              <div className={`px-8 transition-all duration-300 ease-in-out ${openIndex === i ? 'max-h-40 py-6 border-t border-white/5 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+                <p className="text-gray-400 leading-relaxed">{faq.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Footer: React.FC = () => (
   <footer className="bg-black py-16 border-t border-white/10">
@@ -475,26 +608,81 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
+  // Focus trap
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      const focusableElements = modalRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+      const handleTab = (e: KeyboardEvent) => {
+        if (e.key !== 'Tab') return;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      };
+
+      modalRef.current.addEventListener('keydown', handleTab);
+      firstElement?.focus();
+
+      return () => modalRef.current?.removeEventListener('keydown', handleTab);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md animate-fade-in" onClick={onClose}></div>
+      <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-modal-enter"
+      >
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            aria-label="Close modal"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors active:scale-95 focus-visible:ring-2 ring-brand-500 outline-none"
           >
             <XIcon className="w-5 h-5" />
           </button>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
             <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-8" role="list">
             {[
               {
                 step: "01",
@@ -512,8 +700,8 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
                 desc: "Tap the file, hit Install, and launch. You're watching in under a minute."
               }
             ].map((s, i) => (
-              <div key={i} className="flex gap-6">
-                <div className="text-3xl font-black text-brand-500/20 leading-none">{s.step}</div>
+              <div key={i} className="flex gap-6" role="listitem">
+                <div className="text-3xl font-black text-brand-500/20 leading-none" aria-hidden="true">{s.step}</div>
                 <div>
                   <h4 className="text-lg font-bold text-white mb-1">{s.title}</h4>
                   <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
@@ -526,7 +714,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             <a
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
-              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20"
+              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20 active:scale-[0.98] focus-visible:ring-2 ring-white outline-none"
             >
               Get APK Now
             </a>
@@ -556,6 +744,7 @@ function App() {
         <Features />
         <Gallery />
         <Testimonials />
+        <FAQ />
       </main>
       <Footer />
       <InstallModal isOpen={isInstallModalOpen} onClose={() => setIsInstallModalOpen(false)} />
