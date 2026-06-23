@@ -32,51 +32,51 @@ const BACKGROUND_IMAGES = [
 
 // --- Icons ---
 
-const DownloadIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const DownloadIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
   </svg>
 );
 
-const ShieldCheckIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const ShieldCheckIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.956 11.956 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
   </svg>
 );
 
-const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const PlayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
 
-const GlobeIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const GlobeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
   </svg>
 );
 
-const LockClosedIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const LockClosedIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
   </svg>
 );
 
-const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 20 20" fill="currentColor">
+const StarIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" {...props}>
     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
   </svg>
 );
 
-const XIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const XIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
 
-const InfoIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const InfoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
@@ -323,7 +323,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
             </div>
 
             {/* Floating Elements */}
-            <div className="absolute -right-8 top-32 bg-black/40 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce" style={{ animationDuration: '4s' }}>
+            <div className="absolute -right-8 top-32 bg-black/40 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-float" style={{ animationDuration: '4s' }}>
               <div className="w-10 h-10 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center border border-green-500/30">
                 <ShieldCheckIcon className="w-5 h-5" />
               </div>
@@ -333,7 +333,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
               </div>
             </div>
 
-            <div className="absolute -left-12 bottom-40 bg-black/40 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce" style={{ animationDuration: '5s', animationDelay: '1s' }}>
+            <div className="absolute -left-12 bottom-40 bg-black/40 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-float" style={{ animationDuration: '5s', animationDelay: '1s' }}>
               <div className="w-10 h-10 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center border border-brand-500/30">
                 <PlayIcon className="w-5 h-5" />
               </div>
@@ -354,24 +354,24 @@ const Features: React.FC = () => (
   <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-brand-500/20">
+        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-brand-500/50 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)]">
+          <div className="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform border border-brand-500/20">
             <GlobeIcon className="w-7 h-7" />
           </div>
           <h3 className="text-xl font-bold text-white mb-3">All-in-One Aggregator</h3>
           <p className="text-gray-400 leading-relaxed font-light">Why pay for multiple subscriptions? Get access to Netflix, Disney+, Hulu, and more in a single, unified interface.</p>
         </div>
 
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-purple-500/20">
+        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-brand-500/50 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)]">
+          <div className="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform border border-purple-500/20">
             <LockClosedIcon className="w-7 h-7" />
           </div>
           <h3 className="text-xl font-bold text-white mb-3">Private Browser</h3>
           <p className="text-gray-400 leading-relaxed font-light">Browse the web without tracking. Our built-in secure browser ensures your history remains yours alone.</p>
         </div>
 
-        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5">
-          <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-blue-500/20">
+        <div className="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-all duration-300 group hover:-translate-y-2 border border-white/5 hover:border-brand-500/50 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)]">
+          <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform border border-blue-500/20">
             <PlayIcon className="w-7 h-7" />
           </div>
           <h3 className="text-xl font-bold text-white mb-3">Instant Streaming</h3>
@@ -475,47 +475,110 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  const modalRef = React.useRef<HTMLDivElement>(null);
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+
+  // Focus trap and lifecycle
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !modalRef.current) return;
+      const focusableElements = modalRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    window.addEventListener('keydown', handleTab);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+      window.removeEventListener('keydown', handleTab);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  // Initial focus
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => closeButtonRef.current?.focus(), 100);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+      <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300"
+      >
         <div className="p-8 md:p-12">
           <button
+            ref={closeButtonRef}
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            aria-label="Close modal"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-brand-500 outline-none"
           >
-            <XIcon className="w-5 h-5" />
+            <XIcon className="w-5 h-5" aria-hidden="true" />
           </button>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
             <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-12 relative">
+            {/* Visual connecting line */}
+            <div className="absolute left-[27px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-brand-500/50 via-brand-500/20 to-transparent"></div>
+
             {[
               {
-                step: "01",
+                icon: <DownloadIcon className="w-6 h-6" />,
                 title: "Download the APK",
                 desc: "Tap the Get APK button. The file saves to your Downloads folder."
               },
               {
-                step: "02",
+                icon: <ShieldCheckIcon className="w-6 h-6" />,
                 title: "Allow unknown sources",
                 desc: "When prompted, enable installs from your browser in Settings → Security."
               },
               {
-                step: "03",
+                icon: <PlayIcon className="w-6 h-6" />,
                 title: "Install & open XHub",
                 desc: "Tap the file, hit Install, and launch. You're watching in under a minute."
               }
             ].map((s, i) => (
-              <div key={i} className="flex gap-6">
-                <div className="text-3xl font-black text-brand-500/20 leading-none">{s.step}</div>
+              <div key={i} className="flex gap-8 relative z-10">
+                <div className="w-14 h-14 shrink-0 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20 shadow-[0_0_20px_rgba(244,63,94,0.1)]">
+                  {React.cloneElement(s.icon as React.ReactElement<any>, { "aria-hidden": "true" })}
+                </div>
                 <div>
-                  <h4 className="text-lg font-bold text-white mb-1">{s.title}</h4>
+                  <h4 className="text-lg font-bold text-white mb-2">{s.title}</h4>
                   <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
                 </div>
               </div>
@@ -526,9 +589,12 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             <a
               href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk"
               download
-              className="block w-full py-4 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20"
+              className="group block w-full py-5 bg-brand-500 hover:bg-brand-600 text-white text-center font-bold rounded-2xl transition-all shadow-lg shadow-brand-500/20 hover:shadow-brand-500/40 transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-white outline-none"
             >
-              Get APK Now
+              <span className="flex items-center justify-center gap-2">
+                <DownloadIcon className="w-5 h-5 animate-pulse" aria-hidden="true" />
+                Get APK Now
+              </span>
             </a>
           </div>
         </div>
