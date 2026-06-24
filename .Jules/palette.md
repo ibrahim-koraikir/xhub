@@ -1,0 +1,3 @@
+## 2024-06-24 - Accessible Modal Pattern
+**Learning:** Modern accessible modals require a combination of semantic ARIA roles (`role="dialog"`, `aria-modal="true"`), descriptive linkage (`aria-labelledby`, `aria-describedby`), keyboard handling (Escape key), and active focus management. For React modals with entry animations, a small delay (e.g., 100ms) in `useEffect` when focusing the initial element ensures the element is ready and visible to receive focus.
+**Action:** Always implement this "Full-Stack A11y" pattern for custom modals: ARIA roles + ID linkages + Escape listener + Scroll lock + Delayed auto-focus.
