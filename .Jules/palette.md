@@ -1,0 +1,3 @@
+## 2025-06-24 - Semantic Structure for Guides & Modal Accessibility
+**Learning:** Using semantic `<ol>` and `<li>` for step-by-step guides provides much better context for screen readers than generic `div`s. Additionally, applying `aria-hidden="true"` to visual-only step indicators (like "01") prevents screen readers from announcing the step number twice. High-quality modal accessibility requires explicit `role="dialog"`, `aria-modal`, and proactive focus management with `useRef`.
+**Action:** Always prefer `<ol>` for sequential instructions and ensure custom modals implement the "Escape to close" pattern and focus trapping/initial focus logic.
