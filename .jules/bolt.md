@@ -1,0 +1,3 @@
+## 2025-05-15 - Optimizing React rendering and scroll responsiveness
+**Learning:** In a large single-file application like `App.tsx`, parent state changes (e.g., toggling a modal) trigger full-tree re-renders. Component memoization alone is insufficient if event handlers passed as props aren't stabilized with `useCallback`, as referential instability will invalidate the memoization. Furthermore, non-passive scroll listeners can block the main thread, leading to jank during scroll-heavy interactions.
+**Action:** Always wrap functional UI components in `React.memo`, stabilize their callback props with `useCallback`, and utilize `{ passive: true }` for scroll event listeners to ensure high-performance rendering and smooth interactions.
