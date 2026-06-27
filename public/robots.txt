@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ibrahim-koraikir.github.io/xhub/sitemap.xml
