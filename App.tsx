@@ -124,12 +124,12 @@ interface VersionInfo {
   releaseNotes: string;
 }
 
-const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
+const Header: React.FC<{ versionInfo: VersionInfo | null }> = React.memo(({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -158,7 +158,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
       </div>
     </header>
   );
-};
+});
 
 const ScrollingBackground: React.FC = React.memo(() => {
   // Duplicate for seamless loop
@@ -219,7 +219,7 @@ const ScrollingBackground: React.FC = React.memo(() => {
   );
 });
 
-const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = ({ onInstallClick, versionInfo }) => {
+const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = React.memo(({ onInstallClick, versionInfo }) => {
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black pt-20 lg:pt-0">
 
@@ -348,9 +348,9 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
       </div>
     </section>
   );
-};
+});
 
-const Features: React.FC = () => (
+const Features: React.FC = React.memo(() => (
   <section id="features" className="py-32 bg-black relative border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <div className="grid lg:grid-cols-3 gap-8">
@@ -380,9 +380,9 @@ const Features: React.FC = () => (
       </div>
     </div>
   </section>
-);
+));
 
-const Gallery: React.FC = () => {
+const Gallery: React.FC = React.memo(() => {
   return (
     <section id="gallery" className="py-24 bg-gradient-to-b from-black to-slate-950 border-t border-white/5 overflow-hidden scroll-mt-24">
       <div className="container mx-auto px-6 mb-16 text-center">
@@ -404,9 +404,9 @@ const Gallery: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
-const Testimonials: React.FC = () => (
+const Testimonials: React.FC = React.memo(() => (
   <section id="testimonials" className="py-24 bg-black relative z-10 border-t border-white/5 scroll-mt-24">
     <div className="container mx-auto px-6">
       <h2 className="text-3xl font-bold text-center text-white mb-16 tracking-tight">User Reviews</h2>
@@ -435,9 +435,9 @@ const Testimonials: React.FC = () => (
       </div>
     </div>
   </section>
-)
+))
 
-const Footer: React.FC = () => (
+const Footer: React.FC = React.memo(() => (
   <footer className="bg-black py-16 border-t border-white/10">
     <div className="container mx-auto px-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-8">
@@ -472,9 +472,9 @@ const Footer: React.FC = () => (
       </div>
     </div>
   </footer>
-);
+));
 
-const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = React.memo(({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
@@ -484,6 +484,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
+            aria-label="Close installation guide"
             className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
           >
             <XIcon className="w-5 h-5" />
@@ -535,11 +536,19 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
       </div>
     </div>
   );
-};
+});
 
 function App() {
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
+
+  const handleOpenInstallModal = React.useCallback(() => {
+    setIsInstallModalOpen(true);
+  }, []);
+
+  const handleCloseInstallModal = React.useCallback(() => {
+    setIsInstallModalOpen(false);
+  }, []);
 
   useEffect(() => {
     fetch('/version.json')
@@ -552,13 +561,13 @@ function App() {
     <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-500/30 selection:text-white">
       <Header versionInfo={versionInfo} />
       <main>
-        <Hero versionInfo={versionInfo} onInstallClick={() => setIsInstallModalOpen(true)} />
+        <Hero versionInfo={versionInfo} onInstallClick={handleOpenInstallModal} />
         <Features />
         <Gallery />
         <Testimonials />
       </main>
       <Footer />
-      <InstallModal isOpen={isInstallModalOpen} onClose={() => setIsInstallModalOpen(false)} />
+      <InstallModal isOpen={isInstallModalOpen} onClose={handleCloseInstallModal} />
     </div>
   );
 }
