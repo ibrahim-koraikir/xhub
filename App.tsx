@@ -274,7 +274,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
               <div className="flex -space-x-3">
                 {[1, 2, 3, 4].map(i => (
                   <div key={i} className="w-9 h-9 rounded-full bg-slate-800 border-2 border-black flex items-center justify-center overflow-hidden">
-                    <img src={`https://i.pravatar.cc/100?img=${i + 15}`} alt="user" className="w-full h-full object-cover" />
+                    <img src={`https://i.pravatar.cc/100?img=${i + 15}`} alt="" className="w-full h-full object-cover" />
                   </div>
                 ))}
               </div>
@@ -417,8 +417,8 @@ const Testimonials: React.FC = () => (
           { name: "James R.", role: "Verified User", text: "Video quality is amazing, even on mobile data. Highly recommend for movie buffs." }
         ].map((t, i) => (
           <div key={i} className="bg-white/5 border border-white/5 p-8 rounded-2xl hover:border-brand-500/30 transition-colors">
-            <div className="flex text-yellow-500 mb-4 space-x-1">
-              {[1, 2, 3, 4, 5].map(star => <StarIcon key={star} className="w-4 h-4" />)}
+            <div className="flex text-yellow-500 mb-4 space-x-1" role="img" aria-label="5 out of 5 stars">
+              {[1, 2, 3, 4, 5].map(star => <StarIcon key={star} className="w-4 h-4" aria-hidden="true" />)}
             </div>
             <p className="text-gray-300 mb-6 italic leading-relaxed">"{t.text}"</p>
             <div className="flex items-center gap-4">
@@ -475,22 +475,42 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleEscape);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleEscape);
+      };
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+      <div
+        className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            aria-label="Close installation guide"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 outline-none"
           >
             <XIcon className="w-5 h-5" />
           </button>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
             <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
           </div>
 
@@ -513,7 +533,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
               }
             ].map((s, i) => (
               <div key={i} className="flex gap-6">
-                <div className="text-3xl font-black text-brand-500/20 leading-none">{s.step}</div>
+                <div className="text-3xl font-black text-brand-500/20 leading-none" aria-hidden="true">{s.step}</div>
                 <div>
                   <h4 className="text-lg font-bold text-white mb-1">{s.title}</h4>
                   <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
@@ -550,8 +570,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-500/30 selection:text-white">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] bg-brand-500 text-white px-4 py-2 rounded-lg outline-none focus:ring-2 focus:ring-white">
+        Skip to content
+      </a>
       <Header versionInfo={versionInfo} />
-      <main>
+      <main id="main-content">
         <Hero versionInfo={versionInfo} onInstallClick={() => setIsInstallModalOpen(true)} />
         <Features />
         <Gallery />
