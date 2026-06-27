@@ -459,10 +459,10 @@ const Footer: React.FC = () => (
           >
             Download Now
           </a>
-          <p className="text-xs text-gray-600 uppercase tracking-wider">Free to use • Secure • Private</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wider">Free to use • Secure • Private</p>
         </div>
       </div>
-      <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+      <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
         <p>&copy; 2024 XHub App. All rights reserved.</p>
         <div className="flex gap-8 mt-4 md:mt-0">
           <a href="#" className="hover:text-white transition-colors">Privacy</a>
@@ -475,26 +475,43 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
       <div className="relative bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
         <div className="p-8 md:p-12">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            aria-label="Close installation guide"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 outline-none"
           >
             <XIcon className="w-5 h-5" />
           </button>
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-white mb-2">Install in 60 seconds</h2>
             <p className="text-gray-400">No Play Store needed. Three taps and you're in.</p>
           </div>
 
-          <div className="space-y-8">
+          <ol className="space-y-8">
             {[
               {
                 step: "01",
@@ -512,15 +529,15 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
                 desc: "Tap the file, hit Install, and launch. You're watching in under a minute."
               }
             ].map((s, i) => (
-              <div key={i} className="flex gap-6">
-                <div className="text-3xl font-black text-brand-500/20 leading-none">{s.step}</div>
+              <li key={i} className="flex gap-6">
+                <div aria-hidden="true" className="text-3xl font-black text-brand-500/20 leading-none">{s.step}</div>
                 <div>
                   <h4 className="text-lg font-bold text-white mb-1">{s.title}</h4>
                   <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
 
           <div className="mt-12">
             <a
