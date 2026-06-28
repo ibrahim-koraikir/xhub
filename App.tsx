@@ -53,8 +53,8 @@ const LockClosedIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 20 20" fill="currentColor">
+const StarIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" {...props}>
     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
   </svg>
 );
@@ -486,8 +486,8 @@ const Testimonials: React.FC = () => {
                 style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(124,58,237,0.35)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}>
-                <div className="flex gap-0.5">
-                  {Array(5).fill(0).map((_, s) => <StarIcon key={s} className="w-4 h-4" style={{ color: '#F59E0B' } as React.CSSProperties} />)}
+                <div className="flex gap-0.5" role="img" aria-label="5 out of 5 stars">
+                  {Array(5).fill(0).map((_, s) => <StarIcon key={s} aria-hidden="true" className="w-4 h-4" style={{ color: '#F59E0B' } as React.CSSProperties} />)}
                 </div>
                 <p className="text-sm leading-relaxed flex-1 text-white/90">"{r.text}"</p>
                 <div className="flex items-center gap-3">
@@ -581,34 +581,49 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleEscape);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleEscape);
+      };
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div className="absolute inset-0 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={onClose} />
       <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-pulse-slow" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
         <div className="p-8">
           <button aria-label="Close installation guide" onClick={onClose}
-            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
+            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
             style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>
             <XIcon className="w-4 h-4" />
           </button>
-          <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
+          <h2 id="modal-title" className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
           <p className="text-sm mb-8 text-white/80">No Play Store. Three taps and you're streaming.</p>
-          <div className="space-y-6">
+          <ol className="space-y-6">
             {[
               { step: '01', title: 'Download the APK', desc: 'Tap the button below. The file lands in your Downloads folder.' },
               { step: '02', title: 'Allow unknown sources', desc: 'Enable "Install from unknown sources" in Settings → Security when prompted.' },
               { step: '03', title: 'Install & watch', desc: 'Tap the file, hit Install, and launch. You\'re live in under a minute.' },
             ].map(s => (
-              <div key={s.step} className="flex gap-5 items-start">
-                <span className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
+              <li key={s.step} className="flex gap-5 items-start">
+                <span aria-hidden="true" className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
                 <div>
                   <h4 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{s.title}</h4>
                   <p className="text-xs leading-relaxed text-white/80">{s.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
           <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
             className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5"
             style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
@@ -631,8 +646,11 @@ function App() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-violet focus:text-white focus:rounded-lg focus:font-bold">
+        Skip to content
+      </a>
       <Header versionInfo={versionInfo} />
-      <main>
+      <main id="main-content">
         <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
         <Features />
         <Gallery />
