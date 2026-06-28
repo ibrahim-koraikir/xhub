@@ -20,53 +20,62 @@ const BACKGROUND_IMAGES = [
   "/imgs/fuse-ios-6.png",
 ];
 
+const SCROLLING_IMGS = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
+const SCROLLING_REV = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse(), [...BACKGROUND_IMAGES].reverse());
+
+const TESTIMONIALS_DATA = [
+  { name: 'Marcus T.', role: 'Verified User', avatar: 20, text: "Finally an app that works. Library is massive and I cancelled Netflix after the first week." },
+  { name: 'Sarah L.',  role: 'Verified User', avatar: 21, text: "The private browser is insane — super fast and genuinely doesn't track anything. Daily driver now." },
+  { name: 'James R.',  role: 'Verified User', avatar: 22, text: "4K quality even on my crappy data plan. Not sure how they pulled that off but I'm not complaining." },
+];
+
 // --- Icons ---
 
-const DownloadIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const DownloadIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
   </svg>
 );
 
-const ShieldCheckIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const ShieldCheckIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.956 11.956 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
   </svg>
 );
 
-const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const PlayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
 
-const GlobeIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const GlobeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
   </svg>
 );
 
-const LockClosedIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const LockClosedIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
   </svg>
 );
 
-const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 20 20" fill="currentColor">
+const StarIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" {...props}>
     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
   </svg>
 );
 
-const XIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const XIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
 
-const InfoIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const InfoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
@@ -184,11 +193,11 @@ const PhoneMockup: React.FC<{ imageSrc?: string; className?: string }> = ({ imag
 
 interface VersionInfo { versionName: string; releaseNotes: string; }
 
-const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
+const Header: React.FC<{ versionInfo: VersionInfo | null }> = React.memo(({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', fn);
+    window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
@@ -225,15 +234,13 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
       </div>
     </header>
   );
-};
+});
 
 const ScrollingBackground: React.FC = React.memo(() => {
-  const imgs = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
-  const rev = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse(), [...BACKGROUND_IMAGES].reverse());
   return (
     <div className="absolute inset-0 overflow-hidden z-0 select-none pointer-events-none">
       <div className="absolute -inset-40 flex justify-center gap-6 -rotate-12 scale-125 opacity-40">
-        {[imgs, rev, imgs, rev].map((col, ci) => (
+        {[SCROLLING_IMGS, SCROLLING_REV, SCROLLING_IMGS, SCROLLING_REV].map((col, ci) => (
           <div key={ci} className={`flex flex-col gap-6 shrink-0 ${ci % 2 === 0 ? 'animate-marquee-up' : 'animate-marquee-down'} ${ci === 3 ? 'hidden lg:flex' : ''}`}>
             {col.map((src, i) => (
               <div key={i} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)', background: '#0d0d1a' }}>
@@ -250,7 +257,7 @@ const ScrollingBackground: React.FC = React.memo(() => {
   );
 });
 
-const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = ({ onInstallClick, versionInfo }) => {
+const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = React.memo(({ onInstallClick, versionInfo }) => {
   const [activeShot, setActiveShot] = useState<keyof typeof APP_SCREENSHOTS>('hero');
   const [isHovered, setIsHovered] = useState(false);
 
@@ -398,9 +405,9 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
       </div>
     </section>
   );
-};
+});
 
-const Features: React.FC = () => {
+const Features: React.FC = React.memo(() => {
   const cards = [
     { icon: <GlobeIcon className="w-6 h-6" />, title: 'All-in-One Aggregator', body: 'Netflix, Disney+, Hulu, HBO, and live sports — all in one place. Cut the cord without losing anything.', accent: '#7C3AED', glow: 'rgba(124,58,237,0.15)' },
     { icon: <LockClosedIcon className="w-6 h-6" />, title: 'Built-in Private Browser', body: 'A fully sandboxed browser with zero history retention. Your searches stay yours — always.', accent: '#22D3EE', glow: 'rgba(34,211,238,0.15)' },
@@ -440,9 +447,9 @@ const Features: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
-const Gallery: React.FC = () => (
+const Gallery: React.FC = React.memo(() => (
   <section id="gallery" className="py-24 scroll-mt-24 overflow-hidden" style={{ background: `linear-gradient(to bottom, var(--bg), var(--surface))`, borderTop: '1px solid var(--border)' }}>
     <ScrollReveal className="container mx-auto px-6 text-center mb-16">
       <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>App Screenshots</p>
@@ -463,15 +470,9 @@ const Gallery: React.FC = () => (
       ))}
     </div>
   </section>
-);
+));
 
-const Testimonials: React.FC = () => {
-  const reviews = [
-    { name: 'Marcus T.', role: 'Verified User', avatar: 20, text: "Finally an app that works. Library is massive and I cancelled Netflix after the first week." },
-    { name: 'Sarah L.',  role: 'Verified User', avatar: 21, text: "The private browser is insane — super fast and genuinely doesn't track anything. Daily driver now." },
-    { name: 'James R.',  role: 'Verified User', avatar: 22, text: "4K quality even on my crappy data plan. Not sure how they pulled that off but I'm not complaining." },
-  ];
-
+const Testimonials: React.FC = React.memo(() => {
   return (
     <section id="testimonials" className="py-24 scroll-mt-24" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
       <div className="container mx-auto px-6">
@@ -480,7 +481,7 @@ const Testimonials: React.FC = () => {
           <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>From real users</h2>
         </ScrollReveal>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {reviews.map((r, i) => (
+          {TESTIMONIALS_DATA.map((r, i) => (
             <ScrollReveal key={i} delay={i * 100} className="h-full">
               <div className="h-full p-7 rounded-2xl flex flex-col gap-5 transition-all duration-300"
                 style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
@@ -504,7 +505,7 @@ const Testimonials: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   const [open, setOpen] = useState(false);
@@ -526,7 +527,7 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   );
 };
 
-const FAQ: React.FC = () => (
+const FAQ: React.FC = React.memo(() => (
   <section id="faq" className="py-24 scroll-mt-24" style={{ background: 'linear-gradient(to bottom, var(--surface), var(--bg))', borderTop: '1px solid var(--border)' }}>
     <div className="container mx-auto px-6 max-w-3xl">
       <ScrollReveal className="text-center mb-14">
@@ -545,9 +546,9 @@ const FAQ: React.FC = () => (
       </ScrollReveal>
     </div>
   </section>
-);
+));
 
-const Footer: React.FC = () => (
+const Footer: React.FC = React.memo(() => (
   <footer className="py-14" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
     <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
       <div>
@@ -578,9 +579,9 @@ const Footer: React.FC = () => (
       </div>
     </div>
   </footer>
-);
+));
 
-const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = React.memo(({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -619,7 +620,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
       </div>
     </div>
   );
-};
+});
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -629,18 +630,26 @@ function App() {
     fetch('/version.json').then(r => r.json()).then(setVersionInfo).catch(console.error);
   }, []);
 
+  const handleInstallClick = React.useCallback(() => {
+    setModalOpen(true);
+  }, []);
+
+  const handleModalClose = React.useCallback(() => {
+    setModalOpen(false);
+  }, []);
+
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
       <Header versionInfo={versionInfo} />
       <main>
-        <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
+        <Hero versionInfo={versionInfo} onInstallClick={handleInstallClick} />
         <Features />
         <Gallery />
         <Testimonials />
         <FAQ />
       </main>
       <Footer />
-      <InstallModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <InstallModal isOpen={modalOpen} onClose={handleModalClose} />
     </div>
   );
 }
