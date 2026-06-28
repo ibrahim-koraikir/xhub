@@ -188,7 +188,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', fn);
+    window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
@@ -219,7 +219,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
         <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
           className="flex items-center gap-2 text-sm font-semibold py-2 px-5 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
           style={{ background: 'var(--violet)', boxShadow: '0 0 24px var(--violet-glow)' }}>
-          <DownloadIcon className="w-4 h-4" />
+          <DownloadIcon className="w-4 h-4" aria-hidden="true" />
           Download APK{versionInfo && <span className="opacity-60 text-xs"> v{versionInfo.versionName}</span>}
         </a>
       </div>
@@ -301,13 +301,13 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
             <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
               className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:-translate-y-1"
               style={{ background: 'linear-gradient(135deg,#7C3AED,#6D28D9)', boxShadow: '0 0 40px rgba(124,58,237,0.4)' }}>
-              <DownloadIcon className="w-5 h-5" />
+              <DownloadIcon className="w-5 h-5" aria-hidden="true" />
               Download Free
             </a>
             <button onClick={onInstallClick}
               className="flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all duration-300 hover:-translate-y-0.5"
               style={{ background: 'var(--surface)', border: '1px solid var(--border-strong)', color: 'var(--text-primary)' }}>
-              <InfoIcon className="w-5 h-5" style={{ color: 'var(--cyan)' } as React.CSSProperties} />
+              <InfoIcon className="w-5 h-5" aria-hidden="true" style={{ color: 'var(--cyan)' } as React.CSSProperties} />
               How to Install
             </button>
           </div>
@@ -382,14 +382,14 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
             <div className="absolute -right-4 top-28 flex items-center gap-3 p-3 rounded-2xl animate-bounce pointer-events-none"
               style={{ background: 'rgba(18,18,28,0.95)', border: '1px solid var(--border)', backdropFilter: 'blur(16px)', animationDuration: '4s', boxShadow: '0 0 24px rgba(34,211,238,0.15)' }}>
               <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(34,211,238,0.15)', color: 'var(--cyan)' }}>
-                <ShieldCheckIcon className="w-4 h-4" />
+                <ShieldCheckIcon className="w-4 h-4" aria-hidden="true" />
               </div>
               <div><p className="text-white font-bold text-xs">100% Secure</p><p className="text-[11px] font-semibold text-white/80">No tracking</p></div>
             </div>
             <div className="absolute -left-8 bottom-44 flex items-center gap-3 p-3 rounded-2xl animate-bounce pointer-events-none"
               style={{ background: 'rgba(18,18,28,0.95)', border: '1px solid var(--border)', backdropFilter: 'blur(16px)', animationDuration: '5.5s', animationDelay: '1s', boxShadow: '0 0 24px var(--violet-glow)' }}>
               <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(124,58,237,0.15)', color: 'var(--violet-light)' }}>
-                <PlayIcon className="w-4 h-4" />
+                <PlayIcon className="w-4 h-4" aria-hidden="true" />
               </div>
               <div><p className="text-white font-bold text-xs">4K Ultra HD</p><p className="text-[11px] font-semibold text-white/80">Crystal clear</p></div>
             </div>
@@ -402,9 +402,9 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
 
 const Features: React.FC = () => {
   const cards = [
-    { icon: <GlobeIcon className="w-6 h-6" />, title: 'All-in-One Aggregator', body: 'Netflix, Disney+, Hulu, HBO, and live sports — all in one place. Cut the cord without losing anything.', accent: '#7C3AED', glow: 'rgba(124,58,237,0.15)' },
-    { icon: <LockClosedIcon className="w-6 h-6" />, title: 'Built-in Private Browser', body: 'A fully sandboxed browser with zero history retention. Your searches stay yours — always.', accent: '#22D3EE', glow: 'rgba(34,211,238,0.15)' },
-    { icon: <PlayIcon className="w-6 h-6" />, title: 'Instant Streaming', body: 'No buffering, no loading screens. XHub pre-caches streams so playback starts in under a second.', accent: '#A78BFA', glow: 'rgba(167,139,250,0.15)' },
+    { icon: <GlobeIcon className="w-6 h-6" aria-hidden="true" />, title: 'All-in-One Aggregator', body: 'Netflix, Disney+, Hulu, HBO, and live sports — all in one place. Cut the cord without losing anything.', accent: '#7C3AED', glow: 'rgba(124,58,237,0.15)' },
+    { icon: <LockClosedIcon className="w-6 h-6" aria-hidden="true" />, title: 'Built-in Private Browser', body: 'A fully sandboxed browser with zero history retention. Your searches stay yours — always.', accent: '#22D3EE', glow: 'rgba(34,211,238,0.15)' },
+    { icon: <PlayIcon className="w-6 h-6" aria-hidden="true" />, title: 'Instant Streaming', body: 'No buffering, no loading screens. XHub pre-caches streams so playback starts in under a second.', accent: '#A78BFA', glow: 'rgba(167,139,250,0.15)' },
   ];
 
   return (
@@ -486,12 +486,12 @@ const Testimonials: React.FC = () => {
                 style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(124,58,237,0.35)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}>
-                <div className="flex gap-0.5">
-                  {Array(5).fill(0).map((_, s) => <StarIcon key={s} className="w-4 h-4" style={{ color: '#F59E0B' } as React.CSSProperties} />)}
+                <div className="flex gap-0.5" role="img" aria-label="5 out of 5 stars rating">
+                  {Array(5).fill(0).map((_, s) => <StarIcon key={s} className="w-4 h-4" aria-hidden="true" style={{ color: '#F59E0B' } as React.CSSProperties} />)}
                 </div>
                 <p className="text-sm leading-relaxed flex-1 text-white/90">"{r.text}"</p>
                 <div className="flex items-center gap-3">
-                  <img src={`https://i.pravatar.cc/80?img=${r.avatar}`} alt={r.name} className="w-9 h-9 rounded-full object-cover" style={{ border: '2px solid var(--border-strong)' }} />
+                  <img src={`https://i.pravatar.cc/80?img=${r.avatar}`} alt="" className="w-9 h-9 rounded-full object-cover" style={{ border: '2px solid var(--border-strong)' }} />
                   <div>
                     <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{r.name}</p>
                     <p className="text-xs font-medium text-white/70">{r.role}</p>
@@ -515,7 +515,7 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
         className="flex justify-between items-center w-full text-left py-5 focus:outline-none transition-colors duration-200"
         style={{ color: open ? 'var(--violet-light)' : 'var(--text-primary)' }}>
         <span className="font-semibold text-base" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{q}</span>
-        <span className="text-xl ml-4 shrink-0 transition-transform duration-300" style={{ transform: open ? 'rotate(45deg)' : 'none', color: open ? 'var(--violet)' : 'var(--text-primary)', opacity: open ? 1 : 0.6 }}>+</span>
+        <span className="text-xl ml-4 shrink-0 transition-transform duration-300" aria-hidden="true" style={{ transform: open ? 'rotate(45deg)' : 'none', color: open ? 'var(--violet)' : 'var(--text-primary)', opacity: open ? 1 : 0.6 }}>+</span>
       </button>
       <div id={id} role="region" className={`grid transition-all duration-300 ease-in-out ${open ? 'grid-rows-[1fr] opacity-100 pb-5' : 'grid-rows-[0fr] opacity-0'}`}>
         <div className="overflow-hidden">
@@ -563,7 +563,7 @@ const Footer: React.FC = () => (
         <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
           className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
           style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
-          <DownloadIcon className="w-4 h-4" />
+          <DownloadIcon className="w-4 h-4" aria-hidden="true" />
           Download Now
         </a>
         <p className="text-xs tracking-widest uppercase text-white/70">Free • Private • No Play Store needed</p>
@@ -590,29 +590,29 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
           <button aria-label="Close installation guide" onClick={onClose}
             className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
             style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>
-            <XIcon className="w-4 h-4" />
+            <XIcon className="w-4 h-4" aria-hidden="true" />
           </button>
           <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
           <p className="text-sm mb-8 text-white/80">No Play Store. Three taps and you're streaming.</p>
-          <div className="space-y-6">
+          <ol className="space-y-6">
             {[
               { step: '01', title: 'Download the APK', desc: 'Tap the button below. The file lands in your Downloads folder.' },
               { step: '02', title: 'Allow unknown sources', desc: 'Enable "Install from unknown sources" in Settings → Security when prompted.' },
               { step: '03', title: 'Install & watch', desc: 'Tap the file, hit Install, and launch. You\'re live in under a minute.' },
             ].map(s => (
-              <div key={s.step} className="flex gap-5 items-start">
-                <span className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
+              <li key={s.step} className="flex gap-5 items-start">
+                <span className="text-2xl font-black shrink-0 text-white" aria-hidden="true" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
                 <div>
                   <h4 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{s.title}</h4>
                   <p className="text-xs leading-relaxed text-white/80">{s.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
           <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
             className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5"
             style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
-            <DownloadIcon className="w-5 h-5" />
+            <DownloadIcon className="w-5 h-5" aria-hidden="true" />
             Get the APK
           </a>
         </div>
@@ -631,8 +631,11 @@ function App() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-violet-600 focus:text-white focus:rounded-lg">
+        Skip to content
+      </a>
       <Header versionInfo={versionInfo} />
-      <main>
+      <main id="main-content">
         <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
         <Features />
         <Gallery />
