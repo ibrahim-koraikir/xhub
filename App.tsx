@@ -22,51 +22,51 @@ const BACKGROUND_IMAGES = [
 
 // --- Icons ---
 
-const DownloadIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const DownloadIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
   </svg>
 );
 
-const ShieldCheckIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const ShieldCheckIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.956 11.956 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
   </svg>
 );
 
-const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const PlayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
 
-const GlobeIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const GlobeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
   </svg>
 );
 
-const LockClosedIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const LockClosedIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
   </svg>
 );
 
-const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 20 20" fill="currentColor">
+const StarIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" {...props}>
     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
   </svg>
 );
 
-const XIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const XIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
 
-const InfoIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const InfoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
@@ -217,7 +217,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
         </nav>
         {/* CTA */}
         <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-          className="flex items-center gap-2 text-sm font-semibold py-2 px-5 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
+          className="flex items-center gap-2 text-sm font-semibold py-2 px-5 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
           style={{ background: 'var(--violet)', boxShadow: '0 0 24px var(--violet-glow)' }}>
           <DownloadIcon className="w-4 h-4" />
           Download APK{versionInfo && <span className="opacity-60 text-xs"> v{versionInfo.versionName}</span>}
@@ -299,13 +299,13 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
           {/* CTAs */}
           <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start mb-10">
             <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-              className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:-translate-y-1"
+              className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]"
               style={{ background: 'linear-gradient(135deg,#7C3AED,#6D28D9)', boxShadow: '0 0 40px rgba(124,58,237,0.4)' }}>
               <DownloadIcon className="w-5 h-5" />
               Download Free
             </a>
             <button onClick={onInstallClick}
-              className="flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all duration-300 hover:-translate-y-0.5"
+              className="flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
               style={{ background: 'var(--surface)', border: '1px solid var(--border-strong)', color: 'var(--text-primary)' }}>
               <InfoIcon className="w-5 h-5" style={{ color: 'var(--cyan)' } as React.CSSProperties} />
               How to Install
@@ -512,7 +512,7 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   return (
     <div style={{ borderBottom: '1px solid var(--border)' }}>
       <button aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}
-        className="flex justify-between items-center w-full text-left py-5 focus:outline-none transition-colors duration-200"
+        className="flex justify-between items-center w-full text-left py-5 focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none transition-colors duration-200 rounded-lg px-2 -mx-2"
         style={{ color: open ? 'var(--violet-light)' : 'var(--text-primary)' }}>
         <span className="font-semibold text-base" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{q}</span>
         <span className="text-xl ml-4 shrink-0 transition-transform duration-300" style={{ transform: open ? 'rotate(45deg)' : 'none', color: open ? 'var(--violet)' : 'var(--text-primary)', opacity: open ? 1 : 0.6 }}>+</span>
@@ -561,7 +561,7 @@ const Footer: React.FC = () => (
       </div>
       <div className="flex flex-col items-center md:items-end gap-4">
         <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-          className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
+          className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
           style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
           <DownloadIcon className="w-4 h-4" />
           Download Now
@@ -588,29 +588,29 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
       <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-pulse-slow" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
         <div className="p-8">
           <button aria-label="Close installation guide" onClick={onClose}
-            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
+            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-white/10 active:scale-90"
             style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>
             <XIcon className="w-4 h-4" />
           </button>
           <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
           <p className="text-sm mb-8 text-white/80">No Play Store. Three taps and you're streaming.</p>
-          <div className="space-y-6">
+          <ol className="space-y-6">
             {[
               { step: '01', title: 'Download the APK', desc: 'Tap the button below. The file lands in your Downloads folder.' },
               { step: '02', title: 'Allow unknown sources', desc: 'Enable "Install from unknown sources" in Settings → Security when prompted.' },
               { step: '03', title: 'Install & watch', desc: 'Tap the file, hit Install, and launch. You\'re live in under a minute.' },
             ].map(s => (
-              <div key={s.step} className="flex gap-5 items-start">
-                <span className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
+              <li key={s.step} className="flex gap-5 items-start">
+                <span className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }} aria-hidden="true">{s.step}</span>
                 <div>
                   <h4 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{s.title}</h4>
                   <p className="text-xs leading-relaxed text-white/80">{s.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
           <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-            className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5"
+            className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
             style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
             <DownloadIcon className="w-5 h-5" />
             Get the APK
@@ -631,8 +631,12 @@ function App() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 rounded-lg text-white font-bold"
+         style={{ background: 'var(--violet)', boxShadow: '0 0 20px var(--violet-glow)' }}>
+        Skip to content
+      </a>
       <Header versionInfo={versionInfo} />
-      <main>
+      <main id="main-content">
         <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
         <Features />
         <Gallery />
