@@ -1,0 +1,3 @@
+## 2025-05-14 - Modal Accessibility and UX Patterns
+**Learning:** When implementing modals in a dark-themed app, standard accessibility features like Escape key support, background scroll locking, and semantic lists for multi-step instructions are crucial but often overlooked. High-contrast focus indicators for icon-only buttons (like the 'X' close button) are essential for keyboard users.
+**Action:** Always include a `useEffect` for Escape key and scroll lock, use `role="dialog"`, and refactor multi-step lists to semantic `<ol>` and `<li>` elements while hiding decorative step numbers from screen readers.
