@@ -1,0 +1,3 @@
+## 2026-06-30 - Skip to content link for single-page landing apps
+**Learning:** For single-page applications (SPAs) that function as landing pages with many sections (Hero, Features, FAQ, etc.), keyboard users face a "tab trap" where they must navigate through every navigation link before reaching the main content. A "Skip to content" link is a critical micro-UX win that respects the user's time and improves accessibility compliance (WCAG 2.4.1).
+**Action:** Always implement a "Skip to content" link as the first focusable element in `App.tsx`. Use Tailwind's `sr-only focus:not-sr-only` to keep it hidden until focused. Ensure the target element (usually `<main>`) has a unique `id` and `tabIndex={-1}` to receive programmatic focus without an unintended focus ring.
