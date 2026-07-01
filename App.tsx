@@ -60,7 +60,7 @@ const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 const XIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
@@ -581,9 +581,24 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleEscape);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleEscape);
+      };
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div className="absolute inset-0 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={onClose} />
       <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-pulse-slow" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
         <div className="p-8">
@@ -592,23 +607,23 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>
             <XIcon className="w-4 h-4" />
           </button>
-          <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
+          <h2 id="modal-title" className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
           <p className="text-sm mb-8 text-white/80">No Play Store. Three taps and you're streaming.</p>
-          <div className="space-y-6">
+          <ol className="space-y-6">
             {[
               { step: '01', title: 'Download the APK', desc: 'Tap the button below. The file lands in your Downloads folder.' },
               { step: '02', title: 'Allow unknown sources', desc: 'Enable "Install from unknown sources" in Settings → Security when prompted.' },
               { step: '03', title: 'Install & watch', desc: 'Tap the file, hit Install, and launch. You\'re live in under a minute.' },
             ].map(s => (
-              <div key={s.step} className="flex gap-5 items-start">
-                <span className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
+              <li key={s.step} className="flex gap-5 items-start">
+                <span aria-hidden="true" className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
                 <div>
                   <h4 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{s.title}</h4>
                   <p className="text-xs leading-relaxed text-white/80">{s.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
           <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
             className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5"
             style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
@@ -625,6 +640,9 @@ function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
 
+  const handleOpenModal = React.useCallback(() => setModalOpen(true), []);
+  const handleCloseModal = React.useCallback(() => setModalOpen(false), []);
+
   useEffect(() => {
     fetch('/version.json').then(r => r.json()).then(setVersionInfo).catch(console.error);
   }, []);
@@ -633,14 +651,14 @@ function App() {
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
       <Header versionInfo={versionInfo} />
       <main>
-        <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
+        <Hero versionInfo={versionInfo} onInstallClick={handleOpenModal} />
         <Features />
         <Gallery />
         <Testimonials />
         <FAQ />
       </main>
       <Footer />
-      <InstallModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <InstallModal isOpen={modalOpen} onClose={handleCloseModal} />
     </div>
   );
 }
