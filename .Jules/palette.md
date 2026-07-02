@@ -1,0 +1,3 @@
+## 2025-07-02 - Accessible Navigation: Skip to Content
+**Learning:** For landing pages with fixed or complex headers, a 'Skip to content' link is essential for keyboard and screen reader accessibility. It must be the first focusable element and should use Tailwind's `sr-only focus:not-sr-only` to remain invisible until focused. The target element needs `tabIndex={-1}` and `outline-none` to receive programmatic focus reliably without an unintended default browser outline.
+**Action:** Always ensure a 'Skip to content' link is present as the first focusable element in `App.tsx` and verify that focus correctly shifts to the main content area.
