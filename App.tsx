@@ -184,7 +184,7 @@ const PhoneMockup: React.FC<{ imageSrc?: string; className?: string }> = ({ imag
 
 interface VersionInfo { versionName: string; releaseNotes: string; }
 
-const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
+const Header: React.FC<{ versionInfo: VersionInfo | null }> = React.memo(({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -225,7 +225,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
       </div>
     </header>
   );
-};
+});
 
 const ScrollingBackground: React.FC = React.memo(() => {
   const imgs = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
@@ -250,7 +250,7 @@ const ScrollingBackground: React.FC = React.memo(() => {
   );
 });
 
-const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = ({ onInstallClick, versionInfo }) => {
+const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = React.memo(({ onInstallClick, versionInfo }) => {
   const [activeShot, setActiveShot] = useState<keyof typeof APP_SCREENSHOTS>('hero');
   const [isHovered, setIsHovered] = useState(false);
 
@@ -398,9 +398,9 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
       </div>
     </section>
   );
-};
+});
 
-const Features: React.FC = () => {
+const Features: React.FC = React.memo(() => {
   const cards = [
     { icon: <GlobeIcon className="w-6 h-6" />, title: 'All-in-One Aggregator', body: 'Netflix, Disney+, Hulu, HBO, and live sports — all in one place. Cut the cord without losing anything.', accent: '#7C3AED', glow: 'rgba(124,58,237,0.15)' },
     { icon: <LockClosedIcon className="w-6 h-6" />, title: 'Built-in Private Browser', body: 'A fully sandboxed browser with zero history retention. Your searches stay yours — always.', accent: '#22D3EE', glow: 'rgba(34,211,238,0.15)' },
@@ -440,32 +440,34 @@ const Features: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
-const Gallery: React.FC = () => (
-  <section id="gallery" className="py-24 scroll-mt-24 overflow-hidden" style={{ background: `linear-gradient(to bottom, var(--bg), var(--surface))`, borderTop: '1px solid var(--border)' }}>
-    <ScrollReveal className="container mx-auto px-6 text-center mb-16">
-      <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>App Screenshots</p>
-      <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>
-        Cinematic on every screen
-      </h2>
-      <p className="mt-3 text-sm max-w-md mx-auto" style={{ color: 'var(--text-primary)', opacity: 0.8 }}>
-        Dark mode first. Every pixel optimised for late-night watching.
-      </p>
-    </ScrollReveal>
-    <div className="flex overflow-x-auto gap-8 px-6 pb-10 snap-x snap-mandatory no-scrollbar md:justify-center">
-      {[APP_SCREENSHOTS.gallery1, APP_SCREENSHOTS.gallery2, APP_SCREENSHOTS.gallery3].map((src, i) => (
-        <ScrollReveal key={i} delay={i * 120} className="snap-center shrink-0">
-          <div className="transition-transform duration-300 hover:-translate-y-3">
-            <PhoneMockup imageSrc={src} />
-          </div>
-        </ScrollReveal>
-      ))}
-    </div>
-  </section>
-);
+const Gallery: React.FC = React.memo(() => {
+  return (
+    <section id="gallery" className="py-24 scroll-mt-24 overflow-hidden" style={{ background: `linear-gradient(to bottom, var(--bg), var(--surface))`, borderTop: '1px solid var(--border)' }}>
+      <ScrollReveal className="container mx-auto px-6 text-center mb-16">
+        <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>App Screenshots</p>
+        <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>
+          Cinematic on every screen
+        </h2>
+        <p className="mt-3 text-sm max-w-md mx-auto" style={{ color: 'var(--text-primary)', opacity: 0.8 }}>
+          Dark mode first. Every pixel optimised for late-night watching.
+        </p>
+      </ScrollReveal>
+      <div className="flex overflow-x-auto gap-8 px-6 pb-10 snap-x snap-mandatory no-scrollbar md:justify-center">
+        {[APP_SCREENSHOTS.gallery1, APP_SCREENSHOTS.gallery2, APP_SCREENSHOTS.gallery3].map((src, i) => (
+          <ScrollReveal key={i} delay={i * 120} className="snap-center shrink-0">
+            <div className="transition-transform duration-300 hover:-translate-y-3">
+              <PhoneMockup imageSrc={src} />
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+    </section>
+  );
+});
 
-const Testimonials: React.FC = () => {
+const Testimonials: React.FC = React.memo(() => {
   const reviews = [
     { name: 'Marcus T.', role: 'Verified User', avatar: 20, text: "Finally an app that works. Library is massive and I cancelled Netflix after the first week." },
     { name: 'Sarah L.',  role: 'Verified User', avatar: 21, text: "The private browser is insane — super fast and genuinely doesn't track anything. Daily driver now." },
@@ -504,7 +506,7 @@ const Testimonials: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   const [open, setOpen] = useState(false);
@@ -526,61 +528,65 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   );
 };
 
-const FAQ: React.FC = () => (
-  <section id="faq" className="py-24 scroll-mt-24" style={{ background: 'linear-gradient(to bottom, var(--surface), var(--bg))', borderTop: '1px solid var(--border)' }}>
-    <div className="container mx-auto px-6 max-w-3xl">
-      <ScrollReveal className="text-center mb-14">
-        <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>Got questions?</p>
-        <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Answers right here</h2>
-      </ScrollReveal>
-      <ScrollReveal>
-        <div className="p-8 md:p-10 rounded-2xl" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-          {[
-            { q: 'Is XHub safe to install?', a: 'Yes. The APK is clean — no malware, no adware, no hidden trackers. Since it ships outside the Play Store you\'ll need to enable "Install from unknown sources" in Android settings, which is a normal one-time step for sideloading.' },
-            { q: 'Does it cost anything?', a: 'Nothing. XHub is completely free. No subscription, no in-app purchases, no paywalls.' },
-            { q: 'Which Android versions are supported?', a: 'Android 6.0 (Marshmallow) and above. Works on phones, tablets, Android TV boxes, and Fire Stick with a launcher.' },
-            { q: 'How do I get updates?', a: 'XHub checks for updates on launch. When a new version drops you\'ll see an in-app prompt. One tap downloads and installs the latest build.' },
-          ].map((item, i) => <FAQItem key={i} q={item.q} a={item.a} />)}
-        </div>
-      </ScrollReveal>
-    </div>
-  </section>
-);
-
-const Footer: React.FC = () => (
-  <footer className="py-14" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
-    <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-      <div>
-        <div className="flex items-center gap-2.5 mb-3">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7C3AED,#22D3EE)' }}>
-            <span className="text-white font-black text-xs">X</span>
+const FAQ: React.FC = React.memo(() => {
+  return (
+    <section id="faq" className="py-24 scroll-mt-24" style={{ background: 'linear-gradient(to bottom, var(--surface), var(--bg))', borderTop: '1px solid var(--border)' }}>
+      <div className="container mx-auto px-6 max-w-3xl">
+        <ScrollReveal className="text-center mb-14">
+          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>Got questions?</p>
+          <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Answers right here</h2>
+        </ScrollReveal>
+        <ScrollReveal>
+          <div className="p-8 md:p-10 rounded-2xl" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+            {[
+              { q: 'Is XHub safe to install?', a: 'Yes. The APK is clean — no malware, no adware, no hidden trackers. Since it ships outside the Play Store you\'ll need to enable "Install from unknown sources" in Android settings, which is a normal one-time step for sideloading.' },
+              { q: 'Does it cost anything?', a: 'Nothing. XHub is completely free. No subscription, no in-app purchases, no paywalls.' },
+              { q: 'Which Android versions are supported?', a: 'Android 6.0 (Marshmallow) and above. Works on phones, tablets, Android TV boxes, and Fire Stick with a launcher.' },
+              { q: 'How do I get updates?', a: 'XHub checks for updates on launch. When a new version drops you\'ll see an in-app prompt. One tap downloads and installs the latest build.' },
+            ].map((item, i) => <FAQItem key={i} q={item.q} a={item.a} />)}
           </div>
-          <span className="font-bold text-lg" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>XHub</span>
-        </div>
-        <p className="text-sm max-w-xs text-white/80">The Android streaming app that replaces everything else.</p>
+        </ScrollReveal>
       </div>
-      <div className="flex flex-col items-center md:items-end gap-4">
-        <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-          className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
-          style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
-          <DownloadIcon className="w-4 h-4" />
-          Download Now
-        </a>
-        <p className="text-xs tracking-widest uppercase text-white/70">Free • Private • No Play Store needed</p>
-      </div>
-    </div>
-    <div className="container mx-auto px-6 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs gap-3" style={{ borderTop: '1px solid var(--border)', color: 'var(--text-primary)', opacity: 0.7 }}>
-      <p>© 2024 XHub App. All rights reserved.</p>
-      <div className="flex gap-6">
-        {['Privacy','Terms','DMCA'].map(l => (
-          <a key={l} href="#" className="transition-colors hover:text-white">{l}</a>
-        ))}
-      </div>
-    </div>
-  </footer>
-);
+    </section>
+  );
+});
 
-const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const Footer: React.FC = React.memo(() => {
+  return (
+    <footer className="py-14" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
+      <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div>
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7C3AED,#22D3EE)' }}>
+              <span className="text-white font-black text-xs">X</span>
+            </div>
+            <span className="font-bold text-lg" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>XHub</span>
+          </div>
+          <p className="text-sm max-w-xs text-white/80">The Android streaming app that replaces everything else.</p>
+        </div>
+        <div className="flex flex-col items-center md:items-end gap-4">
+          <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
+            className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
+            style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
+            <DownloadIcon className="w-4 h-4" />
+            Download Now
+          </a>
+          <p className="text-xs tracking-widest uppercase text-white/70">Free • Private • No Play Store needed</p>
+        </div>
+      </div>
+      <div className="container mx-auto px-6 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs gap-3" style={{ borderTop: '1px solid var(--border)', color: 'var(--text-primary)', opacity: 0.7 }}>
+        <p>© 2024 XHub App. All rights reserved.</p>
+        <div className="flex gap-6">
+          {['Privacy','Terms','DMCA'].map(l => (
+            <a key={l} href="#" className="transition-colors hover:text-white">{l}</a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+});
+
+const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = React.memo(({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -619,7 +625,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
       </div>
     </div>
   );
-};
+});
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -629,18 +635,21 @@ function App() {
     fetch('/version.json').then(r => r.json()).then(setVersionInfo).catch(console.error);
   }, []);
 
+  const handleOpenModal = React.useCallback(() => setModalOpen(true), []);
+  const handleCloseModal = React.useCallback(() => setModalOpen(false), []);
+
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
       <Header versionInfo={versionInfo} />
       <main>
-        <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
+        <Hero versionInfo={versionInfo} onInstallClick={handleOpenModal} />
         <Features />
         <Gallery />
         <Testimonials />
         <FAQ />
       </main>
       <Footer />
-      <InstallModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <InstallModal isOpen={modalOpen} onClose={handleCloseModal} />
     </div>
   );
 }
