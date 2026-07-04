@@ -3,21 +3,21 @@ import { useState, useEffect } from 'react';
 
 // --- CONFIGURATION ---
 const APP_SCREENSHOTS = {
-  hero:     "/imgs/fuse-ios-14.png",
-  gallery1: "/imgs/apple-podcasts-ios-18.png",
-  gallery2: "/imgs/fuse-ios-15.png",
-  gallery3: "/imgs/apple-podcasts-ios-7.png"
+  hero:     "/imgs/app-shot-5.png",
+  gallery1: "/imgs/app-shot-1.png",
+  gallery2: "/imgs/app-shot-6.png",
+  gallery3: "/imgs/app-shot-3.png"
 };
 
 const BACKGROUND_IMAGES = [
-  "/imgs/apple-podcasts-ios-18.png",
-  "/imgs/apple-podcasts-ios-28.png",
-  "/imgs/apple-podcasts-ios-7.png",
-  "/imgs/apple-podcasts-ios-8.png",
-  "/imgs/fuse-ios-14.png",
-  "/imgs/fuse-ios-15.png",
-  "/imgs/fuse-ios-16.png",
-  "/imgs/fuse-ios-6.png",
+  "/imgs/app-shot-1.png",
+  "/imgs/app-shot-2.png",
+  "/imgs/app-shot-3.png",
+  "/imgs/app-shot-4.png",
+  "/imgs/app-shot-5.png",
+  "/imgs/app-shot-6.png",
+  "/imgs/app-shot-7.png",
+  "/imgs/app-shot-8.png",
 ];
 
 // --- Icons ---
@@ -193,32 +193,27 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-3 border-b' : 'py-5'}`}
-      style={{ background: scrolled ? 'rgba(10,10,15,0.9)' : 'transparent', backdropFilter: scrolled ? 'blur(20px)' : 'none', borderColor: scrolled ? 'var(--border)' : 'transparent' }}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-3 border-b bg-brand-bg/90 backdrop-blur-xl border-brand-border' : 'py-5 bg-transparent border-transparent'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg,#7C3AED,#22D3EE)', boxShadow: '0 0 20px rgba(124,58,237,0.45)' }}>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-brand-violet to-brand-cyan shadow-[0_0_20px_rgba(124,58,237,0.45)]">
             <span className="text-white font-black text-sm">X</span>
           </div>
-          <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>XHub</span>
+          <span className="text-xl font-bold tracking-tight font-display text-brand-text-primary">XHub</span>
         </div>
         {/* Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {[['#features','Features'],['#gallery','Library'],['#testimonials','Reviews'],['#faq','FAQ']].map(([href,label]) => (
-            <a key={href} href={href} className="text-sm font-medium relative group" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}
-              onMouseEnter={e=>(e.currentTarget.style.color='var(--text-primary)')}
-              onMouseLeave={e=>(e.currentTarget.style.color='var(--text-secondary)')}>
+            <a key={href} href={href} className="text-sm font-medium relative group text-brand-text-secondary transition-colors duration-200 hover:text-brand-text-primary">
               {label}
-              <span className="absolute -bottom-0.5 left-0 w-0 h-px group-hover:w-full transition-all duration-300" style={{ background: 'var(--violet)' }} />
+              <span className="absolute -bottom-0.5 left-0 w-0 h-px group-hover:w-full transition-all duration-300 bg-brand-violet" />
             </a>
           ))}
         </nav>
         {/* CTA */}
         <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-          className="flex items-center gap-2 text-sm font-semibold py-2 px-5 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
-          style={{ background: 'var(--violet)', boxShadow: '0 0 24px var(--violet-glow)' }}>
+          className="flex items-center gap-2 text-sm font-semibold py-2 px-5 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5 bg-brand-violet shadow-[0_0_24px_rgba(124,58,237,0.25)]">
           <DownloadIcon className="w-4 h-4" />
           Download APK{versionInfo && <span className="opacity-60 text-xs"> v{versionInfo.versionName}</span>}
         </a>
@@ -236,7 +231,7 @@ const ScrollingBackground: React.FC = React.memo(() => {
         {[imgs, rev, imgs, rev].map((col, ci) => (
           <div key={ci} className={`flex flex-col gap-6 shrink-0 ${ci % 2 === 0 ? 'animate-marquee-up' : 'animate-marquee-down'} ${ci === 3 ? 'hidden lg:flex' : ''}`}>
             {col.map((src, i) => (
-              <div key={i} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)', background: '#0d0d1a' }}>
+              <div key={i} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden border border-brand-border bg-[#0d0d1a]">
                 <img src={src} className="w-full h-full object-cover grayscale-[0.6]" alt="" loading="lazy" />
               </div>
             ))}
@@ -244,8 +239,8 @@ const ScrollingBackground: React.FC = React.memo(() => {
         ))}
       </div>
       {/* Gradient overlays */}
-      <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(to bottom, var(--bg) 0%, rgba(10,10,15,0.5) 40%, rgba(10,10,15,0.5) 60%, var(--bg) 100%)' }} />
-      <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(to right, var(--bg) 0%, transparent 30%, transparent 70%, var(--bg) 100%)' }} />
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-brand-bg via-[#0a0a0f]/50 to-brand-bg" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-brand-bg via-transparent to-brand-bg" />
     </div>
   );
 });
@@ -262,52 +257,47 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
   }, [isHovered]);
 
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-20 lg:pt-0" style={{ background: 'var(--bg)' }}>
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-20 lg:pt-0 bg-brand-bg">
       <ScrollingBackground />
 
       {/* Ambient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none z-0 blur-[120px] animate-float"
-        style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%)' }} />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none z-0 blur-[100px] animate-float"
-        style={{ background: 'radial-gradient(circle, rgba(34,211,238,0.12) 0%, transparent 70%)', animationDelay: '-3s' }} />
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none z-0 blur-[120px] animate-float bg-[radial-gradient(circle,rgba(124,58,237,0.18)_0%,transparent_70%)]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none z-0 blur-[100px] animate-float bg-[radial-gradient(circle,rgba(34,211,238,0.12)_0%,transparent_70%)] [animation-delay:-3s]" />
 
       <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-16 items-center py-16">
         {/* Left */}
         <div className="text-center lg:text-left">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-8 animate-pulse-slow"
-            style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--text-primary)' }}>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-8 animate-pulse-slow bg-brand-violet/10 border border-brand-violet/30 text-brand-text-primary">
             <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: 'var(--cyan)' }} />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: 'var(--cyan)' }} />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-brand-cyan" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-cyan" />
             </span>
             {versionInfo ? `v${versionInfo.versionName} — Just released` : 'New release available'}
           </div>
 
           {/* Headline */}
-          <h1 className="font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 'clamp(2.8rem,6vw,4.5rem)', color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
+          <h1 className="font-bold leading-[1.05] mb-6 tracking-tight font-display text-brand-text-primary text-[clamp(2.8rem,6vw,4.5rem)] tracking-[-0.03em]">
             Every channel.<br />
-            <span style={{ background: 'linear-gradient(135deg,#A78BFA 0%,#22D3EE 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <span className="bg-gradient-to-br from-brand-violet-light to-brand-cyan bg-clip-text text-transparent">
               One tap away.
             </span>
           </h1>
 
-          <p className="text-lg mb-10 max-w-md mx-auto lg:mx-0 leading-relaxed" style={{ color: 'var(--text-primary)', opacity: 0.85, fontWeight: 300 }}>
+          <p className="text-lg mb-10 max-w-md mx-auto lg:mx-0 leading-relaxed text-brand-text-primary/85 font-light">
             XHub brings Netflix, Disney+, sports, live TV, and private browsing into a single free Android app. No subscriptions. No Play Store.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start mb-10">
             <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-              className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:-translate-y-1"
-              style={{ background: 'linear-gradient(135deg,#7C3AED,#6D28D9)', boxShadow: '0 0 40px rgba(124,58,237,0.4)' }}>
+              className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-brand-violet to-[#6D28D9] shadow-[0_0_40px_rgba(124,58,237,0.4)]">
               <DownloadIcon className="w-5 h-5" />
               Download Free
             </a>
             <button onClick={onInstallClick}
-              className="flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all duration-300 hover:-translate-y-0.5"
-              style={{ background: 'var(--surface)', border: '1px solid var(--border-strong)', color: 'var(--text-primary)' }}>
-              <InfoIcon className="w-5 h-5" style={{ color: 'var(--cyan)' } as React.CSSProperties} />
+              className="flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all duration-300 hover:-translate-y-0.5 bg-brand-surface border border-brand-border-strong text-brand-text-primary">
+              <InfoIcon className="w-5 h-5 text-brand-cyan" />
               How to Install
             </button>
           </div>
@@ -316,13 +306,13 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
           <div className="flex items-center gap-4 justify-center lg:justify-start">
             <div className="flex -space-x-2.5">
               {[16,17,18,19].map(i => (
-                <div key={i} className="w-9 h-9 rounded-full overflow-hidden" style={{ border: '2px solid var(--bg)' }}>
+                <div key={i} className="w-9 h-9 rounded-full overflow-hidden border-2 border-brand-bg">
                   <img src={`https://i.pravatar.cc/100?img=${i}`} alt="user" className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>
-            <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
-              <AnimatedCounter target={500} suffix="k+" /> <span style={{ fontWeight: 600 }}>downloads</span> and growing
+            <span className="text-sm font-medium text-brand-text-primary">
+              <AnimatedCounter target={500} suffix="k+" /> <span className="font-semibold">downloads</span> and growing
             </span>
           </div>
         </div>
@@ -342,13 +332,12 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
           {/* Main mockup */}
           <div className="relative z-20 flex flex-col items-center animate-float">
             <TiltCard>
-              <div className="relative" style={{ filter: 'drop-shadow(0 0 60px rgba(124,58,237,0.35))' }}>
-                <div className="relative mx-auto border-[#1a1a2e] border-[8px] rounded-[2.5rem] h-[580px] w-[280px] overflow-hidden flex flex-col"
-                  style={{ background: '#0d0d1a', boxShadow: '0 0 0 1px rgba(124,58,237,0.3), 0 60px 120px rgba(0,0,0,0.7)' }}>
-                  <div className="h-[32px] w-[3px] absolute -left-[10px] top-[72px] rounded-l" style={{ background: '#1a1a2e' }} />
-                  <div className="h-[46px] w-[3px] absolute -left-[10px] top-[124px] rounded-l" style={{ background: '#1a1a2e' }} />
-                  <div className="h-[46px] w-[3px] absolute -left-[10px] top-[178px] rounded-l" style={{ background: '#1a1a2e' }} />
-                  <div className="h-[64px] w-[3px] absolute -right-[10px] top-[142px] rounded-r" style={{ background: '#1a1a2e' }} />
+              <div className="relative shadow-[0_0_60px_rgba(124,58,237,0.35)]">
+                <div className="relative mx-auto border-[#1a1a2e] border-[8px] rounded-[2.5rem] h-[580px] w-[280px] overflow-hidden flex flex-col bg-[#0d0d1a] shadow-[0_0_0_1px_rgba(124,58,237,0.3),0_60px_120px_rgba(0,0,0,0.7)]">
+                  <div className="h-[32px] w-[3px] absolute -left-[10px] top-[72px] rounded-l bg-[#1a1a2e]" />
+                  <div className="h-[46px] w-[3px] absolute -left-[10px] top-[124px] rounded-l bg-[#1a1a2e]" />
+                  <div className="h-[46px] w-[3px] absolute -left-[10px] top-[178px] rounded-l bg-[#1a1a2e]" />
+                  <div className="h-[64px] w-[3px] absolute -right-[10px] top-[142px] rounded-r bg-[#1a1a2e]" />
                   <div className="rounded-[2rem] overflow-hidden w-full h-full relative">
                     <div className="absolute top-0 w-full h-7 px-4 flex justify-between items-center z-20 text-[10px] font-medium text-white/60">
                       <span>9:41</span>
@@ -366,29 +355,24 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
             </TiltCard>
 
             {/* Tab selector with touch-target pad space and ARIA tabs list */}
-            <div className="flex gap-1.5 mt-5 p-1.5 rounded-full" role="tablist" aria-label="App screenshots switcher" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+            <div className="flex gap-1.5 mt-5 p-1.5 rounded-full bg-brand-surface border border-brand-border" role="tablist" aria-label="App screenshots switcher">
               {([['hero','Home'],['gallery1','Player'],['gallery2','Private'],['gallery3','Library']] as const).map(([key, label]) => (
                 <button key={key} role="tab" aria-selected={activeShot === key} aria-controls={`panel-${key}`} onClick={() => setActiveShot(key)}
-                  className="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 min-h-[44px] min-w-[70px]"
-                  style={activeShot === key
-                    ? { background: 'var(--violet)', color: '#fff', boxShadow: '0 0 16px var(--violet-glow)' }
-                    : { color: 'var(--text-primary)', opacity: 0.8 }}>
+                  className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 min-h-[44px] min-w-[70px] ${activeShot === key ? 'bg-brand-violet text-white shadow-[0_0_16px_rgba(124,58,237,0.25)]' : 'text-brand-text-primary opacity-80'}`}>
                   {label}
                 </button>
               ))}
             </div>
 
             {/* Floating badges with high contrast text */}
-            <div className="absolute -right-4 top-28 flex items-center gap-3 p-3 rounded-2xl animate-bounce pointer-events-none"
-              style={{ background: 'rgba(18,18,28,0.95)', border: '1px solid var(--border)', backdropFilter: 'blur(16px)', animationDuration: '4s', boxShadow: '0 0 24px rgba(34,211,238,0.15)' }}>
-              <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(34,211,238,0.15)', color: 'var(--cyan)' }}>
+            <div className="absolute -right-4 top-28 flex items-center gap-3 p-3 rounded-2xl animate-bounce pointer-events-none bg-[#12121c]/95 border border-brand-border backdrop-blur-2xl [animation-duration:4s] shadow-[0_0_24px_rgba(34,211,238,0.15)]">
+              <div className="w-9 h-9 rounded-full flex items-center justify-center bg-brand-cyan/15 text-brand-cyan">
                 <ShieldCheckIcon className="w-4 h-4" />
               </div>
               <div><p className="text-white font-bold text-xs">100% Secure</p><p className="text-[11px] font-semibold text-white/80">No tracking</p></div>
             </div>
-            <div className="absolute -left-8 bottom-44 flex items-center gap-3 p-3 rounded-2xl animate-bounce pointer-events-none"
-              style={{ background: 'rgba(18,18,28,0.95)', border: '1px solid var(--border)', backdropFilter: 'blur(16px)', animationDuration: '5.5s', animationDelay: '1s', boxShadow: '0 0 24px var(--violet-glow)' }}>
-              <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(124,58,237,0.15)', color: 'var(--violet-light)' }}>
+            <div className="absolute -left-8 bottom-44 flex items-center gap-3 p-3 rounded-2xl animate-bounce pointer-events-none bg-[#12121c]/95 border border-brand-border backdrop-blur-2xl [animation-duration:5.5s] [animation-delay:1s] shadow-[0_0_24px_rgba(124,58,237,0.25)]">
+              <div className="w-9 h-9 rounded-full flex items-center justify-center bg-brand-violet/15 text-brand-violet-light">
                 <PlayIcon className="w-4 h-4" />
               </div>
               <div><p className="text-white font-bold text-xs">4K Ultra HD</p><p className="text-[11px] font-semibold text-white/80">Crystal clear</p></div>
@@ -402,20 +386,20 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
 
 const Features: React.FC = () => {
   const cards = [
-    { icon: <GlobeIcon className="w-6 h-6" />, title: 'All-in-One Aggregator', body: 'Netflix, Disney+, Hulu, HBO, and live sports — all in one place. Cut the cord without losing anything.', accent: '#7C3AED', glow: 'rgba(124,58,237,0.15)' },
-    { icon: <LockClosedIcon className="w-6 h-6" />, title: 'Built-in Private Browser', body: 'A fully sandboxed browser with zero history retention. Your searches stay yours — always.', accent: '#22D3EE', glow: 'rgba(34,211,238,0.15)' },
-    { icon: <PlayIcon className="w-6 h-6" />, title: 'Instant Streaming', body: 'No buffering, no loading screens. XHub pre-caches streams so playback starts in under a second.', accent: '#A78BFA', glow: 'rgba(167,139,250,0.15)' },
+    { icon: <GlobeIcon className="w-6 h-6" />, title: 'All-in-One Aggregator', body: 'Netflix, Disney+, Hulu, HBO, and live sports — all in one place. Cut the cord without losing anything.', accent: 'hover:border-brand-violet/30 hover:shadow-[0_0_40px_rgba(124,58,237,0.15)]', iconBg: 'bg-brand-violet/10 text-brand-violet border-brand-violet/20' },
+    { icon: <LockClosedIcon className="w-6 h-6" />, title: 'Built-in Private Browser', body: 'A fully sandboxed browser with zero history retention. Your searches stay yours — always.', accent: 'hover:border-brand-cyan/30 hover:shadow-[0_0_40px_rgba(34,211,238,0.15)]', iconBg: 'bg-brand-cyan/10 text-brand-cyan border-brand-cyan/20' },
+    { icon: <PlayIcon className="w-6 h-6" />, title: 'Instant Streaming', body: 'No buffering, no loading screens. XHub pre-caches streams so playback starts in under a second.', accent: 'hover:border-brand-violet-light/30 hover:shadow-[0_0_40px_rgba(167,139,250,0.15)]', iconBg: 'bg-brand-violet-light/10 text-brand-violet-light border-brand-violet-light/20' },
   ];
 
   return (
-    <section id="features" className="py-28 relative scroll-mt-24" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
+    <section id="features" className="py-28 relative scroll-mt-24 bg-brand-bg border-t border-brand-border">
       {/* Divider glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-px" style={{ background: 'linear-gradient(to right, transparent, var(--violet), transparent)' }} />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-px bg-gradient-to-r from-transparent via-brand-violet to-transparent" />
 
       <div className="container mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--violet-light)' }}>Why XHub</p>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>
+          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3 text-brand-violet-light">Why XHub</p>
+          <h2 className="text-4xl font-bold tracking-tight font-display text-brand-text-primary">
             Built different, by design
           </h2>
         </ScrollReveal>
@@ -423,15 +407,11 @@ const Features: React.FC = () => {
         <div className="grid lg:grid-cols-3 gap-6">
           {cards.map((card, i) => (
             <ScrollReveal key={i} delay={i * 120} className="h-full">
-              <div className="h-full p-8 rounded-2xl transition-all duration-300 group cursor-default"
-                style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = card.accent + '55'; (e.currentTarget as HTMLElement).style.boxShadow = `0 0 40px ${card.glow}`; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
-                  style={{ background: `${card.accent}18`, color: card.accent, border: `1px solid ${card.accent}30` }}>
+              <div className={`h-full p-8 rounded-2xl transition-all duration-300 group cursor-default bg-brand-surface border border-brand-border ${card.accent}`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110 border ${card.iconBg}`}>
                   {card.icon}
                 </div>
-                <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: "'Space Grotesk',sans-serif" }}>{card.title}</h3>
+                <h3 className="text-lg font-bold mb-3 font-display text-brand-text-primary">{card.title}</h3>
                 <p className="text-base leading-relaxed text-white/80">{card.body}</p>
               </div>
             </ScrollReveal>
@@ -443,13 +423,13 @@ const Features: React.FC = () => {
 };
 
 const Gallery: React.FC = () => (
-  <section id="gallery" className="py-24 scroll-mt-24 overflow-hidden" style={{ background: `linear-gradient(to bottom, var(--bg), var(--surface))`, borderTop: '1px solid var(--border)' }}>
+  <section id="gallery" className="py-24 scroll-mt-24 overflow-hidden bg-gradient-to-b from-brand-bg to-brand-surface border-t border-brand-border">
     <ScrollReveal className="container mx-auto px-6 text-center mb-16">
-      <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>App Screenshots</p>
-      <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>
+      <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3 text-brand-cyan">App Screenshots</p>
+      <h2 className="text-4xl font-bold tracking-tight font-display text-brand-text-primary">
         Cinematic on every screen
       </h2>
-      <p className="mt-3 text-sm max-w-md mx-auto" style={{ color: 'var(--text-primary)', opacity: 0.8 }}>
+      <p className="mt-3 text-sm max-w-md mx-auto text-brand-text-primary opacity-80">
         Dark mode first. Every pixel optimised for late-night watching.
       </p>
     </ScrollReveal>
@@ -473,31 +453,30 @@ const Testimonials: React.FC = () => {
   ];
 
   return (
-    <section id="testimonials" className="py-24 scroll-mt-24" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
+    <section id="testimonials" className="py-24 scroll-mt-24 bg-brand-bg border-t border-brand-border">
       <div className="container mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--violet-light)' }}>Reviews</p>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>From real users</h2>
+          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3 text-brand-violet-light">Reviews</p>
+          <h2 className="text-4xl font-bold tracking-tight font-display text-brand-text-primary">From real users</h2>
         </ScrollReveal>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {reviews.map((r, i) => (
             <ScrollReveal key={i} delay={i * 100} className="h-full">
-              <div className="h-full p-7 rounded-2xl flex flex-col gap-5 transition-all duration-300"
-                style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(124,58,237,0.35)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}>
-                <div className="flex gap-0.5">
-                  {Array(5).fill(0).map((_, s) => <StarIcon key={s} className="w-4 h-4" style={{ color: '#F59E0B' } as React.CSSProperties} />)}
+              <figure className="h-full p-7 rounded-2xl flex flex-col gap-5 transition-all duration-300 bg-brand-surface border border-brand-border hover:border-brand-violet/30">
+                <div className="flex gap-0.5" role="img" aria-label="5 out of 5 stars">
+                  {Array(5).fill(0).map((_, s) => <StarIcon key={s} className="w-4 h-4 text-[#F59E0B]" aria-hidden="true" />)}
                 </div>
-                <p className="text-sm leading-relaxed flex-1 text-white/90">"{r.text}"</p>
-                <div className="flex items-center gap-3">
-                  <img src={`https://i.pravatar.cc/80?img=${r.avatar}`} alt={r.name} className="w-9 h-9 rounded-full object-cover" style={{ border: '2px solid var(--border-strong)' }} />
+                <blockquote className="text-sm leading-relaxed flex-1 text-white/90 italic">
+                  <p>"{r.text}"</p>
+                </blockquote>
+                <figcaption className="flex items-center gap-3">
+                  <img src={`https://i.pravatar.cc/80?img=${r.avatar}`} alt="" aria-hidden="true" className="w-9 h-9 rounded-full object-cover border-2 border-brand-border-strong" />
                   <div>
-                    <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{r.name}</p>
+                    <cite className="text-sm font-semibold text-brand-text-primary not-italic">{r.name}</cite>
                     <p className="text-xs font-medium text-white/70">{r.role}</p>
                   </div>
-                </div>
-              </div>
+                </figcaption>
+              </figure>
             </ScrollReveal>
           ))}
         </div>
@@ -510,12 +489,11 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   const [open, setOpen] = useState(false);
   const id = `faq-${q.replace(/\s+/g, '-').toLowerCase()}`;
   return (
-    <div style={{ borderBottom: '1px solid var(--border)' }}>
+    <div className="border-b border-brand-border">
       <button aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}
-        className="flex justify-between items-center w-full text-left py-5 focus:outline-none transition-colors duration-200"
-        style={{ color: open ? 'var(--violet-light)' : 'var(--text-primary)' }}>
-        <span className="font-semibold text-base" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{q}</span>
-        <span className="text-xl ml-4 shrink-0 transition-transform duration-300" style={{ transform: open ? 'rotate(45deg)' : 'none', color: open ? 'var(--violet)' : 'var(--text-primary)', opacity: open ? 1 : 0.6 }}>+</span>
+        className={`flex justify-between items-center w-full text-left py-5 focus:outline-none transition-colors duration-200 ${open ? 'text-brand-violet-light' : 'text-brand-text-primary'}`}>
+        <span className="font-semibold text-base font-display">{q}</span>
+        <span className={`text-xl ml-4 shrink-0 transition-transform duration-300 ${open ? 'rotate(45deg) text-brand-violet opacity-100' : 'text-brand-text-primary opacity-60'}`}>+</span>
       </button>
       <div id={id} role="region" className={`grid transition-all duration-300 ease-in-out ${open ? 'grid-rows-[1fr] opacity-100 pb-5' : 'grid-rows-[0fr] opacity-0'}`}>
         <div className="overflow-hidden">
@@ -527,14 +505,14 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
 };
 
 const FAQ: React.FC = () => (
-  <section id="faq" className="py-24 scroll-mt-24" style={{ background: 'linear-gradient(to bottom, var(--surface), var(--bg))', borderTop: '1px solid var(--border)' }}>
+  <section id="faq" className="py-24 scroll-mt-24 bg-gradient-to-b from-brand-surface to-brand-bg border-t border-brand-border">
     <div className="container mx-auto px-6 max-w-3xl">
       <ScrollReveal className="text-center mb-14">
-        <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>Got questions?</p>
-        <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Answers right here</h2>
+        <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3 text-brand-cyan">Got questions?</p>
+        <h2 className="text-4xl font-bold tracking-tight font-display text-brand-text-primary">Answers right here</h2>
       </ScrollReveal>
       <ScrollReveal>
-        <div className="p-8 md:p-10 rounded-2xl" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+        <div className="p-8 md:p-10 rounded-2xl bg-brand-surface border border-brand-border">
           {[
             { q: 'Is XHub safe to install?', a: 'Yes. The APK is clean — no malware, no adware, no hidden trackers. Since it ships outside the Play Store you\'ll need to enable "Install from unknown sources" in Android settings, which is a normal one-time step for sideloading.' },
             { q: 'Does it cost anything?', a: 'Nothing. XHub is completely free. No subscription, no in-app purchases, no paywalls.' },
@@ -548,28 +526,27 @@ const FAQ: React.FC = () => (
 );
 
 const Footer: React.FC = () => (
-  <footer className="py-14" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
+  <footer className="py-14 bg-brand-bg border-t border-brand-border">
     <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
       <div>
         <div className="flex items-center gap-2.5 mb-3">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7C3AED,#22D3EE)' }}>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-gradient-to-br from-brand-violet to-brand-cyan">
             <span className="text-white font-black text-xs">X</span>
           </div>
-          <span className="font-bold text-lg" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>XHub</span>
+          <span className="font-bold text-lg font-display text-brand-text-primary">XHub</span>
         </div>
         <p className="text-sm max-w-xs text-white/80">The Android streaming app that replaces everything else.</p>
       </div>
       <div className="flex flex-col items-center md:items-end gap-4">
         <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-          className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
-          style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
+          className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5 bg-brand-violet shadow-[0_0_28px_rgba(124,58,237,0.25)]">
           <DownloadIcon className="w-4 h-4" />
           Download Now
         </a>
         <p className="text-xs tracking-widest uppercase text-white/70">Free • Private • No Play Store needed</p>
       </div>
     </div>
-    <div className="container mx-auto px-6 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs gap-3" style={{ borderTop: '1px solid var(--border)', color: 'var(--text-primary)', opacity: 0.7 }}>
+    <div className="container mx-auto px-6 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs gap-3 border-t border-brand-border text-brand-text-primary opacity-70">
       <p>© 2024 XHub App. All rights reserved.</p>
       <div className="flex gap-6">
         {['Privacy','Terms','DMCA'].map(l => (
@@ -581,38 +558,47 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={onClose} />
-      <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-pulse-slow" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div className="absolute inset-0 backdrop-blur-md bg-black/75" onClick={onClose} aria-hidden="true" />
+      <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-pulse-slow bg-brand-surface border border-brand-border">
         <div className="p-8">
           <button aria-label="Close installation guide" onClick={onClose}
-            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
-            style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>
-            <XIcon className="w-4 h-4" />
+            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-white/10 active:scale-95 bg-brand-surface-2 text-brand-text-primary focus-visible:ring-2 focus-visible:ring-brand-violet focus-visible:ring-offset-2 focus-visible:ring-offset-brand-surface outline-none">
+            <XIcon className="w-4 h-4" aria-hidden="true" />
           </button>
-          <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
+          <h2 id="modal-title" className="text-2xl font-bold mb-1 font-display text-brand-text-primary">Install in 60 seconds</h2>
           <p className="text-sm mb-8 text-white/80">No Play Store. Three taps and you're streaming.</p>
-          <div className="space-y-6">
+          <ol className="space-y-6">
             {[
               { step: '01', title: 'Download the APK', desc: 'Tap the button below. The file lands in your Downloads folder.' },
               { step: '02', title: 'Allow unknown sources', desc: 'Enable "Install from unknown sources" in Settings → Security when prompted.' },
               { step: '03', title: 'Install & watch', desc: 'Tap the file, hit Install, and launch. You\'re live in under a minute.' },
             ].map(s => (
-              <div key={s.step} className="flex gap-5 items-start">
-                <span className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
+              <li key={s.step} className="flex gap-5 items-start">
+                <span className="text-2xl font-black shrink-0 text-white font-display" aria-hidden="true">{s.step}</span>
                 <div>
-                  <h4 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{s.title}</h4>
+                  <h4 className="font-semibold text-sm mb-1 text-brand-text-primary">{s.title}</h4>
                   <p className="text-xs leading-relaxed text-white/80">{s.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
           <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-            className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5"
-            style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
-            <DownloadIcon className="w-5 h-5" />
+            className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] bg-brand-violet shadow-[0_0_28px_rgba(124,58,237,0.25)] focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-brand-surface outline-none">
+            <DownloadIcon className="w-5 h-5" aria-hidden="true" />
             Get the APK
           </a>
         </div>
@@ -630,9 +616,12 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
+    <div className="min-h-screen bg-brand-bg text-brand-text-primary font-sans">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-brand-violet focus:text-white focus:rounded-full focus:font-bold focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-brand-cyan">
+        Skip to content
+      </a>
       <Header versionInfo={versionInfo} />
-      <main>
+      <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
         <Features />
         <Gallery />
