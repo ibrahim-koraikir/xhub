@@ -8,20 +8,26 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
       },
       colors: {
         brand: {
-          50: '#fff1f2',
-          100: '#ffe4e6',
-          200: '#fecdd3',
-          300: '#fda4af',
-          400: '#fb7185',
-          500: '#f43f5e',
-          600: '#e11d48',
-          700: '#be123c',
-          800: '#9f1239',
-          900: '#881337',
-          950: '#4c0519',
+          violet: {
+            DEFAULT: '#7C3AED',
+            light: '#A78BFA',
+            glow: 'rgba(124, 58, 237, 0.25)',
+          },
+          cyan: {
+            DEFAULT: '#22D3EE',
+            glow: 'rgba(34, 211, 238, 0.2)',
+          },
+          bg: '#0A0A0F',
+          surface: '#12121C',
+          'surface-2': '#1A1A28',
+          border: 'rgba(255, 255, 255, 0.07)',
+          'border-strong': 'rgba(255, 255, 255, 0.12)',
+          'text-primary': '#F1F0FF',
+          'text-secondary': '#8B8AA8',
         },
       },
       keyframes: {
