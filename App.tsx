@@ -581,9 +581,21 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div className="absolute inset-0 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={onClose} />
       <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-pulse-slow" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
         <div className="p-8">
@@ -592,7 +604,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>
             <XIcon className="w-4 h-4" />
           </button>
-          <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
+          <h2 id="modal-title" className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
           <p className="text-sm mb-8 text-white/80">No Play Store. Three taps and you're streaming.</p>
           <div className="space-y-6">
             {[
