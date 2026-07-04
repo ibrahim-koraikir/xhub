@@ -1,0 +1,3 @@
+## 2025-05-15 - Accessible Skip Links in Monolithic React Apps
+**Learning:** For single-page monolithic React applications, a "Skip to content" link must target a container with `tabIndex={-1}` and `outline-none`. This ensures that when the link is activated, focus correctly shifts to the main content area for assistive technologies and subsequent keyboard navigation, while avoiding an unintended visual focus ring on the large content block for sighted users.
+**Action:** Always pair a "Skip to content" link with a target element (usually `<main>`) that has `id="main-content"`, `tabIndex={-1}`, and `outline-none`.
