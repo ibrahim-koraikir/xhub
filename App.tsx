@@ -581,36 +581,49 @@ const Footer: React.FC = () => (
 );
 
 const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleEscape);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div className="absolute inset-0 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={onClose} />
       <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-pulse-slow" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
         <div className="p-8">
           <button aria-label="Close installation guide" onClick={onClose}
-            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
+            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-all hover:bg-white/10 active:scale-95"
             style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>
             <XIcon className="w-4 h-4" />
           </button>
-          <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
+          <h2 id="modal-title" className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
           <p className="text-sm mb-8 text-white/80">No Play Store. Three taps and you're streaming.</p>
-          <div className="space-y-6">
+          <ol className="space-y-6">
             {[
               { step: '01', title: 'Download the APK', desc: 'Tap the button below. The file lands in your Downloads folder.' },
               { step: '02', title: 'Allow unknown sources', desc: 'Enable "Install from unknown sources" in Settings → Security when prompted.' },
               { step: '03', title: 'Install & watch', desc: 'Tap the file, hit Install, and launch. You\'re live in under a minute.' },
             ].map(s => (
-              <div key={s.step} className="flex gap-5 items-start">
-                <span className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
+              <li key={s.step} className="flex gap-5 items-start">
+                <span className="text-2xl font-black shrink-0 text-white" aria-hidden="true" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
                 <div>
                   <h4 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{s.title}</h4>
                   <p className="text-xs leading-relaxed text-white/80">{s.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
           <a href="https://github.com/ibrahim-koraikir/xhub/releases/latest/download/xhub.apk" download
-            className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5"
+            className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
             style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
             <DownloadIcon className="w-5 h-5" />
             Get the APK

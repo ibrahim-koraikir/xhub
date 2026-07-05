@@ -1,0 +1,3 @@
+## 2026-07-05 - Enhanced Modal Pattern
+**Learning:** A robust modal implementation requires four key pillars for UX and accessibility: (1) Escape key support via useEffect listeners, (2) Body scroll locking (document.body.style.overflow = 'hidden') to maintain context, (3) Programmatic ARIA identification (role="dialog", aria-modal="true", aria-labelledby), and (4) Semantic list structures for multi-step instructions.
+**Action:** Always wrap modal behavioral logic in a useEffect hook and ensure visual indices in lists are hidden from screen readers (aria-hidden="true") when using semantic ordered lists.
