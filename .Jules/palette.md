@@ -1,0 +1,3 @@
+## 2025-05-14 - Accessible Skip-to-Content Link
+**Learning:** In monolithic single-page applications (like this one where everything is in `App.tsx`), a "Skip to content" link is critical for keyboard and screen reader accessibility to bypass repetitive navigation. Using `tabIndex={-1}` on the target `<main>` element ensures it can receive programmatic focus without interfering with the natural tab order, and adding `outline-none` prevents an unintended focus ring on the container when the link is clicked.
+**Action:** Always ensure a "Skip to content" link is the first focusable element in the root component, and verify that the target element is properly configured to receive focus.
