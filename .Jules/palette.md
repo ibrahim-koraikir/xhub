@@ -1,0 +1,3 @@
+## 2025-05-15 - Accessible Navigation with Skip Links
+**Learning:** Monolithic landing pages with complex headers and interactive hero sections (like tab switchers) create a high "tab tax" for keyboard users. A "Skip to content" link is a critical micro-UX win that significantly improves accessibility for power users and those using assistive technology.
+**Action:** Always implement a skip link as the first focusable element in `App.tsx`. Ensure the target element has `tabIndex={-1}` and `outline-none` to receive programmatic focus smoothly without an unintended focus ring. Use Tailwind's `sr-only focus:not-sr-only` for a "visible on focus" behavior.
