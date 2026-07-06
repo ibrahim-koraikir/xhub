@@ -1,0 +1,3 @@
+## 2024-05-15 - Redundant re-renders in monolithic App.tsx
+**Learning:** In a monolithic React architecture where most layout components are defined in a single file (`App.tsx`), toggling root-level state (like a modal visibility) triggers a full-page re-render. Profiling showed ~25 redundant renders of static components (`Header`, `Hero`, `Features`, etc.) on every modal toggle.
+**Action:** Use `React.memo` for all major layout sections and `React.useCallback` for event handlers passed as props to ensure that local state changes do not propagate to the entire DOM tree, keeping re-renders limited to the affected component.
