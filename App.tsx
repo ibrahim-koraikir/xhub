@@ -184,7 +184,7 @@ const PhoneMockup: React.FC<{ imageSrc?: string; className?: string }> = ({ imag
 
 interface VersionInfo { versionName: string; releaseNotes: string; }
 
-const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
+const Header: React.FC<{ versionInfo: VersionInfo | null }> = React.memo(({ versionInfo }) => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -225,7 +225,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
       </div>
     </header>
   );
-};
+});
 
 const ScrollingBackground: React.FC = React.memo(() => {
   const imgs = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
@@ -250,7 +250,7 @@ const ScrollingBackground: React.FC = React.memo(() => {
   );
 });
 
-const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = ({ onInstallClick, versionInfo }) => {
+const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = React.memo(({ onInstallClick, versionInfo }) => {
   const [activeShot, setActiveShot] = useState<keyof typeof APP_SCREENSHOTS>('hero');
   const [isHovered, setIsHovered] = useState(false);
 
@@ -398,9 +398,9 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
       </div>
     </section>
   );
-};
+});
 
-const Features: React.FC = () => {
+const Features: React.FC = React.memo(() => {
   const cards = [
     { icon: <GlobeIcon className="w-6 h-6" />, title: 'All-in-One Aggregator', body: 'Netflix, Disney+, Hulu, HBO, and live sports — all in one place. Cut the cord without losing anything.', accent: '#7C3AED', glow: 'rgba(124,58,237,0.15)' },
     { icon: <LockClosedIcon className="w-6 h-6" />, title: 'Built-in Private Browser', body: 'A fully sandboxed browser with zero history retention. Your searches stay yours — always.', accent: '#22D3EE', glow: 'rgba(34,211,238,0.15)' },
@@ -440,9 +440,9 @@ const Features: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
-const Gallery: React.FC = () => (
+const Gallery: React.FC = React.memo(() => (
   <section id="gallery" className="py-24 scroll-mt-24 overflow-hidden" style={{ background: `linear-gradient(to bottom, var(--bg), var(--surface))`, borderTop: '1px solid var(--border)' }}>
     <ScrollReveal className="container mx-auto px-6 text-center mb-16">
       <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>App Screenshots</p>
@@ -463,9 +463,9 @@ const Gallery: React.FC = () => (
       ))}
     </div>
   </section>
-);
+));
 
-const Testimonials: React.FC = () => {
+const Testimonials: React.FC = React.memo(() => {
   const reviews = [
     { name: 'Marcus T.', role: 'Verified User', avatar: 20, text: "Finally an app that works. Library is massive and I cancelled Netflix after the first week." },
     { name: 'Sarah L.',  role: 'Verified User', avatar: 21, text: "The private browser is insane — super fast and genuinely doesn't track anything. Daily driver now." },
@@ -504,7 +504,7 @@ const Testimonials: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   const [open, setOpen] = useState(false);
@@ -526,7 +526,7 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   );
 };
 
-const FAQ: React.FC = () => (
+const FAQ: React.FC = React.memo(() => (
   <section id="faq" className="py-24 scroll-mt-24" style={{ background: 'linear-gradient(to bottom, var(--surface), var(--bg))', borderTop: '1px solid var(--border)' }}>
     <div className="container mx-auto px-6 max-w-3xl">
       <ScrollReveal className="text-center mb-14">
@@ -545,9 +545,9 @@ const FAQ: React.FC = () => (
       </ScrollReveal>
     </div>
   </section>
-);
+));
 
-const Footer: React.FC = () => (
+const Footer: React.FC = React.memo(() => (
   <footer className="py-14" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
     <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
       <div>
@@ -578,9 +578,9 @@ const Footer: React.FC = () => (
       </div>
     </div>
   </footer>
-);
+));
 
-const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = React.memo(({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -619,7 +619,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
       </div>
     </div>
   );
-};
+});
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -629,18 +629,26 @@ function App() {
     fetch('/version.json').then(r => r.json()).then(setVersionInfo).catch(console.error);
   }, []);
 
+  const handleOpenModal = React.useCallback(() => {
+    setModalOpen(true);
+  }, []);
+
+  const handleCloseModal = React.useCallback(() => {
+    setModalOpen(false);
+  }, []);
+
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
       <Header versionInfo={versionInfo} />
       <main>
-        <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
+        <Hero versionInfo={versionInfo} onInstallClick={handleOpenModal} />
         <Features />
         <Gallery />
         <Testimonials />
         <FAQ />
       </main>
       <Footer />
-      <InstallModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <InstallModal isOpen={modalOpen} onClose={handleCloseModal} />
     </div>
   );
 }
