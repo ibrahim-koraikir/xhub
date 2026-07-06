@@ -1,0 +1,3 @@
+## 2026-07-06 - Implementing the 'Four-Pillar' Accessible Modal
+**Learning:** A truly accessible modal interaction requires four key pillars: (1) Standard ARIA roles (`dialog`, `aria-modal`), (2) Keyboard support (Escape key closure), (3) Interaction stabilization (preventing background scroll-chaining), and (4) Semantic content structure (using `<ol>` for sequential instructions). Removing distracting animations like `animate-pulse-slow` further improves the experience for users sensitive to motion.
+**Action:** Always implement these four pillars when creating or refactoring modals to ensure they meet modern accessibility standards and provide a smooth, intuitive UX.
