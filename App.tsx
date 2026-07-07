@@ -420,19 +420,21 @@ const Features: React.FC = () => {
           </h2>
         </ScrollReveal>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-4 gap-6">
           {cards.map((card, i) => (
-            <ScrollReveal key={i} delay={i * 120} className="h-full">
-              <div className="h-full p-8 rounded-2xl transition-all duration-300 group cursor-default"
+            <ScrollReveal key={i} delay={i * 120} className={`h-full ${i === 2 ? 'md:col-span-4' : 'md:col-span-2'}`}>
+              <div className={`h-full p-8 rounded-2xl transition-all duration-300 group cursor-default ${i === 2 ? 'flex flex-col md:flex-row items-center gap-8' : ''}`}
                 style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = card.accent + '55'; (e.currentTarget as HTMLElement).style.boxShadow = `0 0 40px ${card.glow}`; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
+                <div className={`${i === 2 ? 'w-16 h-16 md:w-20 md:h-20' : 'w-12 h-12'} rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110 shrink-0`}
                   style={{ background: `${card.accent}18`, color: card.accent, border: `1px solid ${card.accent}30` }}>
-                  {card.icon}
+                  {React.cloneElement(card.icon as React.ReactElement, { className: i === 2 ? 'w-8 h-8 md:w-10 md:h-10' : 'w-6 h-6' })}
                 </div>
-                <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: "'Space Grotesk',sans-serif" }}>{card.title}</h3>
-                <p className="text-base leading-relaxed text-white/80">{card.body}</p>
+                <div>
+                  <h3 className={`${i === 2 ? 'text-2xl' : 'text-lg'} font-bold mb-3`} style={{ color: 'var(--text-primary)', fontFamily: "'Space Grotesk',sans-serif" }}>{card.title}</h3>
+                  <p className={`${i === 2 ? 'text-lg' : 'text-base'} leading-relaxed text-white/80`}>{card.body}</p>
+                </div>
               </div>
             </ScrollReveal>
           ))}
