@@ -631,8 +631,11 @@ function App() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-[var(--violet)] focus:text-white focus:rounded-full focus:font-bold focus:shadow-[0_0_24px_var(--violet-glow)] transition-all">
+        Skip to content
+      </a>
       <Header versionInfo={versionInfo} />
-      <main>
+      <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
         <Features />
         <Gallery />
