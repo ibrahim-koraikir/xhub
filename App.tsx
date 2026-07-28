@@ -20,6 +20,8 @@ const BACKGROUND_IMAGES = [
   "/imgs/14515d00-0428-485a-8a11-e902594a1180.jfif",
 ];
 
+const DOWNLOAD_URL = "https://github.com/ibrahim-koraikir/xhubapp/releases/latest/download/XHub-v2.1.0-arm-xhub-full-download-release.apk";
+
 // --- Icons ---
 
 const DownloadIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -216,7 +218,7 @@ const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) 
           ))}
         </nav>
         {/* CTA */}
-        <a href="https://github.com/ibrahim-koraikir/xhubapp/releases/latest/download/xhub.apk" download
+        <a href={DOWNLOAD_URL} download
           className="flex items-center gap-2 text-sm font-semibold py-2 px-5 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
           style={{ background: 'var(--violet)', boxShadow: '0 0 24px var(--violet-glow)' }}>
           <DownloadIcon className="w-4 h-4" />
@@ -298,7 +300,7 @@ const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | nu
 
           {/* CTAs */}
           <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start mb-10">
-            <a href="https://github.com/ibrahim-koraikir/xhubapp/releases/latest/download/xhub.apk" download
+            <a href={DOWNLOAD_URL} download
               className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:-translate-y-1"
               style={{ background: 'linear-gradient(135deg,#7C3AED,#6D28D9)', boxShadow: '0 0 40px rgba(124,58,237,0.4)' }}>
               <DownloadIcon className="w-5 h-5" />
@@ -560,7 +562,7 @@ const Footer: React.FC = () => (
         <p className="text-sm max-w-xs text-white/80">The Android streaming app that replaces everything else.</p>
       </div>
       <div className="flex flex-col items-center md:items-end gap-4">
-        <a href="https://github.com/ibrahim-koraikir/xhubapp/releases/latest/download/xhub.apk" download
+        <a href={DOWNLOAD_URL} download
           className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
           style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
           <DownloadIcon className="w-4 h-4" />
@@ -609,7 +611,7 @@ const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
               </div>
             ))}
           </div>
-          <a href="https://github.com/ibrahim-koraikir/xhubapp/releases/latest/download/xhub.apk" download
+          <a href={DOWNLOAD_URL} download
             className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5"
             style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
             <DownloadIcon className="w-5 h-5" />
