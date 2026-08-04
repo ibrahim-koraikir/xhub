@@ -1,650 +1,768 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { AdGate } from './src/components/AdGate';
 
-// --- CONFIGURATION ---
-const APP_SCREENSHOTS = {
-  hero:     "/imgs/214a219b-69cd-468d-bed2-9b8be74d46ab.jfif",
-  gallery1: "/imgs/214a219b-69cd-468d-bed2-9b8be74d46ab.jfif",
-  gallery2: "/imgs/14515d00-0428-485a-8a11-e902594a1180.jfif",
-  gallery3: "/imgs/214a219b-69cd-468d-bed2-9b8be74d46ab.jfif"
+// ─── CONFIG ──────────────────────────────────────────────────────────────────
+const DOWNLOAD_URL =
+  'https://github.com/ibrahim-koraikir/xhubapp/releases/latest/download/XHub-v2.1.0-arm-xhub-full-download-release.apk';
+
+// Real XHub app screenshots uploaded by the developer
+const SCREENS = {
+  // Hero phone (main dashboard)
+  hero:    '/imgs/684160b2-c59f-4110-8b0b-0293b248ef95.jfif',
+  // Side left phone (quick-access site grid)
+  screen1: '/imgs/60ef2cd0-5d68-4dab-a16a-0d9ccbe4bc9d.jfif',
+  // Side right phone (browser tabs view)
+  modal:   '/imgs/56fb0877-f98e-48f9-9e37-c0fd6893b158.jfif',
+  gallery: [
+    { src: '/imgs/684160b2-c59f-4110-8b0b-0293b248ef95.jfif', caption: 'XHub Dashboard — Quick Access & daily quote' },
+    { src: '/imgs/60ef2cd0-5d68-4dab-a16a-0d9ccbe4bc9d.jfif', caption: 'Quick Access grid — 1-tap launch to your favourite sites' },
+    { src: '/imgs/56fb0877-f98e-48f9-9e37-c0fd6893b158.jfif', caption: 'Tab manager — browse multiple sites at once' },
+    { src: '/imgs/469560fa-2ef0-420b-b8aa-fcc0c260543a.jfif', caption: 'Browser History — with full delete option' },
+    { src: '/imgs/5e1f9068-2548-4d5e-a3e6-a7b2c9edde5a.jfif', caption: 'Settings — appearance, privacy, ad blocker & more' },
+    { src: '/imgs/40e30246-d0e1-43c9-a581-bb4adeddee6b.jfif', caption: 'Stealth Browser — incognito mode with site suggestions' },
+    { src: '/imgs/real_screen1.png', caption: 'Multi-thread downloader — live progress tracking' },
+    { src: '/imgs/real_modal.png',   caption: '18+ Access Gate — built-in age verification' },
+  ],
 };
 
-const BACKGROUND_IMAGES = [
-  "/imgs/214a219b-69cd-468d-bed2-9b8be74d46ab.jfif",
-  "/imgs/14515d00-0428-485a-8a11-e902594a1180.jfif",
-  "/imgs/214a219b-69cd-468d-bed2-9b8be74d46ab.jfif",
-  "/imgs/14515d00-0428-485a-8a11-e902594a1180.jfif",
-  "/imgs/214a219b-69cd-468d-bed2-9b8be74d46ab.jfif",
-  "/imgs/14515d00-0428-485a-8a11-e902594a1180.jfif",
-  "/imgs/214a219b-69cd-468d-bed2-9b8be74d46ab.jfif",
-  "/imgs/14515d00-0428-485a-8a11-e902594a1180.jfif",
-];
-
-const DOWNLOAD_URL = "https://github.com/ibrahim-koraikir/xhubapp/releases/latest/download/XHub-v2.1.0-arm-xhub-full-download-release.apk";
-
-// --- Icons ---
-
-const DownloadIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+// ─── ICONS ───────────────────────────────────────────────────────────────────
+const DownloadIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
   </svg>
 );
 
-const ShieldCheckIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.956 11.956 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+const ChevronLeft = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
   </svg>
 );
 
-const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+const ChevronRight = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
   </svg>
 );
 
-const GlobeIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-  </svg>
-);
-
-const LockClosedIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-  </svg>
-);
-
-const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 20 20" fill="currentColor">
-    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-  </svg>
-);
-
-const XIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-  </svg>
-);
-
-const InfoIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
-);
-
-// --- Animation Helpers ---
-
-const ScrollReveal: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({ children, className = "", delay = 0 }) => {
-  const [isVisible, setIsVisible] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) return true;
-    }
-    return typeof navigator !== 'undefined' && navigator.webdriver;
-  });
-  const domRef = React.useRef<HTMLDivElement>(null);
+// ─── ANIMATED COUNTER ────────────────────────────────────────────────────────
+const AnimatedCounter: React.FC<{ target: number; suffix?: string; duration?: number }> = ({
+  target, suffix = '', duration = 2000,
+}) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const triggered = useRef(false);
 
   useEffect(() => {
-    if (isVisible) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { setIsVisible(true); if (domRef.current) observer.unobserve(domRef.current); }
-    }, { threshold: 0.1 });
-    const ref = domRef.current;
-    if (ref) observer.observe(ref);
-    return () => { if (ref) observer.unobserve(ref); };
-  }, [isVisible]);
+    const observer = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !triggered.current) {
+        triggered.current = true;
+        const steps = 60;
+        const inc = target / steps;
+        let cur = 0;
+        const iv = setInterval(() => {
+          cur += inc;
+          if (cur >= target) { setCount(target); clearInterval(iv); }
+          else setCount(Math.floor(cur));
+        }, duration / steps);
+      }
+    }, { threshold: 0.3 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [target, duration]);
 
-  return (
-    <div ref={domRef} className={`transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
-      {children}
-    </div>
-  );
+  const display = count >= 1_000_000
+    ? `${(count / 1_000_000).toFixed(1)}M`
+    : count >= 1_000
+    ? `${Math.floor(count / 1_000)}k`
+    : count;
+
+  return <span ref={ref}>{display}{suffix}</span>;
 };
 
-const TiltCard: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => {
-  const cardRef = React.useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [hovered, setHovered] = useState(false);
-
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (!cardRef.current) return;
-    const r = cardRef.current.getBoundingClientRect();
-    setCoords({ x: -(((e.clientY - r.top) / r.height) - 0.5) * 14, y: (((e.clientX - r.left) / r.width) - 0.5) * 14 });
-  };
-
-  const isReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  return (
-    <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); setCoords({ x: 0, y: 0 }); }}
-      className={`transition-transform duration-200 ${className}`}
-      style={isReduced ? {} : { transform: `perspective(1000px) rotateX(${coords.x}deg) rotateY(${coords.y}deg) scale3d(${hovered ? 1.02 : 1},${hovered ? 1.02 : 1},1)`, transformStyle: 'preserve-3d' }}>
-      {children}
-    </div>
-  );
-};
-
-const AnimatedCounter: React.FC<{ target: number; suffix?: string }> = ({ target, suffix = "" }) => {
-  const isHeadless = typeof navigator !== 'undefined' && navigator.webdriver;
-  const [count, setCount] = useState(() => isHeadless ? target : 0);
-  const [triggered, setTriggered] = useState(() => isHeadless);
-  const domRef = React.useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting && !triggered) setTriggered(true); }, { threshold: 0.1 });
-    const ref = domRef.current;
-    if (ref) observer.observe(ref);
-    return () => { if (ref) observer.unobserve(ref); };
-  }, [triggered]);
-
-  useEffect(() => {
-    if (!triggered) return;
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setCount(target);
-      return;
-    }
-    let start = 0;
-    const step = target / 50;
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) { clearInterval(timer); setCount(target); }
-      else setCount(Math.floor(start));
-    }, 40);
-    return () => clearInterval(timer);
-  }, [triggered, target]);
-
-  return <span ref={domRef}>{count >= 1000 ? `${Math.floor(count / 1000)}k` : count}{suffix}</span>;
-};
-
-// --- Phone Mockup ---
-
-const PhoneMockup: React.FC<{ imageSrc?: string; className?: string }> = ({ imageSrc, className = "" }) => (
-  <div className={`relative mx-auto border-[#1a1a2e] border-[8px] rounded-[2.5rem] h-[580px] w-[280px] shadow-2xl overflow-hidden flex flex-col ${className}`}
-    style={{ background: '#0d0d1a', boxShadow: '0 0 0 1px rgba(124,58,237,0.2), 0 40px 80px rgba(0,0,0,0.6)' }}>
-    {/* Buttons */}
-    <div className="h-[32px] w-[3px] absolute -left-[10px] top-[72px] rounded-l" style={{ background: '#1a1a2e' }} />
-    <div className="h-[46px] w-[3px] absolute -left-[10px] top-[124px] rounded-l" style={{ background: '#1a1a2e' }} />
-    <div className="h-[46px] w-[3px] absolute -left-[10px] top-[178px] rounded-l" style={{ background: '#1a1a2e' }} />
-    <div className="h-[64px] w-[3px] absolute -right-[10px] top-[142px] rounded-r" style={{ background: '#1a1a2e' }} />
-    {/* Screen */}
-    <div className="rounded-[2rem] overflow-hidden w-full h-full relative">
-      <div className="absolute top-0 w-full h-7 px-4 flex justify-between items-center z-20 text-[10px] font-medium text-white/70">
-        <span>9:41</span>
-        <div className="flex gap-1">
-          <div className="w-2.5 h-2.5 rounded-full bg-white/60" />
-          <div className="w-2.5 h-2.5 rounded-full bg-white/60" />
+// ─── PHONE FRAME ─────────────────────────────────────────────────────────────
+const PhoneFrame: React.FC<{ src: string; alt?: string; glow?: boolean }> = ({
+  src, alt = 'XHub App Screen', glow = false,
+}) => (
+  <div className="relative mx-auto" style={{ width: 260 }}>
+    {glow && (
+      <div className="absolute inset-0 rounded-[2.4rem] blur-2xl opacity-40 z-0"
+        style={{ background: 'radial-gradient(circle, #f97316 0%, #ef4444 60%, transparent 100%)', transform: 'scale(1.1)' }} />
+    )}
+    <div
+      className="relative z-10 rounded-[2.4rem] overflow-hidden border-[7px] shadow-2xl"
+      style={{
+        borderColor: '#1a1210',
+        boxShadow: glow
+          ? '0 0 0 1px rgba(249,115,22,0.4), 0 32px 80px rgba(0,0,0,0.85)'
+          : '0 32px 80px rgba(0,0,0,0.8)',
+        background: '#09070A',
+        height: 520,
+      }}
+    >
+      {/* status bar */}
+      <div className="absolute top-0 left-0 right-0 h-7 flex items-center justify-between px-5 z-20 text-[10px] font-semibold text-white/70" style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)' }}>
+        <span>9:09</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[9px] px-1.5 rounded bg-orange-500/25 text-orange-400 font-bold border border-orange-500/40">XHub</span>
+          <div className="w-2 h-2 rounded-full bg-emerald-400" style={{ animation: 'pulse 2s infinite' }} />
         </div>
       </div>
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-b-xl z-20" />
-      {imageSrc && <img src={imageSrc} alt="App Screenshot" className="absolute inset-0 w-full h-full object-cover z-10" loading="lazy" />}
+      {/* notch */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-4 bg-black rounded-b-xl z-30" />
+      {/* screenshot */}
+      <img src={src} alt={alt} className="absolute inset-0 w-full h-full z-10" style={{ objectFit: 'contain', background: '#09070A' }} loading="lazy" />
+      {/* side buttons */}
+      <div className="absolute -left-[9px] top-[70px] w-[3px] h-8 rounded-l" style={{ background: '#1a1210' }} />
+      <div className="absolute -left-[9px] top-[118px] w-[3px] h-11 rounded-l" style={{ background: '#1a1210' }} />
+      <div className="absolute -left-[9px] top-[175px] w-[3px] h-11 rounded-l" style={{ background: '#1a1210' }} />
+      <div className="absolute -right-[9px] top-[140px] w-[3px] h-14 rounded-r" style={{ background: '#1a1210' }} />
     </div>
   </div>
 );
 
-// --- Sections ---
+// ─── SCREENSHOT SLIDER ────────────────────────────────────────────────────────
+const ScreenshotSlider: React.FC = () => {
+  const [idx, setIdx] = useState(0);
+  const total = SCREENS.gallery.length;
+  const prev = () => setIdx(i => (i - 1 + total) % total);
+  const next = () => setIdx(i => (i + 1) % total);
 
-interface VersionInfo { versionName: string; releaseNotes: string; }
+  // auto-advance
+  useEffect(() => {
+    const t = setInterval(next, 5000);
+    return () => clearInterval(t);
+  }, []);
 
-const Header: React.FC<{ versionInfo: VersionInfo | null }> = ({ versionInfo }) => {
+  const visible = [-1, 0, 1].map(offset => {
+    const i = (idx + offset + total) % total;
+    return { ...SCREENS.gallery[i], offset };
+  });
+
+  return (
+    <div className="relative overflow-hidden" style={{ padding: '20px 0 32px' }}>
+      <div className="flex items-center justify-center gap-6">
+        {visible.map(({ src, caption, offset }) => (
+          <div
+            key={src + offset}
+            className="transition-all duration-500"
+            style={{
+              transform: offset === 0 ? 'scale(1)' : 'scale(0.82)',
+              opacity: offset === 0 ? 1 : 0.45,
+              zIndex: offset === 0 ? 2 : 1,
+              pointerEvents: offset === 0 ? 'auto' : 'none',
+              flexShrink: 0,
+            }}
+          >
+            <PhoneFrame src={src} alt={caption} glow={offset === 0} />
+          </div>
+        ))}
+      </div>
+
+      {/* Caption */}
+      <p className="text-center text-sm text-neutral-400 mt-6 font-medium min-h-[1.5rem]">
+        {SCREENS.gallery[idx].caption}
+      </p>
+
+      {/* Dots */}
+      <div className="flex justify-center gap-2 mt-4">
+        {SCREENS.gallery.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            className="rounded-full transition-all duration-300"
+            style={{
+              width: i === idx ? 24 : 8,
+              height: 8,
+              background: i === idx ? '#f97316' : 'rgba(255,255,255,0.2)',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Arrows */}
+      <button
+        onClick={prev}
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-white transition-all hover:scale-110"
+        style={{ background: 'rgba(249,115,22,0.2)', border: '1px solid rgba(249,115,22,0.4)' }}
+      >
+        <ChevronLeft />
+      </button>
+      <button
+        onClick={next}
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-white transition-all hover:scale-110"
+        style={{ background: 'rgba(249,115,22,0.2)', border: '1px solid rgba(249,115,22,0.4)' }}
+      >
+        <ChevronRight />
+      </button>
+    </div>
+  );
+};
+
+// ─── SCROLL REVEAL ────────────────────────────────────────────────────────────
+const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({
+  children, delay = 0, className = '',
+}) => {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.12 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className={className} style={{
+      transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+      opacity: visible ? 1 : 0,
+      transform: visible ? 'translateY(0)' : 'translateY(28px)',
+    }}>
+      {children}
+    </div>
+  );
+};
+
+// ─── HEADER ───────────────────────────────────────────────────────────────────
+const Header: React.FC<{ versionName: string; onDownload: () => void }> = ({ versionName, onDownload }) => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20);
+    const fn = () => setScrolled(window.scrollY > 24);
     window.addEventListener('scroll', fn);
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-3 border-b' : 'py-5'}`}
-      style={{ background: scrolled ? 'rgba(10,10,15,0.9)' : 'transparent', backdropFilter: scrolled ? 'blur(20px)' : 'none', borderColor: scrolled ? 'var(--border)' : 'transparent' }}>
-      <div className="container mx-auto px-6 flex justify-between items-center">
+    <header
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-400"
+      style={{
+        padding: scrolled ? '10px 0' : '18px 0',
+        background: scrolled ? 'rgba(7,7,11,0.97)' : 'transparent',
+        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : 'none',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+      }}
+    >
+      <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg,#7C3AED,#22D3EE)', boxShadow: '0 0 20px rgba(124,58,237,0.45)' }}>
-            <span className="text-white font-black text-sm">X</span>
+        <a href="#" className="flex items-center gap-2.5 group">
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center font-black text-white text-base"
+            style={{ background: 'linear-gradient(135deg,#f97316,#ef4444)', boxShadow: '0 0 20px rgba(249,115,22,0.5)' }}
+          >
+            X
           </div>
-          <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>XHub</span>
-        </div>
+          <div>
+            <div className="text-white font-extrabold text-lg leading-none">XHub</div>
+            <div className="text-orange-400 text-[9px] font-bold uppercase tracking-widest">Android Media Hub</div>
+          </div>
+        </a>
+
         {/* Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {[['#features','Features'],['#gallery','Library'],['#testimonials','Reviews'],['#faq','FAQ']].map(([href,label]) => (
-            <a key={href} href={href} className="text-sm font-medium relative group" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}
-              onMouseEnter={e=>(e.currentTarget.style.color='var(--text-primary)')}
-              onMouseLeave={e=>(e.currentTarget.style.color='var(--text-secondary)')}>
+        <nav className="hidden md:flex items-center gap-7">
+          {[['#features','Features'],['#screenshots','Screenshots'],['#faq','FAQ']].map(([href, label]) => (
+            <a key={href} href={href} className="text-sm font-semibold text-neutral-300 hover:text-white transition-colors relative group">
               {label}
-              <span className="absolute -bottom-0.5 left-0 w-0 h-px group-hover:w-full transition-all duration-300" style={{ background: 'var(--violet)' }} />
+              <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-300 rounded-full" style={{ background: '#f97316' }} />
             </a>
           ))}
         </nav>
+
         {/* CTA */}
-        <a href={DOWNLOAD_URL} download
-          className="flex items-center gap-2 text-sm font-semibold py-2 px-5 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
-          style={{ background: 'var(--violet)', boxShadow: '0 0 24px var(--violet-glow)' }}>
-          <DownloadIcon className="w-4 h-4" />
-          Download APK{versionInfo && <span className="opacity-60 text-xs"> v{versionInfo.versionName}</span>}
-        </a>
+        <button
+          onClick={onDownload}
+          className="flex items-center gap-2 font-bold text-sm text-white rounded-full px-5 py-2.5 transition-all hover:scale-105 hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg,#f97316,#ef4444)', boxShadow: '0 0 24px rgba(249,115,22,0.4)' }}
+        >
+          <DownloadIcon />
+          {versionName ? `v${versionName}` : 'Download APK'}
+        </button>
       </div>
     </header>
   );
 };
 
+// ─── SCROLLING BACKGROUND ──────────────────────────────────────────────────
+const BACKGROUND_IMAGES = [
+  '/imgs/684160b2-c59f-4110-8b0b-0293b248ef95.jfif',
+  '/imgs/60ef2cd0-5d68-4dab-a16a-0d9ccbe4bc9d.jfif',
+  '/imgs/56fb0877-f98e-48f9-9e37-c0fd6893b158.jfif',
+  '/imgs/469560fa-2ef0-420b-b8aa-fcc0c260543a.jfif',
+  '/imgs/5e1f9068-2548-4d5e-a3e6-a7b2c9edde5a.jfif',
+  '/imgs/40e30246-d0e1-43c9-a581-bb4adeddee6b.jfif',
+  '/imgs/real_screen1.png',
+  '/imgs/real_modal.png',
+  '/imgs/real_home.png',
+  '/imgs/684160b2-c59f-4110-8b0b-0293b248ef95.jpg',
+];
+
 const ScrollingBackground: React.FC = React.memo(() => {
-  const imgs = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
-  const rev = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse(), [...BACKGROUND_IMAGES].reverse());
+  const listA = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
+  const listB = [...BACKGROUND_IMAGES].reverse().concat([...BACKGROUND_IMAGES].reverse());
+  const listC = [BACKGROUND_IMAGES[3], BACKGROUND_IMAGES[5], BACKGROUND_IMAGES[0], BACKGROUND_IMAGES[2], BACKGROUND_IMAGES[4], BACKGROUND_IMAGES[1], BACKGROUND_IMAGES[6], BACKGROUND_IMAGES[7]];
+  const listC2 = [...listC, ...listC];
+
+  const columns = [listA, listB, listC2, listA, listB, listC2];
+
   return (
-    <div className="absolute inset-0 overflow-hidden z-0 select-none pointer-events-none">
-      <div className="absolute -inset-40 flex justify-center gap-6 -rotate-12 scale-125 opacity-40">
-        {[imgs, rev, imgs, rev].map((col, ci) => (
-          <div key={ci} className={`flex flex-col gap-6 shrink-0 ${ci % 2 === 0 ? 'animate-marquee-up' : 'animate-marquee-down'} ${ci === 3 ? 'hidden lg:flex' : ''}`}>
+    <div className="absolute inset-0 overflow-hidden z-0 select-none pointer-events-none opacity-60">
+      <div className="absolute -inset-32 flex justify-center gap-5 -rotate-6 scale-110">
+        {columns.map((col, ci) => (
+          <div
+            key={ci}
+            className={`flex flex-col gap-5 shrink-0 ${ci % 2 === 0 ? 'animate-marquee-up' : 'animate-marquee-down'} ${ci > 3 ? 'hidden md:flex' : ''}`}
+          >
             {col.map((src, i) => (
-              <div key={i} className="w-48 h-[300px] shrink-0 rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)', background: '#0d0d1a' }}>
-                <img src={src} className="w-full h-full object-cover grayscale-[0.6]" alt="" loading="lazy" />
+              <div
+                key={i}
+                className="w-48 sm:w-56 h-[300px] sm:h-[340px] shrink-0 rounded-2xl overflow-hidden border border-orange-500/25 bg-[#09070A] shadow-2xl p-1 transition-transform"
+              >
+                <img src={src} className="w-full h-full object-contain rounded-xl" alt="" loading="lazy" />
               </div>
             ))}
           </div>
         ))}
       </div>
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(to bottom, var(--bg) 0%, rgba(10,10,15,0.5) 40%, rgba(10,10,15,0.5) 60%, var(--bg) 100%)' }} />
-      <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(to right, var(--bg) 0%, transparent 30%, transparent 70%, var(--bg) 100%)' }} />
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#0d0910]/80 via-[#07070B]/40 to-[#07070B]" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#07070B] via-transparent to-[#07070B]" />
     </div>
   );
 });
 
-const Hero: React.FC<{ onInstallClick: () => void; versionInfo: VersionInfo | null }> = ({ onInstallClick, versionInfo }) => {
-  const [activeShot, setActiveShot] = useState<keyof typeof APP_SCREENSHOTS>('hero');
-  const [isHovered, setIsHovered] = useState(false);
+// ─── HERO THREE PHONES SHOWCASE ─────────────────────────────────────────────
+const HeroThreePhones: React.FC = () => (
+  <div className="relative flex items-center justify-center min-h-[420px] sm:min-h-[500px] w-full max-w-[560px] mx-auto select-none my-6">
+    {/* Background ambient glow behind 3 phones */}
+    <div
+      className="absolute inset-0 rounded-full blur-3xl opacity-60 z-0 pointer-events-none"
+      style={{ background: 'radial-gradient(circle, rgba(249,115,22,0.45) 0%, rgba(239,68,68,0.25) 60%, transparent 100%)' }}
+    />
 
-  useEffect(() => {
-    if (isHovered) return;
-    const keys = Object.keys(APP_SCREENSHOTS) as Array<keyof typeof APP_SCREENSHOTS>;
-    const iv = setInterval(() => setActiveShot(prev => keys[(keys.indexOf(prev) + 1) % keys.length]), 4500);
-    return () => clearInterval(iv);
-  }, [isHovered]);
+    {/* LEFT PHONE (Downloader UI) */}
+    <div className="absolute -left-1 sm:left-1 top-6 z-10 -rotate-6 scale-90 sm:scale-95 hover:rotate-0 hover:z-30 hover:scale-100 transition-all duration-500">
+      <div className="w-[160px] sm:w-[210px] h-[340px] sm:h-[430px] rounded-[2rem] overflow-hidden border-[5px] border-[#1a1210] bg-[#09070A] relative shadow-2xl">
+        <div className="absolute top-0 inset-x-0 h-5 bg-black/60 backdrop-blur-sm z-20 flex justify-between px-3 text-[8px] text-white/70 font-semibold items-center">
+          <span>9:09</span>
+          <span className="text-orange-400 font-bold text-[7px] bg-orange-500/20 px-1 rounded">Downloader</span>
+        </div>
+        <img src={SCREENS.screen1} alt="Downloader UI" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
+      </div>
+      <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-orange-400 uppercase tracking-widest bg-black/90 border border-orange-500/30 px-2 py-0.5 rounded-full whitespace-nowrap shadow-lg">
+        📥 Downloader
+      </span>
+    </div>
 
-  return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-20 lg:pt-0" style={{ background: 'var(--bg)' }}>
-      <ScrollingBackground />
+    {/* RIGHT PHONE (18+ Gate UI) */}
+    <div className="absolute -right-1 sm:right-1 top-6 z-10 rotate-6 scale-90 sm:scale-95 hover:rotate-0 hover:z-30 hover:scale-100 transition-all duration-500">
+      <div className="w-[160px] sm:w-[210px] h-[340px] sm:h-[430px] rounded-[2rem] overflow-hidden border-[5px] border-[#1a1210] bg-[#09070A] relative shadow-2xl">
+        <div className="absolute top-0 inset-x-0 h-5 bg-black/60 backdrop-blur-sm z-20 flex justify-between px-3 text-[8px] text-white/70 font-semibold items-center">
+          <span>9:09</span>
+          <span className="text-red-400 font-bold text-[7px] bg-red-500/20 px-1 rounded">18+ Gate</span>
+        </div>
+        <img src={SCREENS.modal} alt="18+ Gate UI" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
+      </div>
+      <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-red-400 uppercase tracking-widest bg-black/90 border border-red-500/30 px-2 py-0.5 rounded-full whitespace-nowrap shadow-lg">
+        🔒 Age Protection
+      </span>
+    </div>
 
-      {/* Ambient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none z-0 blur-[120px] animate-float"
-        style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%)' }} />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none z-0 blur-[100px] animate-float"
-        style={{ background: 'radial-gradient(circle, rgba(34,211,238,0.12) 0%, transparent 70%)', animationDelay: '-3s' }} />
-
-      <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-16 items-center py-16">
-        {/* Left */}
-        <div className="text-center lg:text-left">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-8 animate-pulse-slow"
-            style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--text-primary)' }}>
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: 'var(--cyan)' }} />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: 'var(--cyan)' }} />
-            </span>
-            {versionInfo ? `v${versionInfo.versionName} — Just released` : 'New release available'}
+    {/* CENTER PHONE (Dashboard Main UI) */}
+    <div className="relative z-20 hover:scale-105 transition-all duration-500">
+      <div
+        className="w-[185px] sm:w-[230px] h-[385px] sm:h-[470px] rounded-[2.2rem] overflow-hidden border-[6px] border-[#1a1210] bg-[#09070A] relative"
+        style={{ boxShadow: '0 0 0 1px rgba(249,115,22,0.5), 0 25px 60px rgba(0,0,0,0.95)' }}
+      >
+        <div className="absolute top-0 inset-x-0 h-6 bg-black/60 backdrop-blur-sm z-20 flex justify-between px-3 text-[9px] text-white/80 font-semibold items-center">
+          <span>9:09</span>
+          <div className="flex items-center gap-1">
+            <span className="text-orange-400 font-bold text-[8px] bg-orange-500/25 px-1.5 py-0.2 rounded border border-orange-500/40">XHub</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
+        </div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-3.5 bg-black rounded-b-lg z-30" />
+        <img src={SCREENS.hero} alt="XHub Dashboard" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
+      </div>
+      <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] font-extrabold text-white uppercase tracking-widest bg-gradient-to-r from-orange-500 to-red-500 px-3 py-1 rounded-full whitespace-nowrap shadow-xl">
+        📱 Main Dashboard
+      </span>
+    </div>
+  </div>
+);
 
-          {/* Headline */}
-          <h1 className="font-bold leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 'clamp(2.8rem,6vw,4.5rem)', color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
-            Every channel.<br />
-            <span style={{ background: 'linear-gradient(135deg,#A78BFA 0%,#22D3EE 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              One tap away.
+// ─── HERO ─────────────────────────────────────────────────────────────────────
+const Hero: React.FC<{ versionName: string; onDownload: () => void; onGuide: () => void }> = ({
+  versionName, onDownload, onGuide,
+}) => (
+  <section
+    className="relative overflow-hidden"
+    style={{ background: 'linear-gradient(160deg,#0d0910 0%,#07070B 50%,#0a0709 100%)', paddingTop: 100, paddingBottom: 60 }}
+  >
+    <ScrollingBackground />
+
+    {/* bg glow blobs */}
+    <div
+      className="absolute top-1/4 left-0 w-[500px] h-[500px] rounded-full pointer-events-none blur-[130px] opacity-30 z-0"
+      style={{ background: 'radial-gradient(circle,#f97316,transparent 70%)' }}
+    />
+    <div
+      className="absolute bottom-0 right-1/4 w-[350px] h-[350px] rounded-full pointer-events-none blur-[100px] opacity-20 z-0"
+      style={{ background: 'radial-gradient(circle,#ef4444,transparent 70%)' }}
+    />
+
+    <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+        {/* LEFT – Text & CTAs */}
+        <Reveal className="text-center lg:text-left">
+          <h1 className="font-extrabold leading-tight text-white mb-4" style={{ fontSize: 'clamp(2.2rem,4.5vw,3.8rem)' }}>
+            The Ultimate<br />
+            <span style={{ background: 'linear-gradient(90deg,#f97316,#ef4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              Android Porn App
             </span>
           </h1>
 
-          <p className="text-lg mb-10 max-w-md mx-auto lg:mx-0 leading-relaxed" style={{ color: 'var(--text-primary)', opacity: 0.85, fontWeight: 300 }}>
-            XHub brings Netflix, Disney+, sports, live TV, and private browsing into a single free Android app. No subscriptions. No Play Store.
+          <p className="text-neutral-300 text-sm sm:text-base leading-relaxed mb-6 max-w-lg mx-auto lg:mx-0">
+            <strong className="text-white">XHub</strong> is the only app that combines over 150+ sites into one seamless experience.
+            Stream, download, and organize your favorites on your phone, tablet, or TV. Built with 5 years of passion for
+            the best viewing experience.
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start mb-10">
-            <a href={DOWNLOAD_URL} download
-              className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:-translate-y-1"
-              style={{ background: 'linear-gradient(135deg,#7C3AED,#6D28D9)', boxShadow: '0 0 40px rgba(124,58,237,0.4)' }}>
-              <DownloadIcon className="w-5 h-5" />
-              Download Free
-            </a>
-            <button onClick={onInstallClick}
-              className="flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all duration-300 hover:-translate-y-0.5"
-              style={{ background: 'var(--surface)', border: '1px solid var(--border-strong)', color: 'var(--text-primary)' }}>
-              <InfoIcon className="w-5 h-5" style={{ color: 'var(--cyan)' } as React.CSSProperties} />
-              How to Install
+          {/* Download count */}
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
+            <div
+              className="text-3xl sm:text-4xl font-black"
+              style={{ background: 'linear-gradient(90deg,#f97316,#ef4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              <AnimatedCounter target={500000} />
+            </div>
+            <span className="text-neutral-400 text-xs sm:text-sm font-semibold leading-tight text-left">
+              Total<br />Downloads
+            </span>
+          </div>
+
+          {/* Buttons – Optimized for Mobile Thumbs */}
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3.5 justify-center lg:justify-start">
+            <button
+              onClick={onDownload}
+              className="w-full sm:w-auto flex items-center justify-center gap-2.5 font-bold text-white rounded-full px-8 py-4 text-base transition-all active:scale-95 hover:scale-105 hover:shadow-2xl"
+              style={{ background: 'linear-gradient(135deg,#f97316,#ef4444)', boxShadow: '0 8px 32px rgba(249,115,22,0.45)' }}
+            >
+              <DownloadIcon />
+              Download Free APK{versionName && ` v${versionName}`}
+            </button>
+            <button
+              onClick={onGuide}
+              className="w-full sm:w-auto flex items-center justify-center font-semibold text-white rounded-full px-7 py-4 text-sm transition-all hover:bg-white/10 border"
+              style={{ background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.15)' }}
+            >
+              Install Guide
             </button>
           </div>
 
-          {/* Social proof */}
-          <div className="flex items-center gap-4 justify-center lg:justify-start">
-            <div className="flex -space-x-2.5">
-              {[16,17,18,19].map(i => (
-                <div key={i} className="w-9 h-9 rounded-full overflow-hidden" style={{ border: '2px solid var(--bg)' }}>
-                  <img src={`https://i.pravatar.cc/100?img=${i}`} alt="user" className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
-            <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
-              <AnimatedCounter target={500} suffix="k+" /> <span style={{ fontWeight: 600 }}>downloads</span> and growing
-            </span>
+          {/* Trust badges */}
+          <div className="flex flex-wrap gap-2 sm:gap-3 mt-6 justify-center lg:justify-start">
+            {['✅ VirusTotal Clean', '🔒 Zero Trackers', '⚡ Android 6.0+', '🆓 100% Free'].map(b => (
+              <span
+                key={b}
+                className="text-[10px] sm:text-[11px] font-bold text-neutral-300 px-3 py-1.5 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+              >
+                {b}
+              </span>
+            ))}
           </div>
-        </div>
+        </Reveal>
 
-        {/* Right — Interactive Mockup */}
-        <div className="relative h-[680px] flex items-center justify-center"
-             onMouseEnter={() => setIsHovered(true)}
-             onMouseLeave={() => setIsHovered(false)}>
-          {/* Back cards */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 translate-x-16 rotate-12 opacity-30 scale-90 grayscale pointer-events-none">
-            <PhoneMockup imageSrc={APP_SCREENSHOTS.gallery1} />
-          </div>
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 -translate-x-16 -rotate-12 opacity-30 scale-90 grayscale pointer-events-none">
-            <PhoneMockup imageSrc={APP_SCREENSHOTS.gallery2} />
-          </div>
-
-          {/* Main mockup */}
-          <div className="relative z-20 flex flex-col items-center animate-float">
-            <TiltCard>
-              <div className="relative" style={{ filter: 'drop-shadow(0 0 60px rgba(124,58,237,0.35))' }}>
-                <div className="relative mx-auto border-[#1a1a2e] border-[8px] rounded-[2.5rem] h-[580px] w-[280px] overflow-hidden flex flex-col"
-                  style={{ background: '#0d0d1a', boxShadow: '0 0 0 1px rgba(124,58,237,0.3), 0 60px 120px rgba(0,0,0,0.7)' }}>
-                  <div className="h-[32px] w-[3px] absolute -left-[10px] top-[72px] rounded-l" style={{ background: '#1a1a2e' }} />
-                  <div className="h-[46px] w-[3px] absolute -left-[10px] top-[124px] rounded-l" style={{ background: '#1a1a2e' }} />
-                  <div className="h-[46px] w-[3px] absolute -left-[10px] top-[178px] rounded-l" style={{ background: '#1a1a2e' }} />
-                  <div className="h-[64px] w-[3px] absolute -right-[10px] top-[142px] rounded-r" style={{ background: '#1a1a2e' }} />
-                  <div className="rounded-[2rem] overflow-hidden w-full h-full relative">
-                    <div className="absolute top-0 w-full h-7 px-4 flex justify-between items-center z-20 text-[10px] font-medium text-white/60">
-                      <span>9:41</span>
-                      <div className="flex gap-1"><div className="w-2.5 h-2.5 rounded-full bg-white/50" /><div className="w-2.5 h-2.5 rounded-full bg-white/50" /></div>
-                    </div>
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-b-xl z-20" />
-                    {Object.entries(APP_SCREENSHOTS).map(([key, src]) => (
-                      <img key={key} src={src} id={`panel-${key}`} role="tabpanel" alt={`XHub ${key}`}
-                        className={`absolute inset-0 w-full h-full object-cover z-10 transition-opacity duration-700 ${activeShot === key ? 'opacity-100' : 'opacity-0'}`}
-                        loading="eager" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            {/* Tab selector with touch-target pad space and ARIA tabs list */}
-            <div className="flex gap-1.5 mt-5 p-1.5 rounded-full" role="tablist" aria-label="App screenshots switcher" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-              {([['hero','Home'],['gallery1','Player'],['gallery2','Private'],['gallery3','Library']] as const).map(([key, label]) => (
-                <button key={key} role="tab" aria-selected={activeShot === key} aria-controls={`panel-${key}`} onClick={() => setActiveShot(key)}
-                  className="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 min-h-[44px] min-w-[70px]"
-                  style={activeShot === key
-                    ? { background: 'var(--violet)', color: '#fff', boxShadow: '0 0 16px var(--violet-glow)' }
-                    : { color: 'var(--text-primary)', opacity: 0.8 }}>
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            {/* Floating badges with high contrast text */}
-            <div className="absolute -right-4 top-28 flex items-center gap-3 p-3 rounded-2xl animate-bounce pointer-events-none"
-              style={{ background: 'rgba(18,18,28,0.95)', border: '1px solid var(--border)', backdropFilter: 'blur(16px)', animationDuration: '4s', boxShadow: '0 0 24px rgba(34,211,238,0.15)' }}>
-              <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(34,211,238,0.15)', color: 'var(--cyan)' }}>
-                <ShieldCheckIcon className="w-4 h-4" />
-              </div>
-              <div><p className="text-white font-bold text-xs">100% Secure</p><p className="text-[11px] font-semibold text-white/80">No tracking</p></div>
-            </div>
-            <div className="absolute -left-8 bottom-44 flex items-center gap-3 p-3 rounded-2xl animate-bounce pointer-events-none"
-              style={{ background: 'rgba(18,18,28,0.95)', border: '1px solid var(--border)', backdropFilter: 'blur(16px)', animationDuration: '5.5s', animationDelay: '1s', boxShadow: '0 0 24px var(--violet-glow)' }}>
-              <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(124,58,237,0.15)', color: 'var(--violet-light)' }}>
-                <PlayIcon className="w-4 h-4" />
-              </div>
-              <div><p className="text-white font-bold text-xs">4K Ultra HD</p><p className="text-[11px] font-semibold text-white/80">Crystal clear</p></div>
-            </div>
-          </div>
-        </div>
+        {/* RIGHT – 3 Phones Trio Showcase */}
+        <Reveal delay={120} className="flex justify-center w-full">
+          <HeroThreePhones />
+        </Reveal>
       </div>
-    </section>
-  );
-};
-
-const Features: React.FC = () => {
-  const cards = [
-    { icon: <GlobeIcon className="w-6 h-6" />, title: 'All-in-One Aggregator', body: 'Netflix, Disney+, Hulu, HBO, and live sports — all in one place. Cut the cord without losing anything.', accent: '#7C3AED', glow: 'rgba(124,58,237,0.15)' },
-    { icon: <LockClosedIcon className="w-6 h-6" />, title: 'Built-in Private Browser', body: 'A fully sandboxed browser with zero history retention. Your searches stay yours — always.', accent: '#22D3EE', glow: 'rgba(34,211,238,0.15)' },
-    { icon: <PlayIcon className="w-6 h-6" />, title: 'Instant Streaming', body: 'No buffering, no loading screens. XHub pre-caches streams so playback starts in under a second.', accent: '#A78BFA', glow: 'rgba(167,139,250,0.15)' },
-  ];
-
-  return (
-    <section id="features" className="py-28 relative scroll-mt-24" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
-      {/* Divider glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-px" style={{ background: 'linear-gradient(to right, transparent, var(--violet), transparent)' }} />
-
-      <div className="container mx-auto px-6">
-        <ScrollReveal className="text-center mb-16">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--violet-light)' }}>Why XHub</p>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>
-            Built different, by design
-          </h2>
-        </ScrollReveal>
-
-        <div className="grid lg:grid-cols-3 gap-6">
-          {cards.map((card, i) => (
-            <ScrollReveal key={i} delay={i * 120} className="h-full">
-              <div className="h-full p-8 rounded-2xl transition-all duration-300 group cursor-default"
-                style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = card.accent + '55'; (e.currentTarget as HTMLElement).style.boxShadow = `0 0 40px ${card.glow}`; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
-                  style={{ background: `${card.accent}18`, color: card.accent, border: `1px solid ${card.accent}30` }}>
-                  {card.icon}
-                </div>
-                <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: "'Space Grotesk',sans-serif" }}>{card.title}</h3>
-                <p className="text-base leading-relaxed text-white/80">{card.body}</p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Gallery: React.FC = () => (
-  <section id="gallery" className="py-24 scroll-mt-24 overflow-hidden" style={{ background: `linear-gradient(to bottom, var(--bg), var(--surface))`, borderTop: '1px solid var(--border)' }}>
-    <ScrollReveal className="container mx-auto px-6 text-center mb-16">
-      <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>App Screenshots</p>
-      <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>
-        Cinematic on every screen
-      </h2>
-      <p className="mt-3 text-sm max-w-md mx-auto" style={{ color: 'var(--text-primary)', opacity: 0.8 }}>
-        Dark mode first. Every pixel optimised for late-night watching.
-      </p>
-    </ScrollReveal>
-    <div className="flex overflow-x-auto gap-8 px-6 pb-10 snap-x snap-mandatory no-scrollbar md:justify-center">
-      {[APP_SCREENSHOTS.gallery1, APP_SCREENSHOTS.gallery2, APP_SCREENSHOTS.gallery3].map((src, i) => (
-        <ScrollReveal key={i} delay={i * 120} className="snap-center shrink-0">
-          <div className="transition-transform duration-300 hover:-translate-y-3">
-            <PhoneMockup imageSrc={src} />
-          </div>
-        </ScrollReveal>
-      ))}
     </div>
   </section>
 );
 
-const Testimonials: React.FC = () => {
-  const reviews = [
-    { name: 'Marcus T.', role: 'Verified User', avatar: 20, text: "Finally an app that works. Library is massive and I cancelled Netflix after the first week." },
-    { name: 'Sarah L.',  role: 'Verified User', avatar: 21, text: "The private browser is insane — super fast and genuinely doesn't track anything. Daily driver now." },
-    { name: 'James R.',  role: 'Verified User', avatar: 22, text: "4K quality even on my crappy data plan. Not sure how they pulled that off but I'm not complaining." },
-  ];
-
-  return (
-    <section id="testimonials" className="py-24 scroll-mt-24" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
-      <div className="container mx-auto px-6">
-        <ScrollReveal className="text-center mb-16">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--violet-light)' }}>Reviews</p>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>From real users</h2>
-        </ScrollReveal>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {reviews.map((r, i) => (
-            <ScrollReveal key={i} delay={i * 100} className="h-full">
-              <div className="h-full p-7 rounded-2xl flex flex-col gap-5 transition-all duration-300"
-                style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(124,58,237,0.35)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}>
-                <div className="flex gap-0.5">
-                  {Array(5).fill(0).map((_, s) => <StarIcon key={s} className="w-4 h-4" style={{ color: '#F59E0B' } as React.CSSProperties} />)}
-                </div>
-                <p className="text-sm leading-relaxed flex-1 text-white/90">"{r.text}"</p>
-                <div className="flex items-center gap-3">
-                  <img src={`https://i.pravatar.cc/80?img=${r.avatar}`} alt={r.name} className="w-9 h-9 rounded-full object-cover" style={{ border: '2px solid var(--border-strong)' }} />
-                  <div>
-                    <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{r.name}</p>
-                    <p className="text-xs font-medium text-white/70">{r.role}</p>
-                  </div>
-                </div>
+// ─── FEATURE ROW ─────────────────────────────────────────────────────────────
+interface FeatureRowProps {
+  tag: string;
+  title: string;
+  items: Array<{ label: string; desc: string }>;
+  imageSrc: string;
+  reverse?: boolean;
+  alt?: boolean;
+}
+const FeatureRow: React.FC<FeatureRowProps> = ({ tag, title, items, imageSrc, reverse = false, alt = false }) => (
+  <section style={{ background: alt ? '#0B0B12' : '#07070B', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '80px 0' }}>
+    <div className="container mx-auto px-6">
+      <div className={`grid lg:grid-cols-2 gap-12 items-center ${reverse ? 'lg:grid-flow-dense' : ''}`}>
+        {/* Text side */}
+        <Reveal className={reverse ? 'lg:col-start-2' : ''}>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: '#f97316' }}>{tag}</p>
+          <h2 className="text-3xl font-extrabold text-white mb-6">{title}</h2>
+          <div className="space-y-4">
+            {items.map(item => (
+              <div key={item.label} className="flex gap-3">
+                <span className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-black" style={{ background: 'rgba(249,115,22,0.2)', color: '#f97316' }}>✓</span>
+                <p className="text-neutral-300 text-sm leading-relaxed">
+                  <strong className="text-white">{item.label}:</strong> {item.desc}
+                </p>
               </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+            ))}
+          </div>
+        </Reveal>
 
+        {/* Phone side */}
+        <Reveal delay={120} className={`flex justify-center ${reverse ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
+          <PhoneFrame src={imageSrc} glow />
+        </Reveal>
+      </div>
+    </div>
+  </section>
+);
+
+// ─── STATS BAR ────────────────────────────────────────────────────────────────
+const StatsBar: React.FC = () => (
+  <div style={{ background: '#0A0A0F', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '40px 0' }}>
+    <div className="container mx-auto px-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {[
+          { n: 500000, suf: '+', label: 'Downloads' },
+          { n: 4.9,    suf: '★', label: 'Rating' },
+          { n: 10,     suf: '+', label: 'Supported Sites' },
+          { n: 100,    suf: '%', label: 'Free' },
+        ].map(s => (
+          <Reveal key={s.label} className="text-center">
+            <div className="text-3xl font-extrabold mb-1" style={{ background: 'linear-gradient(90deg,#f97316,#ef4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <AnimatedCounter target={s.n} suffix={s.suf} />
+            </div>
+            <div className="text-xs font-bold text-neutral-400 uppercase tracking-widest">{s.label}</div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// ─── SCREENSHOT SECTION ───────────────────────────────────────────────────────
+const Screenshots: React.FC = () => (
+  <section id="screenshots" style={{ background: '#07070B', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '80px 0' }}>
+    <div className="container mx-auto px-6">
+      <Reveal className="text-center mb-14">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: '#f97316' }}>Screenshots</p>
+        <h2 className="text-3xl font-extrabold text-white">Experience the Interface</h2>
+      </Reveal>
+      <ScreenshotSlider />
+    </div>
+  </section>
+);
+
+// ─── FAQ ──────────────────────────────────────────────────────────────────────
 const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
   const [open, setOpen] = useState(false);
-  const id = `faq-${q.replace(/\s+/g, '-').toLowerCase()}`;
   return (
-    <div style={{ borderBottom: '1px solid var(--border)' }}>
-      <button aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}
-        className="flex justify-between items-center w-full text-left py-5 focus:outline-none transition-colors duration-200"
-        style={{ color: open ? 'var(--violet-light)' : 'var(--text-primary)' }}>
-        <span className="font-semibold text-base" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{q}</span>
-        <span className="text-xl ml-4 shrink-0 transition-transform duration-300" style={{ transform: open ? 'rotate(45deg)' : 'none', color: open ? 'var(--violet)' : 'var(--text-primary)', opacity: open ? 1 : 0.6 }}>+</span>
+    <div style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex justify-between items-center w-full text-left py-5 group"
+      >
+        <span className="font-semibold text-white text-sm group-hover:text-orange-400 transition-colors">{q}</span>
+        <span className="text-2xl ml-4 shrink-0 transition-transform duration-300 text-neutral-500" style={{ transform: open ? 'rotate(45deg)' : 'none' }}>+</span>
       </button>
-      <div id={id} role="region" className={`grid transition-all duration-300 ease-in-out ${open ? 'grid-rows-[1fr] opacity-100 pb-5' : 'grid-rows-[0fr] opacity-0'}`}>
-        <div className="overflow-hidden">
-          <p className="text-sm leading-relaxed text-white/80">{a}</p>
-        </div>
+      <div style={{ maxHeight: open ? 200 : 0, overflow: 'hidden', transition: 'max-height 0.35s ease', paddingBottom: open ? 16 : 0 }}>
+        <p className="text-sm text-neutral-400 leading-relaxed">{a}</p>
       </div>
     </div>
   );
 };
 
 const FAQ: React.FC = () => (
-  <section id="faq" className="py-24 scroll-mt-24" style={{ background: 'linear-gradient(to bottom, var(--surface), var(--bg))', borderTop: '1px solid var(--border)' }}>
-    <div className="container mx-auto px-6 max-w-3xl">
-      <ScrollReveal className="text-center mb-14">
-        <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--cyan)' }}>Got questions?</p>
-        <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Answers right here</h2>
-      </ScrollReveal>
-      <ScrollReveal>
-        <div className="p-8 md:p-10 rounded-2xl" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+  <section id="faq" style={{ background: '#0B0B12', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '80px 0' }}>
+    <div className="container mx-auto px-6 max-w-2xl">
+      <Reveal className="text-center mb-12">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: '#f97316' }}>FAQ</p>
+        <h2 className="text-3xl font-extrabold text-white">Common Questions</h2>
+      </Reveal>
+      <Reveal>
+        <div className="rounded-2xl p-6 md:p-8" style={{ background: '#0F0F1A', border: '1px solid rgba(255,255,255,0.08)' }}>
           {[
-            { q: 'Is XHub safe to install?', a: 'Yes. The APK is clean — no malware, no adware, no hidden trackers. Since it ships outside the Play Store you\'ll need to enable "Install from unknown sources" in Android settings, which is a normal one-time step for sideloading.' },
-            { q: 'Does it cost anything?', a: 'Nothing. XHub is completely free. No subscription, no in-app purchases, no paywalls.' },
-            { q: 'Which Android versions are supported?', a: 'Android 6.0 (Marshmallow) and above. Works on phones, tablets, Android TV boxes, and Fire Stick with a launcher.' },
-            { q: 'How do I get updates?', a: 'XHub checks for updates on launch. When a new version drops you\'ll see an in-app prompt. One tap downloads and installs the latest build.' },
-          ].map((item, i) => <FAQItem key={i} q={item.q} a={item.a} />)}
+            { q: 'Is XHub safe to install?', a: 'Yes. The APK is scanned clean on VirusTotal. Just enable "Install from Unknown Sources" on your Android device.' },
+            { q: 'Does XHub cost anything?', a: 'XHub is completely free — no subscription, no locked tiers, no hidden fees.' },
+            { q: 'Which Android versions are supported?', a: 'Android 6.0 (Marshmallow) and above, including tablets and Android TV boxes.' },
+            { q: 'How do I get updates?', a: 'XHub has a built-in update checker. When a new version drops you get a 1-tap update prompt inside the app.' },
+          ].map(item => <FAQItem key={item.q} {...item} />)}
         </div>
-      </ScrollReveal>
+      </Reveal>
     </div>
   </section>
 );
 
-const Footer: React.FC = () => (
-  <footer className="py-14" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
-    <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-      <div>
-        <div className="flex items-center gap-2.5 mb-3">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7C3AED,#22D3EE)' }}>
-            <span className="text-white font-black text-xs">X</span>
-          </div>
-          <span className="font-bold text-lg" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>XHub</span>
-        </div>
-        <p className="text-sm max-w-xs text-white/80">The Android streaming app that replaces everything else.</p>
-      </div>
-      <div className="flex flex-col items-center md:items-end gap-4">
-        <a href={DOWNLOAD_URL} download
-          className="flex items-center gap-2 font-bold py-3 px-7 rounded-full text-white transition-all duration-300 hover:-translate-y-0.5"
-          style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
-          <DownloadIcon className="w-4 h-4" />
-          Download Now
+// ─── CONTACT ──────────────────────────────────────────────────────────────────
+const Contact: React.FC = () => (
+  <section style={{ background: '#07070B', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '60px 0' }}>
+    <div className="container mx-auto px-6 text-center">
+      <Reveal>
+        <h2 className="text-2xl font-extrabold text-white mb-6">Need Help?</h2>
+        <a
+          href="https://t.me/xhubapp"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 font-bold text-white rounded-full px-8 py-4 transition-all hover:scale-105"
+          style={{ background: '#0088cc', boxShadow: '0 6px 24px rgba(0,136,204,0.4)' }}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .33z"/>
+          </svg>
+          Telegram Support
         </a>
-        <p className="text-xs tracking-widest uppercase text-white/70">Free • Private • No Play Store needed</p>
-      </div>
+      </Reveal>
     </div>
-    <div className="container mx-auto px-6 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs gap-3" style={{ borderTop: '1px solid var(--border)', color: 'var(--text-primary)', opacity: 0.7 }}>
-      <p>© 2024 XHub App. All rights reserved.</p>
-      <div className="flex gap-6">
-        {['Privacy','Terms','DMCA'].map(l => (
-          <a key={l} href="#" className="transition-colors hover:text-white">{l}</a>
-        ))}
+  </section>
+);
+
+// ─── FOOTER ───────────────────────────────────────────────────────────────────
+const Footer: React.FC<{ onDownload: () => void }> = ({ onDownload }) => (
+  <footer style={{ background: '#050508', borderTop: '1px solid rgba(255,255,255,0.07)', padding: '48px 0 32px' }}>
+    <div className="container mx-auto px-6">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
+        {/* brand */}
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center font-black text-white text-base"
+            style={{ background: 'linear-gradient(135deg,#f97316,#ef4444)' }}>
+            X
+          </div>
+          <div>
+            <div className="text-white font-extrabold text-lg leading-none">XHub</div>
+            <div className="text-orange-400 text-[9px] font-bold uppercase tracking-widest">Android Media Hub</div>
+          </div>
+        </div>
+        {/* download */}
+        <button
+          onClick={onDownload}
+          className="flex items-center gap-2 font-bold text-white rounded-full px-7 py-3 transition-all hover:scale-105"
+          style={{ background: 'linear-gradient(135deg,#f97316,#ef4444)', boxShadow: '0 0 20px rgba(249,115,22,0.4)' }}
+        >
+          <DownloadIcon />
+          Download APK Now
+        </button>
+      </div>
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 text-xs text-neutral-600"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <p>© 2026 XHub App. All rights reserved.</p>
+        <div className="flex gap-6">
+          {['Privacy Policy','Terms of Service','DMCA'].map(l => (
+            <a key={l} href="#" className="hover:text-neutral-300 transition-colors">{l}</a>
+          ))}
+        </div>
       </div>
     </div>
   </footer>
 );
 
-const InstallModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
+// ─── INSTALL MODAL ────────────────────────────────────────────────────────────
+const InstallModal: React.FC<{ open: boolean; onClose: () => void; onDownload: () => void }> = ({
+  open, onClose, onDownload,
+}) => {
+  if (!open) return null;
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={onClose} />
-      <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-pulse-slow" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-        <div className="p-8">
-          <button aria-label="Close installation guide" onClick={onClose}
-            className="absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
-            style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>
-            <XIcon className="w-4 h-4" />
-          </button>
-          <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "'Space Grotesk',sans-serif", color: 'var(--text-primary)' }}>Install in 60 seconds</h2>
-          <p className="text-sm mb-8 text-white/80">No Play Store. Three taps and you're streaming.</p>
-          <div className="space-y-6">
-            {[
-              { step: '01', title: 'Download the APK', desc: 'Tap the button below. The file lands in your Downloads folder.' },
-              { step: '02', title: 'Allow unknown sources', desc: 'Enable "Install from unknown sources" in Settings → Security when prompted.' },
-              { step: '03', title: 'Install & watch', desc: 'Tap the file, hit Install, and launch. You\'re live in under a minute.' },
-            ].map(s => (
-              <div key={s.step} className="flex gap-5 items-start">
-                <span className="text-2xl font-black shrink-0 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.step}</span>
-                <div>
-                  <h4 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{s.title}</h4>
-                  <p className="text-xs leading-relaxed text-white/80">{s.desc}</p>
-                </div>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-sm rounded-2xl p-8 z-10"
+        style={{ background: '#0F0F1A', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <button onClick={onClose} className="absolute top-4 right-4 text-neutral-400 hover:text-white text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-all">✕</button>
+        <h2 className="text-xl font-extrabold text-white mb-1">Install Guide</h2>
+        <p className="text-xs text-neutral-400 mb-6">Three quick steps to get started.</p>
+        <div className="space-y-5">
+          {[
+            ['01', 'Download APK', 'Tap the download button — the APK saves to your Downloads folder.'],
+            ['02', 'Allow Unknown Sources', 'Enable "Install from Unknown Sources" in Android settings when prompted.'],
+            ['03', 'Install & Launch', 'Tap the APK file, hit Install, and enjoy XHub instantly.'],
+          ].map(([n, t, d]) => (
+            <div key={n} className="flex gap-4 items-start">
+              <span className="text-2xl font-black shrink-0" style={{ background: 'linear-gradient(90deg,#f97316,#ef4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{n}</span>
+              <div>
+                <div className="font-bold text-sm text-white mb-0.5">{t}</div>
+                <div className="text-xs text-neutral-400 leading-relaxed">{d}</div>
               </div>
-            ))}
-          </div>
-          <a href={DOWNLOAD_URL} download
-            className="mt-8 flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white transition-all duration-300 hover:-translate-y-0.5"
-            style={{ background: 'var(--violet)', boxShadow: '0 0 28px var(--violet-glow)' }}>
-            <DownloadIcon className="w-5 h-5" />
-            Get the APK
-          </a>
+            </div>
+          ))}
         </div>
+        <button
+          onClick={onDownload}
+          className="mt-7 w-full flex items-center justify-center gap-2 font-bold text-white py-3.5 rounded-xl transition-all hover:scale-[1.02]"
+          style={{ background: 'linear-gradient(135deg,#f97316,#ef4444)', boxShadow: '0 6px 24px rgba(249,115,22,0.35)' }}
+        >
+          <DownloadIcon />
+          Get APK Now
+        </button>
       </div>
     </div>
   );
 };
 
-function App() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
+// ─── ROOT ─────────────────────────────────────────────────────────────────────
+export default function App() {
+  const [versionName, setVersionName] = useState('');
+  const [guideOpen, setGuideOpen] = useState(false);
+  const [adGateOpen, setAdGateOpen] = useState(false);
 
   useEffect(() => {
-    fetch('/version.json').then(r => r.json()).then(setVersionInfo).catch(console.error);
+    fetch('/version.json')
+      .then(r => r.json())
+      .then(d => setVersionName(d.versionName || ''))
+      .catch(() => {});
   }, []);
 
+  const handleDownload = () => setAdGateOpen(true);
+  const handleUnlock = () => { setAdGateOpen(false); window.location.href = DOWNLOAD_URL; };
+
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: "'Inter',sans-serif" }}>
-      <Header versionInfo={versionInfo} />
+    <div className="min-h-screen" style={{ background: '#07070B', color: '#e5e5e5', fontFamily: 'Inter, system-ui, sans-serif' }}>
+      <Header versionName={versionName} onDownload={handleDownload} />
+
       <main>
-        <Hero versionInfo={versionInfo} onInstallClick={() => setModalOpen(true)} />
-        <Features />
-        <Gallery />
-        <Testimonials />
+        <Hero versionName={versionName} onDownload={handleDownload} onGuide={() => setGuideOpen(true)} />
+
+        <StatsBar />
+
+        <div id="features">
+          <FeatureRow
+            tag="Core Features"
+            title="More than just a Porn App"
+            imageSrc={SCREENS.screen1}
+            items={[
+              { label: '150+ Sites', desc: 'Unlimited sites for all kind of kinks.' },
+              { label: 'Quality Selection', desc: 'Depending on site and video (360p/480p/720p/1080p/4K).' },
+              { label: 'Download videos', desc: 'Download porn videos without limits.' },
+              { label: 'NSFW Swipe', desc: 'Discover videos with a TikTok-style feed.' },
+              { label: 'VR Mode', desc: 'Full 360° support for immersive viewing.' },
+              { label: 'PiP Mode', desc: 'Multitasking with Picture-in-Picture.' },
+              { label: 'Security', desc: 'PIN & FingerPrint Lock Feature (Standard: 1234)' },
+              { label: 'Collection', desc: 'Save Favorites, History and Custom Playlists.' },
+              { label: 'Chromecast', desc: 'Watch videos via your Chromecast device (limited).' },
+              { label: 'Many more features', desc: 'There are many more features for free users and even more for PRO users.' },
+            ]}
+          />
+
+          <FeatureRow
+            tag="Privacy & Security"
+            title="Private by Default"
+            imageSrc={SCREENS.modal}
+            items={[
+              { label: 'Zero History Logging', desc: 'Incognito sessions run entirely in RAM — nothing saved to storage.' },
+              { label: 'PIN & Fingerprint Lock', desc: 'Protect app access with device biometrics or a custom PIN code.' },
+              { label: 'VirusTotal Verified', desc: 'Every release is scanned and publicly verified with zero detections.' },
+              { label: 'No Google Play Lock', desc: 'Sideload freely — no account, no restrictions, no surveillance.' },
+            ]}
+            reverse
+            alt
+          />
+        </div>
+
+        <Screenshots />
         <FAQ />
+        <Contact />
       </main>
-      <Footer />
-      <InstallModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+
+      <Footer onDownload={handleDownload} />
+
+      <InstallModal open={guideOpen} onClose={() => setGuideOpen(false)} onDownload={() => { setGuideOpen(false); handleDownload(); }} />
+      <AdGate open={adGateOpen} onClose={() => setAdGateOpen(false)} onUnlock={handleUnlock} />
     </div>
   );
 }
-
-export default App;
