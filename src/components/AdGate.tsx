@@ -17,9 +17,11 @@ interface AdGateProps {
 
 export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
-  const [visited, setVisited] = useState<Set<string>>(new Set());
+  const [clicks, setClicks] = useState(0);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const REQUIRED_CLICKS = 3;
 
   // Fetch sponsors
   useEffect(() => {
@@ -73,23 +75,26 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
     return () => { container.innerHTML = ''; };
   }, [open]);
 
-  const handleSponsorClick = (sponsor: Sponsor) => {
-    window.open(sponsor.url, "_blank", "noopener,noreferrer");
-    const newVisited = new Set(visited).add(sponsor.name);
-    setVisited(newVisited);
+  const handleClick = () => {
+    if (sponsors.length > 0) {
+      const sponsor = sponsors[clicks % sponsors.length];
+      window.open(sponsor.url, "_blank", "noopener,noreferrer");
+    }
+    const newClicks = clicks + 1;
+    setClicks(newClicks);
 
-    // Start countdown if all visited
-    if (newVisited.size === sponsors.length && sponsors.length > 0) {
+    // Start countdown after all required clicks
+    if (newClicks >= REQUIRED_CLICKS) {
       setCountdown(3);
     }
   };
 
-  const allVisited = sponsors.length > 0 && visited.size === sponsors.length;
-  const canContinue = allVisited && countdown === 0;
+  const allClicked = clicks >= REQUIRED_CLICKS;
+  const canContinue = allClicked && countdown === 0;
 
   if (!open) return null;
 
-  const progressPct = sponsors.length > 0 ? (visited.size / sponsors.length) * 100 : 0;
+  const progressPct = Math.min((clicks / REQUIRED_CLICKS) * 100, 100);
 
   return (
     <>
@@ -473,9 +478,9 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
               <div className="adgate-icon-wrap">
                 <Lock size={26} color="#fff" />
               </div>
-              <h2 className="adgate-title">Just {sponsors.length || 3} clicks to download.</h2>
+              <h2 className="adgate-title">Just {REQUIRED_CLICKS} clicks to download.</h2>
               <p className="adgate-subtitle">
-                One last step — visit our {sponsors.length || 3} sponsors to unlock your download.
+                One last step — click the button {REQUIRED_CLICKS} times to unlock your download.
               </p>
             </div>
 
@@ -488,12 +493,12 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
             )}
 
             {/* Progress */}
-            {!loading && sponsors.length > 0 && (
+            {!loading && (
               <div className="adgate-progress-section">
                 <div className="adgate-progress-label-row">
                   <span className="adgate-progress-label">Progress</span>
                   <span className="adgate-progress-count">
-                    {visited.size} / {sponsors.length}
+                    {Math.min(clicks, REQUIRED_CLICKS)} / {REQUIRED_CLICKS}
                   </span>
                 </div>
                 <div className="adgate-progress-track">
@@ -503,10 +508,10 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
                   />
                 </div>
                 <div className="adgate-progress-dots">
-                  {sponsors.map((s) => (
+                  {Array.from({ length: REQUIRED_CLICKS }).map((_, i) => (
                     <div
-                      key={s.name}
-                      className={`adgate-dot${visited.has(s.name) ? " visited" : ""}`}
+                      key={i}
+                      className={`adgate-dot${clicks > i ? " visited" : ""}`}
                     />
                   ))}
                 </div>
@@ -521,47 +526,44 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
                   How to unlock:
                 </div>
                 <ol>
-                  <li>Tap each sponsor below — a new tab opens for each one.</li>
-                  <li>Close the sponsor tab and come back here.</li>
+                  <li>Click the button below — a new tab opens.</li>
+                  <li>Close the tab and come back here.</li>
                   <li>
-                    After all {sponsors.length || 5} visits, wait <strong>3 seconds</strong> for
+                    Repeat <strong>{REQUIRED_CLICKS} times</strong>, then wait <strong>3 seconds</strong> for
                     Continue to unlock.
                   </li>
                 </ol>
               </div>
             )}
 
-            {/* Sponsor list */}
-            {!loading && sponsors.length > 0 && (
+            {/* Single sponsor button */}
+            {!loading && (
               <div className="adgate-sponsors">
-                {sponsors.map((sponsor, idx) => {
-                  const isVisited = visited.has(sponsor.name);
-                  return (
-                    <button
-                      key={sponsor.name}
-                      onClick={() => !isVisited && handleSponsorClick(sponsor)}
-                      className={`adgate-sponsor-btn${isVisited ? " visited" : ""}`}
-                    >
-                      <div className="adgate-sponsor-num">
-                        {isVisited ? "✓" : idx + 1}
-                      </div>
-                      <div className="adgate-sponsor-info">
-                        <span className="adgate-sponsor-name">Link {idx + 1}</span>
-                        <span className="adgate-sponsor-sub">
-                          {isVisited ? "Visited" : "Click to visit"}
-                        </span>
-                      </div>
-                      {!isVisited && (
-                        <ExternalLink size={16} className="adgate-sponsor-icon" />
-                      )}
-                    </button>
-                  );
-                })}
+                <button
+                  onClick={handleClick}
+                  disabled={allClicked}
+                  className={`adgate-sponsor-btn${allClicked ? " visited" : ""}`}
+                >
+                  <div className="adgate-sponsor-num">
+                    {allClicked ? "✓" : `${Math.min(clicks + 1, REQUIRED_CLICKS)}`}
+                  </div>
+                  <div className="adgate-sponsor-info">
+                    <span className="adgate-sponsor-name">
+                      {allClicked ? "Unlocked" : `Click ${Math.min(clicks + 1, REQUIRED_CLICKS)} of ${REQUIRED_CLICKS}`}
+                    </span>
+                    <span className="adgate-sponsor-sub">
+                      {allClicked ? "Done" : clicks > 0 ? `${REQUIRED_CLICKS - clicks} more to go` : "Click to visit"}
+                    </span>
+                  </div>
+                  {!allClicked && (
+                    <ExternalLink size={16} className="adgate-sponsor-icon" />
+                  )}
+                </button>
               </div>
             )}
 
             {/* Countdown */}
-            {allVisited && countdown !== null && countdown > 0 && (
+            {allClicked && countdown !== null && countdown > 0 && (
               <div className="adgate-countdown">
                 <div className="adgate-countdown-badge">{countdown}</div>
                 <p className="adgate-countdown-text">
@@ -584,9 +586,9 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
               ) : (
                 <>
                   <span className="adgate-mini-spinner" />
-                  {allVisited
+                  {allClicked
                     ? "Please wait…"
-                    : `Visit ${sponsors.length - visited.size} more sponsor${sponsors.length - visited.size !== 1 ? "s" : ""}`}
+                    : `Click ${REQUIRED_CLICKS - Math.min(clicks, REQUIRED_CLICKS)} more time${REQUIRED_CLICKS - Math.min(clicks, REQUIRED_CLICKS) !== 1 ? "s" : ""}`}
                 </>
               )}
             </button>
