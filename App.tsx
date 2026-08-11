@@ -342,7 +342,7 @@ const HeroThreePhones: React.FC = () => (
           <span>9:09</span>
           <span className="text-orange-400 font-bold text-[7px] bg-orange-500/20 px-1 rounded">Downloader</span>
         </div>
-        <img src={SCREENS.screen1} alt="Downloader UI" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
+        <img src="/imgs/img1.jfif" alt="Downloader UI" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
       </div>
       <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-orange-400 uppercase tracking-widest bg-black/90 border border-orange-500/30 px-2 py-0.5 rounded-full whitespace-nowrap shadow-lg">
         📥 Downloader
@@ -356,7 +356,7 @@ const HeroThreePhones: React.FC = () => (
           <span>9:09</span>
           <span className="text-red-400 font-bold text-[7px] bg-red-500/20 px-1 rounded">18+ Gate</span>
         </div>
-        <img src={SCREENS.modal} alt="18+ Gate UI" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
+        <img src="/imgs/img3.jfif" alt="18+ Gate UI" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
       </div>
       <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-red-400 uppercase tracking-widest bg-black/90 border border-red-500/30 px-2 py-0.5 rounded-full whitespace-nowrap shadow-lg">
         🔒 Age Protection
@@ -377,7 +377,7 @@ const HeroThreePhones: React.FC = () => (
           </div>
         </div>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-3.5 bg-black rounded-b-lg z-30" />
-        <img src={SCREENS.hero} alt="XHub Dashboard" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
+        <img src="/imgs/img2.jfif" alt="XHub Dashboard" className="w-full h-full object-contain bg-[#09070A]" loading="lazy" />
       </div>
       <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] font-extrabold text-white uppercase tracking-widest bg-gradient-to-r from-orange-500 to-red-500 px-3 py-1 rounded-full whitespace-nowrap shadow-xl">
         📱 Main Dashboard
