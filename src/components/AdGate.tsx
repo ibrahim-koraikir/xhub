@@ -518,24 +518,6 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
               </div>
             )}
 
-            {/* How to unlock */}
-            {!loading && (
-              <div className="adgate-howto">
-                <div className="adgate-howto-title">
-                  <div className="adgate-howto-dot" />
-                  How to unlock:
-                </div>
-                <ol>
-                  <li>Click the button below — a new tab opens.</li>
-                  <li>Close the tab and come back here.</li>
-                  <li>
-                    Repeat <strong>{REQUIRED_CLICKS} times</strong>, then wait <strong>3 seconds</strong> for
-                    Continue to unlock.
-                  </li>
-                </ol>
-              </div>
-            )}
-
             {/* Single sponsor button */}
             {!loading && (
               <div className="adgate-sponsors">
@@ -559,6 +541,24 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
                     <ExternalLink size={16} className="adgate-sponsor-icon" />
                   )}
                 </button>
+              </div>
+            )}
+
+            {/* How to unlock */}
+            {!loading && (
+              <div className="adgate-howto">
+                <div className="adgate-howto-title">
+                  <div className="adgate-howto-dot" />
+                  How to unlock:
+                </div>
+                <ol>
+                  <li>Click the button below — a new tab opens.</li>
+                  <li>Close the tab and come back here.</li>
+                  <li>
+                    Repeat <strong>{REQUIRED_CLICKS} times</strong>, then wait <strong>3 seconds</strong> for
+                    Continue to unlock.
+                  </li>
+                </ol>
               </div>
             )}
 
