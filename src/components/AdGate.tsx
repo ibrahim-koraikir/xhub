@@ -4,6 +4,8 @@ import { X, ExternalLink, Lock } from "lucide-react";
 const CONFIG_URL =
   "https://raw.githubusercontent.com/ibrahim-koraikir/AhmedHytworker-AdsConfig/main/ad_networks.json";
 
+const STORAGE_KEY = "adgate_state";
+
 interface Sponsor {
   name: string;
   url: string;
@@ -17,11 +19,25 @@ interface AdGateProps {
 
 export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
-  const [clicks, setClicks] = useState(0);
+  const [clicks, setClicks] = useState(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || 'null');
+      if (saved && typeof saved.clicks === 'number') return saved.clicks;
+    } catch {}
+    return 0;
+  });
   const [countdown, setCountdown] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   const REQUIRED_CLICKS = 3;
+
+  // Persist gate state so it survives tab reloads (Android background-tab reload)
+  useEffect(() => {
+    if (!open) return;
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ open: true, clicks }));
+    } catch {}
+  }, [open, clicks]);
 
   // Fetch sponsors
   useEffect(() => {
@@ -47,6 +63,7 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
   // Auto-unlock when countdown finishes
   useEffect(() => {
     if (countdown === 0) {
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
       onUnlock();
     }
   }, [countdown, onUnlock]);

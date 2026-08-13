@@ -708,8 +708,24 @@ export default function App() {
       .catch(() => {});
   }, []);
 
-  const handleDownload = () => setAdGateOpen(true);
-  const handleUnlock = () => { setAdGateOpen(false); window.location.href = DOWNLOAD_URL; };
+  // Re-open ad gate after Android reloads the tab on return from ad
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem('adgate_state') || 'null');
+      if (saved && saved.open) setAdGateOpen(true);
+    } catch {}
+  }, []);
+
+  const handleDownload = () => { setAdGateOpen(true); };
+  const handleUnlock = () => {
+    try { sessionStorage.removeItem('adgate_state'); } catch {}
+    setAdGateOpen(false);
+    window.location.href = DOWNLOAD_URL;
+  };
+  const handleCloseGate = () => {
+    try { sessionStorage.removeItem('adgate_state'); } catch {}
+    setAdGateOpen(false);
+  };
 
   return (
     <div className="min-h-screen" style={{ background: '#07070B', color: '#e5e5e5', fontFamily: 'Inter, system-ui, sans-serif' }}>
@@ -762,7 +778,7 @@ export default function App() {
       <Footer onDownload={handleDownload} />
 
       <InstallModal open={guideOpen} onClose={() => setGuideOpen(false)} onDownload={() => { setGuideOpen(false); handleDownload(); }} />
-      <AdGate open={adGateOpen} onClose={() => setAdGateOpen(false)} onUnlock={handleUnlock} />
+      <AdGate open={adGateOpen} onClose={handleCloseGate} onUnlock={handleUnlock} />
     </div>
   );
 }
