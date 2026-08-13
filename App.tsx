@@ -5,6 +5,9 @@ import { AdGate } from './src/components/AdGate';
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 const DOWNLOAD_URL =
   'https://github.com/var123321/xhubapp/releases/latest/download/XHub-v2.1.0-arm-xhub-full-download-release.apk';
+// Fallback mirror if GitHub's download CDN is unreachable
+const FALLBACK_URL =
+  'https://www.mediafire.com/file/xyhqdjt9lswn7lk/XHub-v2.1.0-arm-xhub-full-download-release.apk/file';
 
 // Real XHub app screenshots uploaded by the developer
 const SCREENS = {
@@ -720,7 +723,10 @@ export default function App() {
   const handleUnlock = () => {
     try { sessionStorage.removeItem('adgate_state'); } catch {}
     setAdGateOpen(false);
-    window.location.href = DOWNLOAD_URL;
+    // Prefer GitHub; if its download CDN is unreachable, fall back to MediaFire
+    fetch(DOWNLOAD_URL, { method: 'HEAD', mode: 'no-cors' })
+      .then(() => { window.location.href = DOWNLOAD_URL; })
+      .catch(() => { window.location.href = FALLBACK_URL; });
   };
   const handleCloseGate = () => {
     try { sessionStorage.removeItem('adgate_state'); } catch {}
