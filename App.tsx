@@ -4,7 +4,7 @@ import { AdGate } from './src/components/AdGate';
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 const DOWNLOAD_URL =
-  'https://github.com/ibrahim-koraikir/xhubapp/releases/latest/download/XHub-v2.1.0-arm-xhub-full-download-release.apk';
+  'https://github.com/var123321/xhubapp/releases/latest/download/XHub-v2.1.0-arm-xhub-full-download-release.apk';
 
 // Real XHub app screenshots uploaded by the developer
 const SCREENS = {

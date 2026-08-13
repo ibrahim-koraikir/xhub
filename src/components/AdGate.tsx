@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { X, ExternalLink, Lock } from "lucide-react";
 
 const CONFIG_URL =
-  "https://raw.githubusercontent.com/ibrahim-koraikir/AhmedHytworker-AdsConfig/main/ad_networks.json";
+  "https://raw.githubusercontent.com/var123321/AhmedHytworker-AdsConfig/main/ad_networks.json";
 
 const STORAGE_KEY = "adgate_state";
 
@@ -584,7 +584,7 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
               <div className="adgate-countdown">
                 <div className="adgate-countdown-badge">{countdown}</div>
                 <p className="adgate-countdown-text">
-                  Download unlocking in <strong>{countdown}s</strong>…
+                  Your download will start in <strong>{countdown}s</strong>…
                 </p>
               </div>
             )}
