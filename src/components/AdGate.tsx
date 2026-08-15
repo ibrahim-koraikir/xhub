@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, ExternalLink, Lock } from "lucide-react";
+import { X, Lock } from "lucide-react";
 
 const CONFIG_URL =
   "https://raw.githubusercontent.com/var123321/AhmedHytworker-AdsConfig/main/ad_networks.json";
@@ -548,14 +548,14 @@ export function AdGate({ open, onClose, onUnlock }: AdGateProps) {
                   </div>
                   <div className="adgate-sponsor-info">
                     <span className="adgate-sponsor-name">
-                      {allClicked ? "Unlocked" : `Click ${Math.min(clicks + 1, REQUIRED_CLICKS)} of ${REQUIRED_CLICKS}`}
+                      {allClicked ? "Unlocked" : `Click ${Math.min(clicks + 1, REQUIRED_CLICKS)} of ${REQUIRED_CLICKS} to download`}
                     </span>
                     <span className="adgate-sponsor-sub">
                       {allClicked ? "Done" : clicks > 0 ? `${REQUIRED_CLICKS - clicks} more to go` : "Click to visit"}
                     </span>
                   </div>
                   {!allClicked && (
-                    <ExternalLink size={16} className="adgate-sponsor-icon" />
+                    <span className="adgate-mini-spinner" style={{ flexShrink: 0 }} />
                   )}
                 </button>
               </div>
